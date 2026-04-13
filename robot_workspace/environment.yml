@@ -1,0 +1,16 @@
+name: vt-franka-workspace
+channels:
+  - conda-forge
+dependencies:
+  - python=3.10
+  - pip
+  - numpy
+  - scipy
+  - fastapi
+  - uvicorn
+  - requests
+  - pyyaml
+  - pip:
+      - -e ../shared
+      - -e .
+

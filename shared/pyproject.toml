@@ -1,0 +1,21 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "vt-franka-shared"
+version = "0.1.0"
+description = "Shared contracts and math for VT Franka"
+requires-python = ">=3.8"
+dependencies = [
+  "numpy>=1.24",
+  "pydantic>=2.6",
+  "PyYAML>=6.0",
+  "scipy>=1.11",
+]
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+
+[tool.setuptools.packages.find]
+where = ["src"]

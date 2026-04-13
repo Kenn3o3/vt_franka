@@ -1,0 +1,59 @@
+controller:
+  host: 192.168.217.109
+  port: 8092
+  request_timeout_sec: 0.2
+
+teleop:
+  host: 0.0.0.0
+  port: 8082
+  loop_hz: 60.0
+  tracking_button_index: 4
+  trigger_close_threshold: 0.5
+  relative_translation_scale: 0.8
+  max_tracking_position_error_m: 0.3
+  use_force_control_for_gripper: true
+  max_gripper_width: 0.078
+  min_gripper_width: 0.0
+  grasp_force: 7.0
+  gripper_velocity: 0.1
+  gripper_stability_window: 30
+  gripper_force_close_threshold: 15.0
+  gripper_force_open_threshold: 5.0
+  gripper_width_vis_precision: 0.001
+
+quest_feedback:
+  quest_ip: 192.168.217.221
+  robot_state_udp_port: 10001
+  tactile_udp_port: 10002
+  force_udp_port: 10005
+  state_publish_hz: 120.0
+  force_scale_factor: 0.025
+
+gelsight:
+  enabled: true
+  camera_name: left_gripper_camera_1
+  camera_index: 0
+  fps: 30
+  width: 640
+  height: 480
+  exposure: -6
+  contrast: 100
+  marker_dimension: 2
+  marker_vis_rotation_deg: 0.0
+  vis_latency_steps: 5
+  teleop_status_host: 127.0.0.1
+  teleop_status_port: 8082
+  save_frames: true
+
+recording:
+  enabled: true
+  root_dir: ./data/episodes
+  image_format: jpg
+
+calibration:
+  calibration_dir: config/calibration/v6
+
+rollout:
+  control_hz: 12.0
+  max_duration_sec: 30.0
+

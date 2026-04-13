@@ -1,0 +1,35 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "vt-franka-workspace"
+version = "0.1.0"
+description = "Workspace-side teleop, tactile, and recording stack for VT Franka"
+requires-python = ">=3.10"
+dependencies = [
+  "fastapi>=0.110",
+  "numpy>=1.24",
+  "opencv-python>=4.8",
+  "pydantic>=2.6",
+  "PyYAML>=6.0",
+  "requests>=2.31",
+  "scipy>=1.11",
+  "uvicorn>=0.29",
+  "pymongo>=4.6",
+]
+
+[project.scripts]
+vt-franka-workspace = "vt_franka_workspace.cli:main"
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+include-package-data = true
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+"vt_franka_workspace.sensors.gelsight.lib" = ["find_marker.so"]
+"vt_franka_workspace.sensors.gelsight.marker_track" = ["README.md", "makefile", "src/*"]
+

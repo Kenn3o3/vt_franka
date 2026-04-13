@@ -1,0 +1,20 @@
+server:
+  host: 0.0.0.0
+  port: 8092
+
+backend:
+  kind: polymetis
+  robot_ip: 127.0.0.1
+  robot_port: 50051
+  gripper_ip: 127.0.0.1
+  gripper_port: 50052
+
+control:
+  control_frequency_hz: 300.0
+  teleop_command_hz: 60.0
+  cartesian_stiffness: [750.0, 750.0, 750.0, 15.0, 15.0, 15.0]
+  cartesian_damping: [37.0, 37.0, 37.0, 2.0, 2.0, 2.0]
+  home_joint_positions: [-0.07, -0.96, -0.01, -2.55, -0.09, 2.14, 0.59]
+  home_duration_sec: 8.0
+  max_queue_size: 256
+
