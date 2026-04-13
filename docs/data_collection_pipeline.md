@@ -31,11 +31,27 @@ The original `factoryil` tree is kept only as a reference. All commands below us
 
 You need a real-time capable kernel and a `libfranka`/Polymetis stack that matches the robot firmware.
 
+Before building anything, confirm the Franka Robot System Version in Franka Desk and choose the matching `LIBFRANKA_VERSION`. Do not assume the latest `libfranka` will work with your robot.
+
 Useful official references:
 
 - Franka FCI overview: <https://support.franka.de/docs/overview.html>
 - Franka `libfranka` docs: <https://support.franka.de/docs/libfranka.html>
 - Franka FCI docs index: <https://support.franka.de/docs/index.html>
+
+The full controller-host checklist is in [controller_setup.md](/home/zhenya/kenny/visuotact/vt_franka/docs/controller_setup.md). At minimum, verify all of the following on the controller machine before continuing:
+
+```bash
+ip -br addr
+ip route
+sudo ethtool <ROBOT_NIC> | egrep "Speed|Duplex|Link detected"
+ping -c 5 172.16.0.2
+uname -a
+cat /sys/kernel/realtime
+groups | grep realtime
+ulimit -r
+ulimit -l
+```
 
 After installing the RT kernel, verify it:
 
@@ -148,11 +164,18 @@ Edit [workspace.yaml](/home/zhenya/kenny/visuotact/vt_franka/robot_workspace/con
 
 Power on the Franka, unlock brakes, and enable FCI in Franka Desk.
 
-Check robot connectivity:
+Check robot connectivity and real-time host state:
 
 ```bash
 ping -c 3 172.16.0.2
+uname -a
+cat /sys/kernel/realtime
+groups | grep realtime
+ulimit -r
+ulimit -l
 ```
+
+Avoid VPN or Wi-Fi in the real-time control path. The Franka-side machine should talk to the robot over the dedicated wired interface.
 
 ### 3.2 On the workspace machine
 
@@ -333,4 +356,3 @@ nc -z 127.0.0.1 50052
 - This v1 stack records raw per-stream data and aligns it offline later.
 - If GelSight processing harms controller stability, move the GelSight publisher to a separate workspace-class machine and keep the controller machine isolated.
 - The controller machine still depends on the Franka RT/libfranka/Polymetis stack. `vt_franka` does not replace that layer.
-

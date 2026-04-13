@@ -40,9 +40,28 @@ Use the same base setup as:
 - [controller_setup.md](/home/zhenya/kenny/visuotact/vt_franka/docs/controller_setup.md)
 - [workspace_setup.md](/home/zhenya/kenny/visuotact/vt_franka/docs/workspace_setup.md)
 
+For a fresh controller machine, do not skip the controller-host prerequisites in `controller_setup.md`:
+
+- direct 1 GbE wired link to the robot
+- `PREEMPT_RT` kernel booted
+- realtime group and `limits.conf` configured
+- `LIBFRANKA_VERSION` matched to the robot firmware
+- Polymetis built against that matching `libfranka`
+
 ## 2. Start the Controller Side
 
 Open three terminals on the controller machine.
+
+Before opening the terminals, run this preflight once:
+
+```bash
+ping -c 3 172.16.0.2
+uname -a
+cat /sys/kernel/realtime
+groups | grep realtime
+ulimit -r
+ulimit -l
+```
 
 ### Terminal C1: Polymetis robot server
 
@@ -255,6 +274,16 @@ curl http://<CONTROLLER_IP>:8092/api/v1/state
 curl http://<CONTROLLER_IP>:8092/api/v1/health
 ```
 
+### Controller machine is not actually in RT mode
+
+```bash
+uname -a
+cat /sys/kernel/realtime
+groups | grep realtime
+ulimit -r
+ulimit -l
+```
+
 ### Quest feedback not visible
 
 Make sure `state-bridge` is running and Quest IP is correct in [workspace.yaml](/home/zhenya/kenny/visuotact/vt_franka/robot_workspace/config/workspace.yaml).
@@ -280,4 +309,3 @@ for latency-matching state.
   - Polymetis
   - Franka FCI
 - If you need the exact original RDP model/checkpoint integration, that should be added as a separate model-loader module on top of this command path.
-
