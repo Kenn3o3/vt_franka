@@ -21,4 +21,7 @@ build/
 venv/
 .idea/
 .vscode/
-
+/.codex
+/fairo/
+/linux-5.11.tar
+/patch-5.11-rt7.patch.xz
