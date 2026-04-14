@@ -34,44 +34,18 @@ class PolymetisFrankaBackend(FrankaBackend):
         quat = xyzw_to_wxyz(quaternion_xyzw.numpy())
         return np.concatenate([pos, quat])
 
-    def _get_base_to_flange_rotation_matrix(self):
-        joint_positions = self._robot.get_joint_positions()
-        _, quat = self._robot.robot_model.forward_kinematics(joint_positions)
-        return self._torch.from_numpy(Rotation.from_quat(quat.numpy()).as_matrix()).to(joint_positions.dtype)
-
-    def _get_tcp_velocity_flange(self):
-        robot_state = self._robot.get_robot_state()
-        joint_positions = self._torch.Tensor(robot_state.joint_positions)
-        joint_velocities = self._torch.Tensor(robot_state.joint_velocities)
-        jacobian = self._robot.robot_model.compute_jacobian(joint_positions)
-        tcp_velocity_base = jacobian @ joint_velocities
-        rotation = self._get_base_to_flange_rotation_matrix().T
-        linear = rotation @ tcp_velocity_base[0:3]
-        angular = rotation @ tcp_velocity_base[3:6]
-        return self._torch.cat([linear, angular])
-
-    def _get_tcp_wrench_flange(self):
-        robot_state = self._robot.get_robot_state()
-        joint_positions = self._torch.Tensor(robot_state.joint_positions)
-        tau_external = self._torch.Tensor(robot_state.motor_torques_external)
-        jacobian = self._robot.robot_model.compute_jacobian(joint_positions)
-        wrench_base, _, _, _ = self._torch.linalg.lstsq(jacobian.T, tau_external)
-        rotation = self._get_base_to_flange_rotation_matrix().T
-        force = rotation @ wrench_base[0:3]
-        torque = rotation @ wrench_base[3:6]
-        return self._torch.cat([force, torque])
-
     def get_controller_state(self, control_frequency_hz: float) -> ControllerState:
         robot_state = self._robot.get_robot_state()
         gripper_state = self._gripper.get_state()
+        tcp_pose, tcp_velocity, tcp_wrench = self._compute_controller_snapshot(robot_state)
         try:
             gripper_force = float(gripper_state.force)
         except (AttributeError, TypeError):
             gripper_force = 0.0
         return ControllerState(
-            tcp_pose=self.get_tcp_pose().tolist(),
-            tcp_velocity=self._get_tcp_velocity_flange().tolist(),
-            tcp_wrench=self._get_tcp_wrench_flange().tolist(),
+            tcp_pose=tcp_pose.tolist(),
+            tcp_velocity=tcp_velocity.tolist(),
+            tcp_wrench=tcp_wrench.tolist(),
             joint_positions=list(robot_state.joint_positions),
             joint_velocities=list(robot_state.joint_velocities),
             gripper_width=float(gripper_state.width),
@@ -79,6 +53,32 @@ class PolymetisFrankaBackend(FrankaBackend):
             control_frequency_hz=control_frequency_hz,
             backend=self.name,
         )
+
+    def _compute_controller_snapshot(self, robot_state) -> tuple[np.ndarray, np.ndarray, np.ndarray]:
+        joint_positions = self._torch.as_tensor(robot_state.joint_positions)
+        joint_velocities = self._torch.as_tensor(robot_state.joint_velocities)
+        tau_external = self._torch.as_tensor(robot_state.motor_torques_external)
+
+        position, quaternion_xyzw = self._robot.robot_model.forward_kinematics(joint_positions)
+        pose = np.concatenate([position.numpy(), xyzw_to_wxyz(quaternion_xyzw.numpy())])
+
+        rotation_base_to_flange = self._torch.from_numpy(Rotation.from_quat(quaternion_xyzw.numpy()).as_matrix()).to(
+            joint_positions.dtype
+        )
+        rotation_flange_to_base = rotation_base_to_flange.T
+
+        jacobian = self._robot.robot_model.compute_jacobian(joint_positions)
+        tcp_velocity_base = jacobian @ joint_velocities
+        linear_velocity = rotation_flange_to_base @ tcp_velocity_base[0:3]
+        angular_velocity = rotation_flange_to_base @ tcp_velocity_base[3:6]
+        tcp_velocity = self._torch.cat([linear_velocity, angular_velocity]).numpy()
+
+        wrench_base, _, _, _ = self._torch.linalg.lstsq(jacobian.T, tau_external)
+        force = rotation_flange_to_base @ wrench_base[0:3]
+        torque = rotation_flange_to_base @ wrench_base[3:6]
+        tcp_wrench = self._torch.cat([force, torque]).numpy()
+
+        return pose, tcp_velocity, tcp_wrench
 
     def start_cartesian_impedance(self, stiffness: Sequence[float], damping: Sequence[float]) -> None:
         self._robot.start_cartesian_impedance(
@@ -114,4 +114,3 @@ class PolymetisFrankaBackend(FrankaBackend):
             self._robot.terminate_current_policy()
         except Exception:  # pragma: no cover - best effort on hardware shutdown
             LOGGER.exception("Failed to terminate current Polymetis policy cleanly")
-
