@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-import time
 from typing import Any
 
 import requests
@@ -8,8 +7,12 @@ import requests
 from vt_franka_shared.models import ControllerState, GripperGraspCommand, GripperWidthCommand, TcpTargetCommand
 
 
+class ControllerClientError(RuntimeError):
+    pass
+
+
 class ControllerClient:
-    def __init__(self, host: str, port: int, request_timeout_sec: float = 0.2) -> None:
+    def __init__(self, host: str, port: int, request_timeout_sec: float = 1.0) -> None:
         self.base_url = f"http://{host}:{port}"
         self.request_timeout_sec = request_timeout_sec
         self.session = requests.Session()
@@ -40,12 +43,21 @@ class ControllerClient:
         self._post_json("/api/v1/actions/home", {})
 
     def _get_json(self, path: str) -> dict[str, Any]:
-        response = self.session.get(f"{self.base_url}{path}", timeout=self.request_timeout_sec)
-        response.raise_for_status()
-        return response.json()
+        try:
+            response = self.session.get(f"{self.base_url}{path}", timeout=self.request_timeout_sec)
+            response.raise_for_status()
+            return response.json()
+        except requests.RequestException as exc:
+            raise ControllerClientError(f"GET {self.base_url}{path} failed: {exc}") from exc
+        except ValueError as exc:
+            raise ControllerClientError(f"GET {self.base_url}{path} returned invalid JSON") from exc
 
     def _post_json(self, path: str, payload: dict[str, Any]) -> dict[str, Any]:
-        response = self.session.post(f"{self.base_url}{path}", json=payload, timeout=self.request_timeout_sec)
-        response.raise_for_status()
-        return response.json()
-
+        try:
+            response = self.session.post(f"{self.base_url}{path}", json=payload, timeout=self.request_timeout_sec)
+            response.raise_for_status()
+            return response.json()
+        except requests.RequestException as exc:
+            raise ControllerClientError(f"POST {self.base_url}{path} failed: {exc}") from exc
+        except ValueError as exc:
+            raise ControllerClientError(f"POST {self.base_url}{path} returned invalid JSON") from exc

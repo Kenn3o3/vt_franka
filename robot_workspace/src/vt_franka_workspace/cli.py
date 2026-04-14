@@ -17,13 +17,17 @@ from .recording import EpisodeSessionManager, JsonlStreamRecorder, align_episode
 from .rollout.real_env import RealWorldEnv
 from .rollout.real_runner import RealRunner
 from .sensors.gelsight.publisher import GelsightPublisher
+from .sensors.orbbec import OrbbecRgbRecorder
 from .settings import WorkspaceSettings
 from .teleop.quest_server import QuestTeleopService, create_teleop_app
 
 
 def main() -> None:
     parser = argparse.ArgumentParser(description="VT Franka workspace CLI")
-    parser.add_argument("command", choices=["teleop", "state-bridge", "gelsight", "episode-start", "episode-stop", "postprocess", "rollout"])
+    parser.add_argument(
+        "command",
+        choices=["teleop", "state-bridge", "gelsight", "orbbec", "episode-start", "episode-stop", "postprocess", "rollout"],
+    )
     parser.add_argument("--config", default="config/workspace.yaml", help="Path to workspace config YAML")
     parser.add_argument("--name", default=None, help="Optional episode name")
     parser.add_argument("--episode-dir", default=None, help="Episode directory for postprocess")
@@ -105,6 +109,17 @@ def main() -> None:
             return
         return
 
+    if args.command == "orbbec":
+        if not settings.orbbec.enabled:
+            raise SystemExit("Orbbec is disabled in the workspace config")
+        recorder = JsonlStreamRecorder(sessions, "orbbec_rgb") if settings.recording.enabled else None
+        service = OrbbecRgbRecorder(settings.orbbec, recorder=recorder, image_format=settings.recording.image_format)
+        try:
+            service.run()
+        except KeyboardInterrupt:
+            return
+        return
+
     if args.command == "rollout":
         if args.policy is None:
             raise SystemExit("--policy is required for rollout")
@@ -123,4 +138,3 @@ def _load_and_resolve_settings(config_path: str | Path) -> WorkspaceSettings:
     if not settings.recording.root_dir.is_absolute():
         settings.recording.root_dir = (config_path.parent / settings.recording.root_dir).resolve()
     return settings
-

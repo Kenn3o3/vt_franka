@@ -1,6 +1,6 @@
 # Policy Inference Pipeline
 
-This document is the step-by-step command runbook for policy rollout with `vt_franka`.
+This document is the operational runbook for policy rollout with `vt_franka`.
 
 Current scope of `vt_franka` rollout:
 
@@ -9,11 +9,22 @@ Current scope of `vt_franka` rollout:
 - Workspace-side rollout through `vt-franka-workspace rollout`
 - Policy entrypoint is a Python callable specified as `module:function`
 
-Because the new repo does not yet contain the original RDP training/checkpoint loader, inference is driven by a policy wrapper function. A smoke-test policy is included in:
+Because the new repo does not yet contain the original RDP training or checkpoint loader, inference is driven by a policy wrapper function. A smoke-test policy is included in:
 
 - [policies.py](/home/zhenya/kenny/visuotact/vt_franka/robot_workspace/src/vt_franka_workspace/examples/policies.py)
 
-## 0. When to Run Which Processes
+## 0. Required Setup Documents
+
+This rollout runbook assumes the machines are already installed and configured.
+
+Use these setup documents first:
+
+- [controller_setup.md](/home/zhenya/kenny/visuotact/vt_franka/docs/controller_setup.md)
+- [workspace_setup.md](/home/zhenya/kenny/visuotact/vt_franka/docs/workspace_setup.md)
+
+This document does not repeat installation commands.
+
+## 1. Which Processes Are Required
 
 ### Required for rollout
 
@@ -33,22 +44,21 @@ Because the new repo does not yet contain the original RDP training/checkpoint l
 - `vt-franka-workspace gelsight`
   - if you want tactile arrows on Quest or tactile recording during rollout
 
-## 1. One-Time Setup
+## 2. Policy Environment
 
-Use the same base setup as:
+Default path:
 
-- [controller_setup.md](/home/zhenya/kenny/visuotact/vt_franka/docs/controller_setup.md)
-- [workspace_setup.md](/home/zhenya/kenny/visuotact/vt_franka/docs/workspace_setup.md)
+- Run `vt-franka-workspace rollout` inside the existing `vt-franka-workspace` conda environment.
+- You do not need a second conda environment by default.
 
-For a fresh controller machine, do not skip the controller-host prerequisites in `controller_setup.md`:
+If your policy has conflicting dependencies:
 
-- direct 1 GbE wired link to the robot
-- `PREEMPT_RT` kernel booted
-- realtime group and `limits.conf` configured
-- `LIBFRANKA_VERSION` matched to the robot firmware
-- Polymetis built against that matching `libfranka`
+- Create a separate inference environment.
+- Install `vt-franka-workspace` and your policy package into that environment.
+- Run only the `rollout` process in that separate environment.
+- Keep `teleop`, `state-bridge`, and optional sensor publishers in the original workspace environment if you want.
 
-## 2. Start the Controller Side
+## 3. Start the Controller Side
 
 Open three terminals on the controller machine.
 
@@ -71,6 +81,10 @@ cd /home/zhenya/kenny/visuotact/fairo/polymetis
 launch_robot.py robot_client=franka_hardware robot_client.executable_cfg.robot_ip=172.16.0.2
 ```
 
+What this launches:
+
+- Polymetis Franka robot gRPC server on `127.0.0.1:50051`
+
 ### Terminal C2: Polymetis gripper server
 
 ```bash
@@ -78,6 +92,10 @@ conda activate polymetis-local
 cd /home/zhenya/kenny/visuotact/fairo/polymetis
 launch_gripper.py gripper=franka_hand gripper.executable_cfg.robot_ip=172.16.0.2
 ```
+
+What this launches:
+
+- Polymetis Franka hand gRPC server on `127.0.0.1:50052`
 
 ### Terminal C3: Controller API
 
@@ -87,6 +105,11 @@ cd /home/zhenya/kenny/visuotact/vt_franka/robot_controller
 vt-franka-controller run --config /home/zhenya/kenny/visuotact/vt_franka/robot_controller/config/controller.yaml
 ```
 
+What this launches:
+
+- FastAPI controller service on `0.0.0.0:8092`
+- The 300 Hz controller loop that accepts higher-level workspace commands
+
 Health checks:
 
 ```bash
@@ -94,7 +117,7 @@ curl http://127.0.0.1:8092/api/v1/health
 curl http://127.0.0.1:8092/api/v1/state
 ```
 
-## 3. Start the Workspace Side
+## 4. Start the Workspace Side
 
 Open up to four terminals on the workspace machine.
 
@@ -110,6 +133,10 @@ vt-franka-workspace episode-start \
   --name rollout_001
 ```
 
+What this does:
+
+- Creates an active rollout episode directory
+
 ### Terminal W2: Robot state bridge
 
 ```bash
@@ -118,6 +145,10 @@ cd /home/zhenya/kenny/visuotact/vt_franka/robot_workspace
 vt-franka-workspace state-bridge \
   --config /home/zhenya/kenny/visuotact/vt_franka/robot_workspace/config/workspace.yaml
 ```
+
+What this launches:
+
+- Controller-state polling and Quest UDP feedback publishing
 
 ### Terminal W3: Optional teleop server
 
@@ -130,6 +161,11 @@ vt-franka-workspace teleop \
   --config /home/zhenya/kenny/visuotact/vt_franka/robot_workspace/config/workspace.yaml
 ```
 
+What this launches:
+
+- Quest teleop HTTP server on `<WORKSPACE_IP>:8082`
+- Manual takeover path if you want to interrupt rollout
+
 ### Terminal W4: Optional GelSight publisher
 
 If you want tactile arrows and tactile recording during rollout:
@@ -141,7 +177,11 @@ vt-franka-workspace gelsight \
   --config /home/zhenya/kenny/visuotact/vt_franka/robot_workspace/config/workspace.yaml
 ```
 
-## 4. Smoke-Test the Rollout Stack With a Built-In Policy
+What this launches:
+
+- GelSight capture and tactile recording or Quest tactile visualization
+
+## 5. Smoke-Test the Rollout Stack
 
 The built-in `hold_current_pose` policy simply keeps the robot at its current TCP pose and current gripper width.
 
@@ -165,13 +205,12 @@ vt-franka-workspace rollout \
   --policy vt_franka_workspace.examples.policies:nudge_x
 ```
 
-## 5. Run Your Own Policy Wrapper
+## 6. Run Your Own Policy Wrapper
 
-Your policy function must satisfy:
+Your policy function must return either:
 
 ```python
 def my_policy(observation: dict) -> dict:
-    ...
     return {
         "target_tcp": [x, y, z, qw, qx, qy, qz],
         "gripper_width": 0.05,
@@ -182,7 +221,6 @@ or:
 
 ```python
 def my_policy(observation: dict) -> dict:
-    ...
     return {
         "target_tcp": [x, y, z, qw, qx, qy, qz],
         "gripper_closed": True,
@@ -202,15 +240,14 @@ Create a wrapper file, for example:
 mkdir -p /home/zhenya/kenny/visuotact/vt_franka/local_policies
 ```
 
-```bash
-cat > /home/zhenya/kenny/visuotact/vt_franka/local_policies/my_policy.py <<'PY'
+```python
+# /home/zhenya/kenny/visuotact/vt_franka/local_policies/my_policy.py
 def rollout_policy(observation: dict) -> dict:
     state = observation["controller_state"]
     return {
         "target_tcp": state["tcp_pose"],
         "gripper_width": state["gripper_width"],
     }
-PY
 ```
 
 Run it:
@@ -225,22 +262,20 @@ vt-franka-workspace rollout \
   --policy local_policies.my_policy:rollout_policy
 ```
 
-## 6. Integrate a Real Checkpoint Loader
+## 7. Integrate A Real Checkpoint Loader
 
 If you want to roll out an actual RDP checkpoint, wrap your model-loading code behind a `module:function` entrypoint and make the function return the action dict expected above.
 
 Typical pattern:
 
-1. Load checkpoint once at module import time or on first call.
-2. Convert `observation["controller_state"]` and your tactile inputs into your model input tensor format.
+1. Load the checkpoint once at module import time or on first call.
+2. Convert `observation["controller_state"]` and optional tactile inputs into your model input tensors.
 3. Run the forward pass.
-4. Convert model output into:
-   - `target_tcp`
-   - `gripper_width` or `gripper_closed`
+4. Convert model output into `target_tcp` and gripper commands.
 
 The new repo does not yet include the original training workspace or checkpoint format loader, so this wrapper is the integration point.
 
-## 7. Stop and Postprocess Recorded Rollouts
+## 8. Stop And Postprocess Recorded Rollouts
 
 If you started an episode:
 
@@ -259,53 +294,3 @@ cd /home/zhenya/kenny/visuotact/vt_franka/robot_workspace
 vt-franka-workspace postprocess \
   --episode-dir EPISODE_DIR
 ```
-
-## 8. Quick Failure Checks
-
-### Controller state not coming back
-
-```bash
-curl http://<CONTROLLER_IP>:8092/api/v1/state
-```
-
-### Workspace cannot reach controller
-
-```bash
-curl http://<CONTROLLER_IP>:8092/api/v1/health
-```
-
-### Controller machine is not actually in RT mode
-
-```bash
-uname -a
-cat /sys/kernel/realtime
-groups | grep realtime
-ulimit -r
-ulimit -l
-```
-
-### Quest feedback not visible
-
-Make sure `state-bridge` is running and Quest IP is correct in [workspace.yaml](/home/zhenya/kenny/visuotact/vt_franka/robot_workspace/config/workspace.yaml).
-
-### GelSight arrows not updating during rollout
-
-Start `teleop` as well as `gelsight`, since the GelSight publisher uses:
-
-```bash
-curl http://<WORKSPACE_IP>:8082/get_current_gripper_state
-```
-
-for latency-matching state.
-
-## 9. Notes
-
-- The rollout runner is intentionally lightweight.
-- The command path for execution is:
-  - policy callable
-  - `vt-franka-workspace rollout`
-  - controller HTTP API
-  - `vt-franka-controller`
-  - Polymetis
-  - Franka FCI
-- If you need the exact original RDP model/checkpoint integration, that should be added as a separate model-loader module on top of this command path.

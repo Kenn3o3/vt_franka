@@ -1,21 +1,26 @@
 from __future__ import annotations
 
+import json
+import logging
 import time
 from collections import deque
 from contextlib import asynccontextmanager
 from threading import Event, Lock, Thread
 
 import numpy as np
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException, Request
+from fastapi.responses import JSONResponse
 from scipy.spatial.transform import Rotation
 
-from vt_franka_shared.models import ControllerState, UnityTeleopMessage
+from vt_franka_shared.models import ControllerState, UnityTeleopMessage, parse_unity_teleop_message
 from vt_franka_shared.timing import precise_sleep
 from vt_franka_shared.transforms import SingleArmCalibration
 
 from ..controller.client import ControllerClient
 from ..recording.raw_recorder import JsonlStreamRecorder
 from ..settings import TeleopSettings
+
+LOGGER = logging.getLogger(__name__)
 
 
 class QuestTeleopService:
@@ -82,41 +87,44 @@ class QuestTeleopService:
     def _control_loop(self) -> None:
         period = 1.0 / self.settings.loop_hz
         while self._running.is_set():
-            state = self.controller.get_state()
-            self._update_gripper_state(state)
-            message = self._latest_message_copy()
-            if message is None:
-                precise_sleep(period)
-                continue
+            try:
+                state = self.controller.get_state()
+                self._update_gripper_state(state)
+                message = self._latest_message_copy()
+                if message is None:
+                    precise_sleep(period)
+                    continue
 
-            hand_pose_robot = self.calibration.unity_to_robot_pose(
-                np.asarray(message.leftHand.wristPos + message.leftHand.wristQuat, dtype=np.float64)
-            )
-            tracking_pressed = self._button_pressed(message, self.settings.tracking_button_index)
-            if tracking_pressed and not self._tracking:
-                self._tracking = True
-                self._start_real_tcp = np.asarray(state.tcp_pose, dtype=np.float64)
-                self._start_hand_tcp = hand_pose_robot
-            elif not tracking_pressed and self._tracking:
-                self._tracking = False
-                self.controller.stop_gripper()
-
-            if self._tracking:
-                self._handle_gripper_toggle(message)
-                target_pose = self._calculate_relative_target(hand_pose_robot)
-                current_pose = np.asarray(state.tcp_pose, dtype=np.float64)
-                if np.linalg.norm(target_pose[:3] - current_pose[:3]) > self.settings.max_tracking_position_error_m:
+                hand_pose_robot = self.calibration.unity_to_robot_pose(
+                    np.asarray(message.leftHand.wristPos + message.leftHand.wristQuat, dtype=np.float64)
+                )
+                tracking_pressed = self._button_pressed(message, self.settings.tracking_button_index)
+                if tracking_pressed and not self._tracking:
+                    self._tracking = True
+                    self._start_real_tcp = np.asarray(state.tcp_pose, dtype=np.float64)
+                    self._start_hand_tcp = hand_pose_robot
+                elif not tracking_pressed and self._tracking:
                     self._tracking = False
-                else:
-                    self.controller.queue_tcp(target_pose.tolist(), source="teleop")
-                    if self.command_recorder is not None:
-                        self.command_recorder.record_event(
-                            {
-                                "source_wall_time": time.time(),
-                                "target_tcp": target_pose.tolist(),
-                                "gripper_closed": self._gripper_closed,
-                            }
-                        )
+                    self.controller.stop_gripper()
+
+                if self._tracking:
+                    self._handle_gripper_toggle(message)
+                    target_pose = self._calculate_relative_target(hand_pose_robot)
+                    current_pose = np.asarray(state.tcp_pose, dtype=np.float64)
+                    if np.linalg.norm(target_pose[:3] - current_pose[:3]) > self.settings.max_tracking_position_error_m:
+                        self._tracking = False
+                    else:
+                        self.controller.queue_tcp(target_pose.tolist(), source="teleop")
+                        if self.command_recorder is not None:
+                            self.command_recorder.record_event(
+                                {
+                                    "source_wall_time": time.time(),
+                                    "target_tcp": target_pose.tolist(),
+                                    "gripper_closed": self._gripper_closed,
+                                }
+                            )
+            except Exception as exc:
+                LOGGER.warning("Teleop control iteration failed: %s", exc)
 
             precise_sleep(period)
 
@@ -206,7 +214,19 @@ def create_teleop_app(service: QuestTeleopService) -> FastAPI:
     app = FastAPI(title="VT Franka Teleop", version="0.1.0", lifespan=lifespan)
 
     @app.post("/unity")
-    def unity(message: UnityTeleopMessage):
+    async def unity(request: Request):
+        try:
+            payload = await request.json()
+        except json.JSONDecodeError as exc:
+            raise HTTPException(status_code=400, detail="Invalid Quest teleop JSON") from exc
+
+        try:
+            message = parse_unity_teleop_message(payload)
+        except Exception as exc:
+            LOGGER.error("Quest teleop payload validation failed: %s", exc)
+            LOGGER.error("Quest teleop payload: %s", _truncate_payload(payload))
+            return JSONResponse(status_code=422, content={"detail": str(exc)})
+
         service.submit_message(message)
         return {"status": "ok"}
 
@@ -220,3 +240,9 @@ def create_teleop_app(service: QuestTeleopService) -> FastAPI:
 def _wxyz_to_xyzw(quaternion_wxyz):
     return np.array([quaternion_wxyz[1], quaternion_wxyz[2], quaternion_wxyz[3], quaternion_wxyz[0]], dtype=np.float64)
 
+
+def _truncate_payload(payload: object, max_chars: int = 800) -> str:
+    text = json.dumps(payload, ensure_ascii=True, separators=(",", ":"))
+    if len(text) <= max_chars:
+        return text
+    return f"{text[:max_chars]}..."

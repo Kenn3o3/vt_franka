@@ -1,9 +1,10 @@
+from fastapi.testclient import TestClient
 import numpy as np
 
 from vt_franka_shared.models import ControllerState
 from vt_franka_shared.transforms import SingleArmCalibration
 from vt_franka_workspace.settings import TeleopSettings
-from vt_franka_workspace.teleop.quest_server import QuestTeleopService
+from vt_franka_workspace.teleop.quest_server import QuestTeleopService, create_teleop_app
 
 
 class FakeController:
@@ -36,3 +37,28 @@ def test_relative_target_uses_robot_frame_delta():
     service._start_hand_tcp = np.array([0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0])
     target = service._calculate_relative_target(np.array([0.1, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0]))
     assert np.allclose(target[:3], [0.5, 0.0, 0.3])
+
+
+def test_teleop_endpoint_accepts_flattened_tactar_payload():
+    calibration = SingleArmCalibration.from_dir(
+        "/home/zhenya/kenny/visuotact/vt_franka/robot_workspace/config/calibration/v6"
+    )
+    controller = FakeController()
+    service = QuestTeleopService(TeleopSettings(relative_translation_scale=1.0), controller, calibration)
+    app = create_teleop_app(service)
+
+    payload = {
+        "timestamp": 123.0,
+        "leftHandPose": [0.1, 0.2, 0.3, 1.0, 0.0, 0.0, 0.0],
+        "leftGripperState": 0.75,
+        "buttonStates": {"button_4": True},
+    }
+
+    with TestClient(app) as client:
+        response = client.post("/unity", json=payload)
+
+    assert response.status_code == 200
+    assert service._latest_message is not None
+    assert service._latest_message.leftHand.wristPos == [0.1, 0.2, 0.3]
+    assert service._latest_message.leftHand.triggerState == 0.75
+    assert service._latest_message.leftHand.buttonState == [False, False, False, False, True]

@@ -12,9 +12,9 @@ backend:
 control:
   control_frequency_hz: 300.0
   teleop_command_hz: 60.0
+  state_cache_hz: 60.0
   cartesian_stiffness: [750.0, 750.0, 750.0, 15.0, 15.0, 15.0]
   cartesian_damping: [37.0, 37.0, 37.0, 2.0, 2.0, 2.0]
   home_joint_positions: [-0.07, -0.96, -0.01, -2.55, -0.09, 2.14, 0.59]
   home_duration_sec: 8.0
   max_queue_size: 256
-

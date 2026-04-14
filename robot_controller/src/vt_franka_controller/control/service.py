@@ -17,7 +17,6 @@ from vt_franka_shared.models import (
     TcpTargetCommand,
 )
 from vt_franka_shared.pose_math import pose7d_to_pose6d
-from vt_franka_shared.timing import precise_wait
 
 from ..settings import ControllerSettings
 from ..backends.base import FrankaBackend
@@ -37,6 +36,8 @@ class ControllerService:
         self._gripper_lock = threading.Lock()
         self._pose_interp: Optional[PoseTrajectoryInterpolator] = None
         self._last_waypoint_time: Optional[float] = None
+        self._state_cache_period = 1.0 / max(self.settings.control.state_cache_hz, 1e-6)
+        self._next_state_refresh_time: Optional[float] = None
 
     def start(self) -> None:
         if self._running.is_set():
@@ -109,6 +110,7 @@ class ControllerService:
         start_time = time.monotonic()
         self._pose_interp = PoseTrajectoryInterpolator(times=np.array([start_time]), poses=np.array([current_pose]))
         self._last_waypoint_time = start_time
+        self._next_state_refresh_time = start_time
         self.backend.start_cartesian_impedance(
             self.settings.control.cartesian_stiffness,
             self.settings.control.cartesian_damping,
@@ -120,7 +122,13 @@ class ControllerService:
             now = time.monotonic()
             target_pose = self._pose_interp(now)
             self.backend.update_desired_tcp(target_pose)
-            self._refresh_state()
+
+            if self._next_state_refresh_time is None or now >= self._next_state_refresh_time:
+                try:
+                    self._refresh_state()
+                except Exception:  # pragma: no cover - hardware dependent failure path
+                    LOGGER.exception("Failed to refresh controller state cache")
+                self._next_state_refresh_time = now + self._state_cache_period
 
             try:
                 command = self.command_queue.popleft()
@@ -138,5 +146,7 @@ class ControllerService:
                 self._last_waypoint_time = command["target_time"]
 
             deadline = start_time + (iteration + 1) * period
-            precise_wait(deadline, time_func=time.monotonic)
+            remaining = deadline - time.monotonic()
+            if remaining > 0.0:
+                time.sleep(remaining)
             iteration += 1

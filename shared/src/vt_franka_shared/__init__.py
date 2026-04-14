@@ -12,6 +12,7 @@ from .models import (
     TactileSensorMessage,
     TcpTargetCommand,
     UnityTeleopMessage,
+    parse_unity_teleop_message,
 )
 from .timing import precise_sleep, precise_wait
 from .transforms import SingleArmCalibration
@@ -32,8 +33,8 @@ __all__ = [
     "UnityTeleopMessage",
     "dump_yaml_model",
     "load_yaml_model",
+    "parse_unity_teleop_message",
     "pose_distance",
     "precise_sleep",
     "precise_wait",
 ]
-

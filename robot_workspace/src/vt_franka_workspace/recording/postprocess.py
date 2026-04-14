@@ -32,6 +32,7 @@ def align_episode(episode_dir: str | Path, target_hz: float = 24.0) -> Path:
     controller = _read_jsonl(streams_dir / "controller_state.jsonl")
     teleop = _read_jsonl(streams_dir / "teleop_commands.jsonl")
     gelsight = _read_jsonl(streams_dir / "gelsight_markers.jsonl")
+    orbbec = _read_jsonl(streams_dir / "orbbec_rgb.jsonl")
 
     if not controller:
         raise RuntimeError(f"No controller_state stream found in {episode_dir}")
@@ -50,6 +51,8 @@ def align_episode(episode_dir: str | Path, target_hz: float = 24.0) -> Path:
     teleop_closed = []
     marker_locations = []
     marker_offsets = []
+    orbbec_frame_paths = []
+    orbbec_capture_times = []
 
     for timestamp in grid:
         controller_item = _nearest_record(controller, timestamp, "source_wall_time")
@@ -81,6 +84,14 @@ def align_episode(episode_dir: str | Path, target_hz: float = 24.0) -> Path:
             marker_locations.append(gelsight_item["marker_locations"])
             marker_offsets.append(gelsight_item["marker_offsets"])
 
+        orbbec_item = _nearest_record(orbbec, timestamp, "captured_wall_time")
+        if orbbec_item is None:
+            orbbec_frame_paths.append("")
+            orbbec_capture_times.append(np.nan)
+        else:
+            orbbec_frame_paths.append(orbbec_item.get("frame_path", ""))
+            orbbec_capture_times.append(float(orbbec_item["captured_wall_time"]))
+
     output_path = episode_dir / "aligned_episode.npz"
     np.savez_compressed(
         output_path,
@@ -93,12 +104,16 @@ def align_episode(episode_dir: str | Path, target_hz: float = 24.0) -> Path:
         teleop_gripper_closed=np.asarray(teleop_closed, dtype=bool),
         gelsight_marker_locations=np.asarray(marker_locations, dtype=object),
         gelsight_marker_offsets=np.asarray(marker_offsets, dtype=object),
+        orbbec_rgb_frame_paths=np.asarray(orbbec_frame_paths, dtype=object),
+        orbbec_rgb_capture_timestamps=np.asarray(orbbec_capture_times, dtype=np.float64),
     )
+    streams_used = ["controller_state", "teleop_commands", "gelsight_markers"]
+    if orbbec:
+        streams_used.append("orbbec_rgb")
     manifest = {
         "target_hz": target_hz,
         "num_steps": int(len(grid)),
-        "streams_used": ["controller_state", "teleop_commands", "gelsight_markers"],
+        "streams_used": streams_used,
     }
     (episode_dir / "aligned_episode_manifest.json").write_text(json.dumps(manifest, indent=2), encoding="utf-8")
     return output_path
-

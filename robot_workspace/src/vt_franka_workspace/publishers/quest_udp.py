@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import logging
 import socket
 from typing import Iterable
 
@@ -9,6 +10,8 @@ import numpy as np
 from vt_franka_shared.models import Arrow, ControllerState, ForceSensorMessage, TactileSensorMessage
 from vt_franka_shared.pose_math import pose7d_to_matrix
 from vt_franka_shared.transforms import SingleArmCalibration
+
+LOGGER = logging.getLogger(__name__)
 
 
 class QuestUdpPublisher:
@@ -58,6 +61,20 @@ class QuestUdpPublisher:
         self._send(tactile.model_dump(mode="json"), self.tactile_udp_port)
 
     def _send(self, payload: dict, port: int) -> None:
-        packet = bson.dumps(payload)
+        packet = _encode_bson(payload)
         self.socket.sendto(packet, (self.quest_ip, port))
 
+
+def _encode_bson(payload: dict) -> bytes:
+    dumps = getattr(bson, "dumps", None)
+    if callable(dumps):
+        return dumps(payload)
+
+    bson_class = getattr(bson, "BSON", None)
+    if bson_class is not None and callable(getattr(bson_class, "encode", None)):
+        return bson_class.encode(payload)
+
+    raise RuntimeError(
+        "Installed bson module does not provide bson.dumps or bson.BSON.encode; "
+        "install pymongo or a compatible bson package."
+    )

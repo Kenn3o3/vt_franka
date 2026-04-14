@@ -46,6 +46,7 @@ class JsonlStreamRecorder:
         frame_id: str,
         metadata: dict[str, Any] | None = None,
         image_format: str = "jpg",
+        extra_event_fields: dict[str, Any] | None = None,
     ) -> Path | None:
         episode_dir = self.session_manager.get_active_episode_dir()
         if episode_dir is None:
@@ -62,11 +63,10 @@ class JsonlStreamRecorder:
         if not success:
             raise RuntimeError("Failed to encode frame for recording")
         frame_path.write_bytes(encoded.tobytes())
-        self.record_event(
-            {
-                "frame_path": frame_path.relative_to(episode_dir).as_posix(),
-                "metadata": metadata or {},
-            }
-        )
+        payload = {"frame_path": frame_path.relative_to(episode_dir).as_posix()}
+        if metadata:
+            payload["metadata"] = metadata
+        if extra_event_fields:
+            payload.update(extra_event_fields)
+        self.record_event(payload)
         return frame_path
-

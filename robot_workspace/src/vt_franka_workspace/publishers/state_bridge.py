@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import logging
 import time
 from threading import Event, Thread
 
@@ -10,6 +11,8 @@ from ..recording.raw_recorder import JsonlStreamRecorder
 from ..ros.state_publisher import Ros2StatePublisher
 from ..settings import QuestFeedbackSettings
 from .quest_udp import QuestUdpPublisher
+
+LOGGER = logging.getLogger(__name__)
 
 
 class StateBridge:
@@ -46,18 +49,20 @@ class StateBridge:
     def _loop(self) -> None:
         period = 1.0 / self.settings.state_publish_hz
         while self._running.is_set():
-            state = self.controller.get_state()
-            self.quest_publisher.publish_robot_state(state)
-            if self.ros_publisher is not None:
-                self.ros_publisher.publish_controller_state(state)
-            if self.recorder is not None:
-                self.recorder.record_event(
-                    {
-                        "source_wall_time": state.wall_time,
-                        "source_monotonic_time": state.monotonic_time,
-                        "received_wall_time": time.time(),
-                        "state": state.model_dump(mode="json"),
-                    }
-                )
+            try:
+                state = self.controller.get_state()
+                self.quest_publisher.publish_robot_state(state)
+                if self.ros_publisher is not None:
+                    self.ros_publisher.publish_controller_state(state)
+                if self.recorder is not None:
+                    self.recorder.record_event(
+                        {
+                            "source_wall_time": state.wall_time,
+                            "source_monotonic_time": state.monotonic_time,
+                            "received_wall_time": time.time(),
+                            "state": state.model_dump(mode="json"),
+                        }
+                    )
+            except Exception as exc:
+                LOGGER.warning("State bridge iteration failed: %s", exc)
             precise_sleep(period)
-

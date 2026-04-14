@@ -8,7 +8,7 @@ from pydantic import BaseModel, Field
 class ControllerClientSettings(BaseModel):
     host: str = "127.0.0.1"
     port: int = 8092
-    request_timeout_sec: float = 0.2
+    request_timeout_sec: float = 1.0
 
 
 class TeleopSettings(BaseModel):
@@ -35,7 +35,7 @@ class QuestFeedbackSettings(BaseModel):
     robot_state_udp_port: int = 10001
     tactile_udp_port: int = 10002
     force_udp_port: int = 10005
-    state_publish_hz: float = 120.0
+    state_publish_hz: float = 60.0
     force_scale_factor: float = 0.025
 
 
@@ -53,6 +53,18 @@ class GelsightSettings(BaseModel):
     vis_latency_steps: int = 5
     teleop_status_host: str = "127.0.0.1"
     teleop_status_port: int = 8082
+    save_frames: bool = True
+
+
+class OrbbecSettings(BaseModel):
+    enabled: bool = False
+    camera_name: str = "workspace_orbbec_rgb"
+    serial_number: str = ""
+    color_width: int = 640
+    color_height: int = 0
+    color_format: str = "RGB"
+    color_fps: int = 30
+    frame_timeout_ms: int = 200
     save_frames: bool = True
 
 
@@ -76,7 +88,7 @@ class WorkspaceSettings(BaseModel):
     teleop: TeleopSettings = Field(default_factory=TeleopSettings)
     quest_feedback: QuestFeedbackSettings = Field(default_factory=QuestFeedbackSettings)
     gelsight: GelsightSettings = Field(default_factory=GelsightSettings)
+    orbbec: OrbbecSettings = Field(default_factory=OrbbecSettings)
     recording: RecordingSettings = Field(default_factory=RecordingSettings)
     calibration: CalibrationSettings = Field(default_factory=CalibrationSettings)
     rollout: RolloutSettings = Field(default_factory=RolloutSettings)
-

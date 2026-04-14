@@ -1,7 +1,7 @@
 controller:
-  host: 192.168.217.109
+  host: 192.168.217.180
   port: 8092
-  request_timeout_sec: 0.2
+  request_timeout_sec: 1.0
 
 teleop:
   host: 0.0.0.0
@@ -26,11 +26,11 @@ quest_feedback:
   robot_state_udp_port: 10001
   tactile_udp_port: 10002
   force_udp_port: 10005
-  state_publish_hz: 120.0
+  state_publish_hz: 60.0
   force_scale_factor: 0.025
 
 gelsight:
-  enabled: true
+  enabled: false
   camera_name: left_gripper_camera_1
   camera_index: 0
   fps: 30
@@ -43,17 +43,27 @@ gelsight:
   vis_latency_steps: 5
   teleop_status_host: 127.0.0.1
   teleop_status_port: 8082
+  save_frames: false
+
+orbbec:
+  enabled: true
+  camera_name: workspace_orbbec_rgb
+  serial_number: ""
+  color_width: 640
+  color_height: 0
+  color_format: RGB
+  color_fps: 30
+  frame_timeout_ms: 200
   save_frames: true
 
 recording:
   enabled: true
-  root_dir: ./data/episodes
+  root_dir: /home/zhenya/kenny/visuotact/vt_franka/robot_workspace/data/episodes
   image_format: jpg
 
 calibration:
-  calibration_dir: config/calibration/v6
+  calibration_dir: /home/zhenya/kenny/visuotact/vt_franka/robot_workspace/config/calibration/v6
 
 rollout:
   control_hz: 12.0
   max_duration_sec: 30.0
-

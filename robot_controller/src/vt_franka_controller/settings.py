@@ -21,6 +21,7 @@ class BackendSettings(BaseModel):
 class ControlSettings(BaseModel):
     control_frequency_hz: float = 300.0
     teleop_command_hz: float = 60.0
+    state_cache_hz: float = 60.0
     cartesian_stiffness: List[float] = Field(default_factory=lambda: [750.0, 750.0, 750.0, 15.0, 15.0, 15.0])
     cartesian_damping: List[float] = Field(default_factory=lambda: [37.0, 37.0, 37.0, 2.0, 2.0, 2.0])
     home_joint_positions: List[float] = Field(
