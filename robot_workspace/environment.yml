@@ -6,6 +6,7 @@ dependencies:
   - pip
   - numpy
   - scipy
+  - matplotlib
   - fastapi
   - uvicorn
   - requests
@@ -13,4 +14,3 @@ dependencies:
   - pip:
       - -e ../shared
       - -e .
-

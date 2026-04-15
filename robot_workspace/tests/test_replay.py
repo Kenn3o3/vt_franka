@@ -25,6 +25,7 @@ def test_load_replay_episode_reads_aligned_npz(tmp_path: Path):
             dtype=np.float64,
         ),
         teleop_gripper_closed=np.array([False, True, True], dtype=bool),
+        teleop_command_source_timestamps=np.array([0.05, 0.15, 0.25], dtype=np.float64),
     )
 
     episode = load_replay_episode(path)
@@ -47,6 +48,7 @@ def test_build_replay_policy_returns_sequenced_actions(tmp_path: Path):
             dtype=np.float64,
         ),
         teleop_gripper_closed=np.array([False, True, True], dtype=bool),
+        teleop_command_source_timestamps=np.array([10.05, 10.15, 10.25], dtype=np.float64),
     )
 
     policy = build_replay_policy(

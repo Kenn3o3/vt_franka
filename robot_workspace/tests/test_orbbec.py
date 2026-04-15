@@ -22,6 +22,7 @@ def test_align_episode_includes_orbbec_stream(tmp_path: Path):
     episode_dir = sessions.start_episode("orbbec")
 
     controller = JsonlStreamRecorder(sessions, "controller_state")
+    teleop = JsonlStreamRecorder(sessions, "teleop_commands")
     orbbec = JsonlStreamRecorder(sessions, "orbbec_rgb")
 
     controller.record_event(
@@ -60,6 +61,8 @@ def test_align_episode_includes_orbbec_stream(tmp_path: Path):
             "frame_height": 480,
         }
     )
+    teleop.record_event({"source_wall_time": 1.05, "target_tcp": [0.3] * 7, "gripper_closed": False})
+    teleop.record_event({"source_wall_time": 1.15, "target_tcp": [0.4] * 7, "gripper_closed": True})
     sessions.stop_episode()
 
     output_path = align_episode(episode_dir, target_hz=10.0)
@@ -67,3 +70,4 @@ def test_align_episode_includes_orbbec_stream(tmp_path: Path):
     assert output_path.exists()
     assert "orbbec_rgb_frame_paths" in aligned
     assert aligned["orbbec_rgb_frame_paths"][0] == "streams/orbbec_rgb/000001.jpg"
+    assert aligned["orbbec_rgb_capture_timestamps"].tolist() == [1.0, 1.0]

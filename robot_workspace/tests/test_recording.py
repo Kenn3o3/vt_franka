@@ -48,6 +48,8 @@ def test_run_session_and_alignment(tmp_path: Path):
         }
     )
     teleop.record_event({"source_wall_time": 1.0, "target_tcp": [0.3] * 7, "gripper_closed": True})
+    teleop.record_event({"source_wall_time": 1.05, "target_tcp": [0.4] * 7, "gripper_closed": False})
+    teleop.record_event({"source_wall_time": 1.15, "target_tcp": [0.5] * 7, "gripper_closed": True})
     gelsight.record_event({"captured_wall_time": 1.0, "marker_locations": [[0.1, 0.2]], "marker_offsets": [[0.0, 0.1]]})
     sessions.stop_episode()
 
@@ -56,6 +58,9 @@ def test_run_session_and_alignment(tmp_path: Path):
     aligned = np.load(output_path, allow_pickle=True)
     assert "robot_joint_positions" in aligned
     assert aligned["robot_joint_positions"].shape[1] == 7
+    assert aligned["timestamps"].tolist() == [1.0, 1.1]
+    assert aligned["teleop_command_source_timestamps"].tolist() == [1.05, 1.15]
+    assert np.all(aligned["teleop_action_lead_sec"] > 0.0)
 
 
 def test_run_session_manager_creates_nested_run_and_qc(tmp_path: Path):

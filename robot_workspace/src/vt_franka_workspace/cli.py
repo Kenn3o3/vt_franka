@@ -22,13 +22,14 @@ from .sensors.gelsight.publisher import GelsightPublisher
 from .sensors.orbbec import OrbbecRgbRecorder
 from .settings import WorkspaceSettings
 from .teleop.quest_server import QuestTeleopService, create_teleop_app
+from .visualization import export_episode_composite_video
 
 
 def main() -> None:
     parser = argparse.ArgumentParser(description="VT Franka workspace CLI")
     parser.add_argument(
         "command",
-        choices=["teleop", "state-bridge", "gelsight", "orbbec", "postprocess", "rollout", "collect"],
+        choices=["teleop", "state-bridge", "gelsight", "orbbec", "postprocess", "rollout", "collect", "visualize"],
     )
     parser.add_argument("--config", default="config/workspace.yaml", help="Path to workspace config YAML")
     parser.add_argument("--run", default=None, help="Run name for collect mode")
@@ -78,6 +79,7 @@ def main() -> None:
         action="store_true",
         help="Allow collect mode to start episodes before a Quest message heartbeat is present",
     )
+    parser.add_argument("--output", default=None, help="Optional output path for visualize commands")
     args = parser.parse_args()
 
     logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(name)s: %(message)s")
@@ -89,6 +91,16 @@ def main() -> None:
             raise SystemExit("--episode-dir is required for postprocess")
         target_hz = args.hz if args.hz is not None else settings.recording.postprocess_target_hz
         output = align_episode(args.episode_dir, target_hz=target_hz)
+        print(output)
+        return
+    if args.command == "visualize":
+        if args.episode_dir is None:
+            raise SystemExit("--episode-dir is required for visualize")
+        output = export_episode_composite_video(
+            args.episode_dir,
+            output_path=args.output,
+            fps=args.hz,
+        )
         print(output)
         return
 
