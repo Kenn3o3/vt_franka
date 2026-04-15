@@ -205,6 +205,32 @@ vt-franka-workspace rollout \
   --policy vt_franka_workspace.examples.policies:nudge_x
 ```
 
+## 5.1 Replay An Episode Through The Same Policy Pipeline
+
+If you want to test the current inference path with recorded teleop targets instead of a learned model, use the replay policy factory:
+
+```bash
+conda activate vt-franka-workspace
+cd /home/zhenya/kenny/visuotact/vt_franka/robot_workspace
+vt-franka-workspace rollout \
+  --config /home/zhenya/kenny/visuotact/vt_franka/robot_workspace/config/workspace.yaml \
+  --policy vt_franka_workspace.rollout.replay_policy:build_replay_policy \
+  --episode-dir EPISODE_DIR \
+  --go-ready
+```
+
+This path:
+
+- loads `aligned_episode.npz`
+- turns the recorded teleop targets into a rollout policy
+- runs them through the same `RealRunner -> RealWorldEnv -> ControllerClient` chain used by inference policies
+
+Useful flags:
+
+- `--hz` to override replay-policy step rate
+- `--speed-scale` to slow down or speed up playback
+- `--skip-gripper` to test TCP-only data quality
+
 ## 6. Run Your Own Policy Wrapper
 
 Your policy function must return either:

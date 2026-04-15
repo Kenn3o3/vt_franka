@@ -52,10 +52,6 @@ def main() -> None:
     except ImportError as exc:
         raise RuntimeError(
             "Failed to import FastAPI/uvicorn for 'vt-franka-controller run'. "
-            "Your controller API dependencies in the 'polymetis-local' env are likely broken. "
-            "Reinstall them with: "
-            "pip install --force-reinstall --no-cache-dir "
-            "'fastapi==0.115.4' 'pydantic==2.10.6' 'uvicorn==0.32.1'"
         ) from exc
 
     service = ControllerService(settings, backend)

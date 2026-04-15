@@ -26,13 +26,18 @@ class RealWorldEnv:
         if target_tcp is not None:
             self.controller.queue_tcp(list(target_tcp), source="rollout")
 
+        gripper_velocity = float(action.get("gripper_velocity", 0.1))
+        gripper_force_limit = float(action.get("gripper_force_limit", 5.0))
         if action.get("gripper_closed") is True:
-            self.controller.grasp_gripper(velocity=0.1, force_limit=5.0, source="rollout")
+            self.controller.grasp_gripper(
+                velocity=gripper_velocity,
+                force_limit=gripper_force_limit,
+                source="rollout",
+            )
         elif "gripper_width" in action:
             self.controller.move_gripper(
                 width=float(action["gripper_width"]),
-                velocity=0.1,
-                force_limit=5.0,
+                velocity=gripper_velocity,
+                force_limit=gripper_force_limit,
                 source="rollout",
             )
-

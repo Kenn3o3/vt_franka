@@ -16,7 +16,6 @@ from .controller.client import ControllerClient
 from .publishers.quest_udp import QuestUdpPublisher
 from .publishers.state_bridge import StateBridge
 from .recording import EpisodeSessionManager, JsonlStreamRecorder, align_episode
-from .replay import load_replay_episode, replay_episode
 from .rollout.real_env import RealWorldEnv
 from .rollout.real_runner import RealRunner
 from .sensors.gelsight.publisher import GelsightPublisher
@@ -29,18 +28,18 @@ def main() -> None:
     parser = argparse.ArgumentParser(description="VT Franka workspace CLI")
     parser.add_argument(
         "command",
-        choices=["teleop", "state-bridge", "gelsight", "orbbec", "episode-start", "episode-stop", "postprocess", "rollout", "collect", "replay"],
+        choices=["teleop", "state-bridge", "gelsight", "orbbec", "episode-start", "episode-stop", "postprocess", "rollout", "collect"],
     )
     parser.add_argument("--config", default="config/workspace.yaml", help="Path to workspace config YAML")
     parser.add_argument("--name", default=None, help="Optional episode name")
     parser.add_argument("--run", default=None, help="Run name for collect mode")
-    parser.add_argument("--episode-dir", default=None, help="Episode directory for postprocess")
+    parser.add_argument("--episode-dir", default=None, help="Episode directory for postprocess or replay-policy rollout")
     parser.add_argument("--policy", default=None, help="Policy callable spec module:function for rollout")
-    parser.add_argument("--hz", type=float, default=None, help="Replay rate override or postprocess target rate override")
-    parser.add_argument("--speed-scale", type=float, default=1.0, help="Replay speed multiplier")
-    parser.add_argument("--skip-gripper", action="store_true", help="Replay TCP only")
-    parser.add_argument("--go-ready", action="store_true", help="Move robot to ready pose before replay")
-    parser.add_argument("--go-home", action="store_true", help="Move robot to home pose before replay")
+    parser.add_argument("--hz", type=float, default=None, help="Rollout control override, replay-policy rate override, or postprocess target rate override")
+    parser.add_argument("--speed-scale", type=float, default=1.0, help="Replay-policy speed multiplier")
+    parser.add_argument("--skip-gripper", action="store_true", help="Replay-policy TCP only")
+    parser.add_argument("--go-ready", action="store_true", help="Move robot to ready pose before rollout")
+    parser.add_argument("--go-home", action="store_true", help="Move robot to home pose before rollout")
     parser.add_argument("--with-orbbec", action="store_true", help="Force-enable Orbbec for collect mode")
     parser.add_argument("--without-orbbec", action="store_true", help="Force-disable Orbbec for collect mode")
     parser.add_argument("--with-gelsight", action="store_true", help="Force-enable GelSight for collect mode")
@@ -210,9 +209,9 @@ def main() -> None:
         supervisor.run()
         return
 
-    if args.command == "replay":
-        if args.episode_dir is None:
-            raise SystemExit("--episode-dir is required for replay")
+    if args.command == "rollout":
+        if args.policy is None:
+            raise SystemExit("--policy is required for rollout")
         if args.go_ready and args.go_home:
             raise SystemExit("Cannot use --go-ready and --go-home together")
         if args.go_ready:
@@ -221,23 +220,24 @@ def main() -> None:
         if args.go_home:
             controller.home()
             time.sleep(1.0)
-        episode = load_replay_episode(args.episode_dir)
-        replay_episode(
-            controller,
-            episode,
-            teleop_settings=settings.teleop,
-            hz=args.hz,
-            speed_scale=args.speed_scale,
-            skip_gripper=args.skip_gripper,
-        )
-        return
-
-    if args.command == "rollout":
-        if args.policy is None:
-            raise SystemExit("--policy is required for rollout")
         env = RealWorldEnv(controller)
-        runner = RealRunner(env, settings.rollout.control_hz, settings.rollout.max_duration_sec)
-        policy = RealRunner.load_policy(args.policy)
+        policy = RealRunner.load_policy(
+            args.policy,
+            policy_kwargs={
+                "episode_dir": args.episode_dir,
+                "hz": args.hz,
+                "speed_scale": args.speed_scale,
+                "skip_gripper": args.skip_gripper,
+                "teleop_settings": settings.teleop,
+                "workspace_settings": settings,
+            },
+        )
+        control_hz = args.hz if args.hz is not None else getattr(policy, "__vt_franka_control_hz__", settings.rollout.control_hz)
+        max_duration_sec = max(
+            settings.rollout.max_duration_sec,
+            float(getattr(policy, "__vt_franka_max_duration_sec__", settings.rollout.max_duration_sec)),
+        )
+        runner = RealRunner(env, control_hz, max_duration_sec)
         runner.run(policy)
         return
 
