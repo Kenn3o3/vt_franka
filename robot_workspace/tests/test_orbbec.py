@@ -5,7 +5,7 @@ import pytest
 
 from vt_franka_workspace.recording.postprocess import align_episode
 from vt_franka_workspace.recording.raw_recorder import JsonlStreamRecorder
-from vt_franka_workspace.recording.session import EpisodeSessionManager
+from vt_franka_workspace.recording.session import RunSessionManager
 from vt_franka_workspace.sensors.orbbec.frame_decoder import decode_color_buffer
 
 
@@ -17,7 +17,8 @@ def test_decode_rgb_buffer_to_bgr():
 
 
 def test_align_episode_includes_orbbec_stream(tmp_path: Path):
-    sessions = EpisodeSessionManager(tmp_path)
+    sessions = RunSessionManager(tmp_path / "runs")
+    sessions.start_run("orbbec")
     episode_dir = sessions.start_episode("orbbec")
 
     controller = JsonlStreamRecorder(sessions, "controller_state")

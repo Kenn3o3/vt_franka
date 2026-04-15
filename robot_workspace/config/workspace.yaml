@@ -63,7 +63,6 @@ orbbec:
 
 recording:
   enabled: true
-  root_dir: /home/zhenya/kenny/visuotact/vt_franka/robot_workspace/data/episodes
   run_root: /home/zhenya/kenny/visuotact/vt_franka/robot_workspace/data/runs
   image_format: jpg
   postprocess_target_hz: 10.0

@@ -15,7 +15,7 @@ from .collect import CollectSupervisor
 from .controller.client import ControllerClient
 from .publishers.quest_udp import QuestUdpPublisher
 from .publishers.state_bridge import StateBridge
-from .recording import EpisodeSessionManager, JsonlStreamRecorder, align_episode
+from .recording import JsonlStreamRecorder, align_episode
 from .rollout.real_env import RealWorldEnv
 from .rollout.real_runner import RealRunner
 from .sensors.gelsight.publisher import GelsightPublisher
@@ -28,10 +28,9 @@ def main() -> None:
     parser = argparse.ArgumentParser(description="VT Franka workspace CLI")
     parser.add_argument(
         "command",
-        choices=["teleop", "state-bridge", "gelsight", "orbbec", "episode-start", "episode-stop", "postprocess", "rollout", "collect"],
+        choices=["teleop", "state-bridge", "gelsight", "orbbec", "postprocess", "rollout", "collect"],
     )
     parser.add_argument("--config", default="config/workspace.yaml", help="Path to workspace config YAML")
-    parser.add_argument("--name", default=None, help="Optional episode name")
     parser.add_argument("--run", default=None, help="Run name for collect mode")
     parser.add_argument("--episode-dir", default=None, help="Episode directory for postprocess or replay-policy rollout")
     parser.add_argument("--policy", default=None, help="Policy callable spec module:function for rollout")
@@ -84,15 +83,7 @@ def main() -> None:
     logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(name)s: %(message)s")
     settings = _load_and_resolve_settings(args.config)
     _apply_collect_overrides(settings, args)
-    sessions = EpisodeSessionManager(settings.recording.root_dir)
 
-    if args.command == "episode-start":
-        episode_dir = sessions.start_episode(args.name)
-        print(episode_dir)
-        return
-    if args.command == "episode-stop":
-        sessions.stop_episode()
-        return
     if args.command == "postprocess":
         if args.episode_dir is None:
             raise SystemExit("--episode-dir is required for postprocess")
@@ -117,34 +108,17 @@ def main() -> None:
     )
 
     if args.command == "teleop":
-        quest_recorder = (
-            JsonlStreamRecorder(sessions, "quest_messages", record_hz=settings.teleop.quest_message_record_hz)
-            if settings.recording.enabled
-            else None
-        )
-        command_recorder = (
-            JsonlStreamRecorder(sessions, "teleop_commands", record_hz=settings.teleop.command_record_hz)
-            if settings.recording.enabled
-            else None
-        )
         service = QuestTeleopService(
             settings.teleop,
             controller,
             calibration,
-            quest_message_recorder=quest_recorder,
-            command_recorder=command_recorder,
         )
         app = create_teleop_app(service)
         uvicorn.run(app, host=settings.teleop.host, port=settings.teleop.port)
         return
 
     if args.command == "state-bridge":
-        recorder = (
-            JsonlStreamRecorder(sessions, "controller_state", record_hz=settings.quest_feedback.record_hz)
-            if settings.recording.enabled
-            else None
-        )
-        bridge = StateBridge(controller, quest_publisher, settings.quest_feedback, recorder=recorder)
+        bridge = StateBridge(controller, quest_publisher, settings.quest_feedback)
         bridge.start()
         try:
             Event().wait()
@@ -155,21 +129,9 @@ def main() -> None:
     if args.command == "gelsight":
         if not settings.gelsight.enabled:
             raise SystemExit("GelSight is disabled in the workspace config")
-        marker_recorder = (
-            JsonlStreamRecorder(sessions, "gelsight_markers", record_hz=settings.gelsight.record_hz)
-            if settings.recording.enabled
-            else None
-        )
-        frame_recorder = (
-            JsonlStreamRecorder(sessions, "gelsight_frames", record_hz=settings.gelsight.record_hz)
-            if settings.recording.enabled
-            else None
-        )
         publisher = GelsightPublisher(
             settings.gelsight,
             quest_publisher,
-            marker_recorder=marker_recorder,
-            frame_recorder=frame_recorder,
             image_format=settings.recording.image_format,
         )
         try:
@@ -181,12 +143,7 @@ def main() -> None:
     if args.command == "orbbec":
         if not settings.orbbec.enabled:
             raise SystemExit("Orbbec is disabled in the workspace config")
-        recorder = (
-            JsonlStreamRecorder(sessions, "orbbec_rgb", record_hz=settings.orbbec.record_hz)
-            if settings.recording.enabled
-            else None
-        )
-        service = OrbbecRgbRecorder(settings.orbbec, recorder=recorder, image_format=settings.recording.image_format)
+        service = OrbbecRgbRecorder(settings.orbbec, image_format=settings.recording.image_format)
         try:
             service.run()
         except KeyboardInterrupt:
@@ -247,8 +204,6 @@ def _load_and_resolve_settings(config_path: str | Path) -> WorkspaceSettings:
     settings = load_yaml_model(config_path, WorkspaceSettings)
     if not settings.calibration.calibration_dir.is_absolute():
         settings.calibration.calibration_dir = (config_path.parent / settings.calibration.calibration_dir).resolve()
-    if not settings.recording.root_dir.is_absolute():
-        settings.recording.root_dir = (config_path.parent / settings.recording.root_dir).resolve()
     if not settings.recording.run_root.is_absolute():
         settings.recording.run_root = (config_path.parent / settings.recording.run_root).resolve()
     return settings

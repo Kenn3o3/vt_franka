@@ -75,7 +75,6 @@ class OrbbecSettings(BaseModel):
 
 class RecordingSettings(BaseModel):
     enabled: bool = True
-    root_dir: Path = Path("./data/episodes")
     run_root: Path = Path("./data/runs")
     image_format: str = "jpg"
     postprocess_target_hz: float = 10.0

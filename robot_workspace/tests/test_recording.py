@@ -7,11 +7,12 @@ import numpy as np
 from vt_franka_workspace.recording.postprocess import align_episode
 from vt_franka_workspace.recording.raw_recorder import JsonlStreamRecorder
 from vt_franka_workspace.recording.qc import analyze_episode
-from vt_franka_workspace.recording.session import EpisodeSessionManager, RunSessionManager
+from vt_franka_workspace.recording.session import RunSessionManager
 
 
-def test_episode_session_and_alignment(tmp_path: Path):
-    sessions = EpisodeSessionManager(tmp_path)
+def test_run_session_and_alignment(tmp_path: Path):
+    sessions = RunSessionManager(tmp_path / "runs")
+    sessions.start_run("test")
     episode_dir = sessions.start_episode("test")
 
     controller = JsonlStreamRecorder(sessions, "controller_state")
@@ -107,7 +108,8 @@ def test_run_session_manager_resumes_and_increments_episode_index(tmp_path: Path
 
 
 def test_jsonl_stream_recorder_respects_record_hz(tmp_path: Path):
-    sessions = EpisodeSessionManager(tmp_path)
+    sessions = RunSessionManager(tmp_path / "runs")
+    sessions.start_run("rate_limited")
     sessions.start_episode("rate_limited")
     recorder = JsonlStreamRecorder(sessions, "controller_state", record_hz=2.0)
 

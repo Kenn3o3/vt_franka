@@ -4,11 +4,13 @@ import json
 import threading
 import time
 from pathlib import Path
-from typing import Any
+from typing import Any, Protocol
 
 import numpy as np
 
-from .session import EpisodeSessionManager
+
+class SupportsActiveEpisodeDir(Protocol):
+    def get_active_episode_dir(self) -> Path | None: ...
 
 
 def _json_default(value: Any):
@@ -22,7 +24,7 @@ def _json_default(value: Any):
 
 
 class JsonlStreamRecorder:
-    def __init__(self, session_manager: EpisodeSessionManager, stream_name: str, record_hz: float = 0.0) -> None:
+    def __init__(self, session_manager: SupportsActiveEpisodeDir, stream_name: str, record_hz: float = 0.0) -> None:
         self.session_manager = session_manager
         self.stream_name = stream_name
         self.record_hz = float(record_hz)
