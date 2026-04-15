@@ -12,8 +12,8 @@ from scipy.spatial.transform import Rotation
 ROBOT_IP = "127.0.0.1"
 ROBOT_PORT = 50051
 
-TARGET_POSITION_M = [0.15, 0.39, 0.21]
-TARGET_RPY_DEG = [180, 0, 20]
+TARGET_POSITION_M = [0.1, 0.4, 0.4]
+TARGET_RPY_DEG = [-180, 0, 45]
 POSE_MOVE_TIME_S = 4.0
 
 # Target joint positions in radians.

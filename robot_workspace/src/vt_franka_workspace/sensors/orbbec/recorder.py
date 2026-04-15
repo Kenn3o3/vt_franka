@@ -149,9 +149,10 @@ class OrbbecRgbRecorder:
                     frame_id=frame_id,
                     image_format=self.image_format,
                     extra_event_fields=payload,
+                    event_time=captured_wall_time,
                 )
             else:
-                self.recorder.record_event(payload)
+                self.recorder.record_event(payload, event_time=captured_wall_time)
 
         self._frames_seen += 1
         now = time.monotonic()
@@ -163,6 +164,10 @@ class OrbbecRgbRecorder:
                 str(active_episode) if active_episode is not None else "<none>",
             )
             self._last_status_log_time = now
+
+    @property
+    def frames_seen(self) -> int:
+        return self._frames_seen
 
 
 def _build_frame_id(captured_wall_time: float, sequence_id: Any) -> str:

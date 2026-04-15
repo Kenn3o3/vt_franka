@@ -3,6 +3,7 @@ from __future__ import annotations
 import math
 import time
 from threading import Event
+from typing import Callable
 
 import numpy as np
 import requests
@@ -24,12 +25,14 @@ class GelsightPublisher:
         marker_recorder: JsonlStreamRecorder | None = None,
         frame_recorder: JsonlStreamRecorder | None = None,
         image_format: str = "jpg",
+        gripper_status_provider: Callable[[], dict[str, bool]] | None = None,
     ) -> None:
         self.settings = settings
         self.quest_publisher = quest_publisher
         self.marker_recorder = marker_recorder
         self.frame_recorder = frame_recorder
         self.image_format = image_format
+        self.gripper_status_provider = gripper_status_provider
         self.tracker = GelsightMarkerTracker()
         self._base_marker_motion: np.ndarray | None = None
         self._latency_counter = 0
@@ -37,6 +40,7 @@ class GelsightPublisher:
             "left_gripper_stable_closed": False,
             "left_gripper_stable_open": True,
         }
+        self._frames_seen = 0
 
     def run(self, stop_event: Event | None = None) -> None:
         try:
@@ -79,7 +83,8 @@ class GelsightPublisher:
                             "captured_wall_time": captured_wall_time,
                             "marker_locations": initial_markers_norm[:, :2],
                             "marker_offsets": marker_offsets_norm,
-                        }
+                        },
+                        event_time=captured_wall_time,
                     )
                 if self.frame_recorder is not None and self.settings.save_frames:
                     self.frame_recorder.record_frame(
@@ -87,13 +92,20 @@ class GelsightPublisher:
                         frame_id=f"{captured_wall_time:.6f}".replace(".", "_"),
                         metadata={"captured_wall_time": captured_wall_time},
                         image_format=self.image_format,
+                        event_time=captured_wall_time,
                     )
 
+                self._frames_seen += 1
                 precise_sleep(max(0.0, period - (time.time() - loop_start)))
         finally:
             cap.release()
 
     def _fetch_gripper_state(self) -> dict[str, bool]:
+        if self.gripper_status_provider is not None:
+            try:
+                return self.gripper_status_provider()
+            except Exception:
+                return dict(self._previous_gripper_state)
         url = f"http://{self.settings.teleop_status_host}:{self.settings.teleop_status_port}/get_current_gripper_state"
         try:
             response = requests.get(url, timeout=0.1)
@@ -101,6 +113,10 @@ class GelsightPublisher:
             return response.json()
         except Exception:
             return dict(self._previous_gripper_state)
+
+    @property
+    def frames_seen(self) -> int:
+        return self._frames_seen
 
     def _latency_match(self, marker_offsets: np.ndarray, gripper_state: dict[str, bool]) -> np.ndarray:
         if (
@@ -147,4 +163,3 @@ class GelsightPublisher:
             end = [float(marker[0] + offset[0]), float(marker[1] + offset[1]), z_offset]
             arrows.append(Arrow(start=start, end=end))
         return TactileSensorMessage(device_id=self.settings.camera_name, arrows=arrows)
-

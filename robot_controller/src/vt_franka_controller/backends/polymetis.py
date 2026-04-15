@@ -103,9 +103,12 @@ class PolymetisFrankaBackend(FrankaBackend):
     def stop_gripper(self) -> None:
         LOGGER.info("Polymetis gripper stop is not exposed; keeping current state")
 
-    def go_home(self, joint_positions: Sequence[float], duration_sec: float) -> None:
-        self._robot.move_to_joint_positions(
-            positions=self._torch.Tensor(np.asarray(joint_positions, dtype=np.float32)),
+    def go_home(self, ee_pose: Sequence[float], duration_sec: float) -> None:
+        ee_pose = np.asarray(ee_pose, dtype=np.float64)
+        quaternion_xyzw = Rotation.from_euler("xyz", ee_pose[3:], degrees=True).as_quat().astype(np.float32)
+        self._robot.move_to_ee_pose(
+            position=self._torch.Tensor(ee_pose[:3].astype(np.float32)),
+            orientation=self._torch.Tensor(quaternion_xyzw),
             time_to_go=duration_sec,
         )
 

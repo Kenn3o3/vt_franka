@@ -53,6 +53,14 @@ def create_app(service: ControllerService) -> FastAPI:
         service.go_home()
         return {"status": "ok"}
 
+    @app.post("/api/v1/actions/ready")
+    def go_ready():
+        try:
+            service.go_ready()
+        except RuntimeError as exc:
+            raise HTTPException(status_code=400, detail=str(exc)) from exc
+        return {"status": "ok"}
+
     @app.get("/get_current_tcp/{robot_side}")
     def legacy_get_current_tcp(robot_side: str):
         _ensure_left(robot_side)

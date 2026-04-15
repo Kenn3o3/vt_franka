@@ -3,11 +3,8 @@ from __future__ import annotations
 import argparse
 import logging
 
-import uvicorn
-
 from vt_franka_shared.config import load_yaml_model
 
-from .api.app import create_app
 from .backends.mock import MockFrankaBackend
 from .backends.polymetis import PolymetisFrankaBackend
 from .control.service import ControllerService
@@ -38,11 +35,29 @@ def main() -> None:
     backend = build_backend(settings)
 
     if args.command == "home":
-        backend.go_home(settings.control.home_joint_positions, settings.control.home_duration_sec)
+        backend.go_home(settings.control.home_ee_pose, settings.control.home_duration_sec)
         backend.shutdown()
         return
+
+    if args.command == "ready":
+        if settings.control.ready_ee_pose is None:
+            raise SystemExit("ready_ee_pose is not configured in the controller config")
+        backend.go_home(settings.control.ready_ee_pose, settings.control.ready_duration_sec)
+        backend.shutdown()
+        return
+
+    try:
+        import uvicorn
+        from .api.app import create_app
+    except ImportError as exc:
+        raise RuntimeError(
+            "Failed to import FastAPI/uvicorn for 'vt-franka-controller run'. "
+            "Your controller API dependencies in the 'polymetis-local' env are likely broken. "
+            "Reinstall them with: "
+            "pip install --force-reinstall --no-cache-dir "
+            "'fastapi==0.115.4' 'pydantic==2.10.6' 'uvicorn==0.32.1'"
+        ) from exc
 
     service = ControllerService(settings, backend)
     app = create_app(service)
     uvicorn.run(app, host=settings.server.host, port=settings.server.port)
-

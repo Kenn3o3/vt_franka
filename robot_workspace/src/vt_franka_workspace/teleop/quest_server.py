@@ -6,6 +6,7 @@ import time
 from collections import deque
 from contextlib import asynccontextmanager
 from threading import Event, Lock, Thread
+from typing import Callable
 
 import numpy as np
 from fastapi import FastAPI, HTTPException, Request
@@ -31,12 +32,14 @@ class QuestTeleopService:
         calibration: SingleArmCalibration,
         quest_message_recorder: JsonlStreamRecorder | None = None,
         command_recorder: JsonlStreamRecorder | None = None,
+        state_provider: Callable[[], ControllerState] | None = None,
     ) -> None:
         self.settings = settings
         self.controller = controller
         self.calibration = calibration
         self.quest_message_recorder = quest_message_recorder
         self.command_recorder = command_recorder
+        self.state_provider = state_provider
 
         self._running = Event()
         self._message_lock = Lock()
@@ -49,17 +52,21 @@ class QuestTeleopService:
         self._gripper_closed = False
         self._gripper_force = 0.0
         self._gripper_width_history = deque(maxlen=self.settings.gripper_stability_window)
+        self._last_message_wall_time: float | None = None
 
     def submit_message(self, message: UnityTeleopMessage) -> None:
+        source_wall_time = time.time()
         with self._message_lock:
             self._latest_message = message
+            self._last_message_wall_time = source_wall_time
         if self.quest_message_recorder is not None:
             self.quest_message_recorder.record_event(
                 {
                     "quest_timestamp": message.timestamp,
-                    "source_wall_time": time.time(),
+                    "source_wall_time": source_wall_time,
                     "message": message.model_dump(mode="json"),
-                }
+                },
+                event_time=source_wall_time,
             )
 
     def start(self) -> None:
@@ -84,11 +91,18 @@ class QuestTeleopService:
             "right_gripper_stable_open": True,
         }
 
+    def has_recent_message(self, timeout_sec: float) -> bool:
+        with self._message_lock:
+            last_message_wall_time = self._last_message_wall_time
+        if last_message_wall_time is None:
+            return False
+        return time.time() - last_message_wall_time <= timeout_sec
+
     def _control_loop(self) -> None:
         period = 1.0 / self.settings.loop_hz
         while self._running.is_set():
             try:
-                state = self.controller.get_state()
+                state = self._get_state()
                 self._update_gripper_state(state)
                 message = self._latest_message_copy()
                 if message is None:
@@ -121,7 +135,8 @@ class QuestTeleopService:
                                     "source_wall_time": time.time(),
                                     "target_tcp": target_pose.tolist(),
                                     "gripper_closed": self._gripper_closed,
-                                }
+                                },
+                                event_time=time.time(),
                             )
             except Exception as exc:
                 LOGGER.warning("Teleop control iteration failed: %s", exc)
@@ -131,6 +146,11 @@ class QuestTeleopService:
     def _latest_message_copy(self) -> UnityTeleopMessage | None:
         with self._message_lock:
             return self._latest_message.model_copy(deep=True) if self._latest_message is not None else None
+
+    def _get_state(self) -> ControllerState:
+        if self.state_provider is not None:
+            return self.state_provider()
+        return self.controller.get_state()
 
     def _handle_gripper_toggle(self, message: UnityTeleopMessage) -> None:
         wants_closed = message.leftHand.triggerState > self.settings.trigger_close_threshold

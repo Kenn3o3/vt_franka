@@ -22,15 +22,26 @@ def _json_default(value: Any):
 
 
 class JsonlStreamRecorder:
-    def __init__(self, session_manager: EpisodeSessionManager, stream_name: str) -> None:
+    def __init__(self, session_manager: EpisodeSessionManager, stream_name: str, record_hz: float = 0.0) -> None:
         self.session_manager = session_manager
         self.stream_name = stream_name
+        self.record_hz = float(record_hz)
         self._lock = threading.Lock()
+        self._last_record_time: float | None = None
+        self._last_episode_dir: Path | None = None
 
-    def record_event(self, payload: dict[str, Any]) -> None:
+    def record_event(self, payload: dict[str, Any], event_time: float | None = None) -> None:
         episode_dir = self.session_manager.get_active_episode_dir()
         if episode_dir is None:
+            self._last_episode_dir = None
+            self._last_record_time = None
             return
+        event_time = float(event_time if event_time is not None else payload.get("recorded_at_wall_time", time.time()))
+        if not self._should_record(episode_dir, event_time):
+            return
+        self._write_event(episode_dir, payload)
+
+    def _write_event(self, episode_dir: Path, payload: dict[str, Any]) -> None:
         stream_dir = episode_dir / "streams"
         stream_dir.mkdir(parents=True, exist_ok=True)
         record = dict(payload)
@@ -47,9 +58,15 @@ class JsonlStreamRecorder:
         metadata: dict[str, Any] | None = None,
         image_format: str = "jpg",
         extra_event_fields: dict[str, Any] | None = None,
+        event_time: float | None = None,
     ) -> Path | None:
         episode_dir = self.session_manager.get_active_episode_dir()
         if episode_dir is None:
+            self._last_episode_dir = None
+            self._last_record_time = None
+            return None
+        event_time = float(event_time if event_time is not None else time.time())
+        if not self._should_record(episode_dir, event_time):
             return None
         try:
             import cv2
@@ -68,5 +85,18 @@ class JsonlStreamRecorder:
             payload["metadata"] = metadata
         if extra_event_fields:
             payload.update(extra_event_fields)
-        self.record_event(payload)
+        self._write_event(episode_dir, payload)
         return frame_path
+
+    def _should_record(self, episode_dir: Path, event_time: float) -> bool:
+        with self._lock:
+            if self._last_episode_dir != episode_dir:
+                self._last_episode_dir = episode_dir
+                self._last_record_time = None
+            if self.record_hz <= 0.0:
+                self._last_record_time = event_time
+                return True
+            if self._last_record_time is None or event_time - self._last_record_time >= 1.0 / self.record_hz:
+                self._last_record_time = event_time
+                return True
+            return False

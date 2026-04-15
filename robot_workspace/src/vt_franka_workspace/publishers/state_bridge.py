@@ -3,8 +3,10 @@ from __future__ import annotations
 import logging
 import time
 from threading import Event, Thread
+from typing import Callable
 
 from vt_franka_shared.timing import precise_sleep
+from vt_franka_shared.models import ControllerState
 
 from ..controller.client import ControllerClient
 from ..recording.raw_recorder import JsonlStreamRecorder
@@ -23,12 +25,14 @@ class StateBridge:
         settings: QuestFeedbackSettings,
         recorder: JsonlStreamRecorder | None = None,
         ros_publisher: Ros2StatePublisher | None = None,
+        state_provider: Callable[[], ControllerState] | None = None,
     ) -> None:
         self.controller = controller
         self.quest_publisher = quest_publisher
         self.settings = settings
         self.recorder = recorder
         self.ros_publisher = ros_publisher
+        self.state_provider = state_provider
         self._running = Event()
         self._thread: Thread | None = None
 
@@ -50,7 +54,7 @@ class StateBridge:
         period = 1.0 / self.settings.state_publish_hz
         while self._running.is_set():
             try:
-                state = self.controller.get_state()
+                state = self._get_state()
                 self.quest_publisher.publish_robot_state(state)
                 if self.ros_publisher is not None:
                     self.ros_publisher.publish_controller_state(state)
@@ -61,8 +65,14 @@ class StateBridge:
                             "source_monotonic_time": state.monotonic_time,
                             "received_wall_time": time.time(),
                             "state": state.model_dump(mode="json"),
-                        }
+                        },
+                        event_time=state.wall_time,
                     )
             except Exception as exc:
                 LOGGER.warning("State bridge iteration failed: %s", exc)
             precise_sleep(period)
+
+    def _get_state(self) -> ControllerState:
+        if self.state_provider is not None:
+            return self.state_provider()
+        return self.controller.get_state()

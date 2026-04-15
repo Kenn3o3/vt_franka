@@ -6,9 +6,10 @@
 
 - Ubuntu machine directly connected to the Franka controller over Ethernet
 - Polymetis robot server and gripper server available locally
-- No Quest, GelSight, or ROS2 dependency required for the controller package itself
 
-## Fresh machine prerequisites
+> Note: No Quest, GelSight, or ROS2 dependency required for the controller package itself
+
+## Machine prerequisites
 
 Before installing `robot_controller`, make sure the new Ubuntu machine is actually ready to host the Franka real-time stack.
 
@@ -21,8 +22,6 @@ As a rule of thumb:
 - robot system `>= 5.9.0` needs `libfranka >= 0.18.0`
 - robot system `>= 5.7.2` and `< 5.9.0` usually needs `libfranka >= 0.15.0` and `< 0.18.0`
 
-Do not guess this step. Confirm the robot version first, then choose the matching `LIBFRANKA_VERSION` for the Polymetis build.
-
 ### 2. Verify the direct Ethernet link to the robot
 
 The controller machine should use a dedicated wired interface to the robot. Do not run the real-time control path over Wi-Fi or VPN.
@@ -32,10 +31,10 @@ Check interface state and routing:
 ```bash
 ip -br addr
 ip route
-sudo ethtool <ROBOT_NIC> | egrep "Speed|Duplex|Link detected"
+sudo ethtool eno2 | egrep "Speed|Duplex|Link detected"
 ```
 
-You want to see:
+Expected:
 
 - `Speed: 1000Mb/s`
 - `Duplex: Full`
@@ -49,11 +48,9 @@ ping -c 5 172.16.0.2
 
 ### 3. Install and verify the RT kernel and realtime privileges
 
-For the Polymetis-on-Franka setup, Ubuntu 20.04 is still acceptable. The missing requirement on a fresh machine is the `PREEMPT_RT` kernel, not a different Ubuntu release.
+For the Polymetis-on-Franka + Ubuntu 20.04 setup, we need the `PREEMPT_RT` kernel.
 
-The procedure below adds an RT kernel alongside the current generic kernel. It should not remove your existing Conda environments, repositories, or normal user-space packages. Keep the generic kernel installed as a fallback boot option.
-
-If this machine already boots an RT kernel, skip to step `3.8`.
+The procedure below adds an RT kernel alongside the current generic kernel. If this machine already boots an RT kernel, skip to step `3.8`.
 
 #### 3.1 Record the current machine state
 
@@ -64,6 +61,8 @@ ip -br addr
 ip route
 dpkg -l | grep -E 'linux-(image|headers)' | grep -E 'generic|rt' || true
 ```
+
+Output:
 
 ```
 (base) medair@medair:~/vt_franka$ lsb_release -a
@@ -90,17 +89,6 @@ ii  linux-headers-generic-hwe-20.04             5.15.0.139.149~20.04.1          
 ii  linux-image-5.15.0-139-generic              5.15.0-139.149~20.04.1               amd64        Signed kernel image generic
 ii  linux-image-5.9.1-rt20                      5.9.1-rt20-2                         amd64        Linux kernel, version 5.9.1-rt20
 ii  linux-image-generic-hwe-20.04               5.15.0.139.149~20.04.1               amd64        Generic Linux kernel image
-```
-
-Optional but recommended backup of package and environment metadata:
-
-```bash
-mkdir -p ~/controller_host_backup_$(date +%F)
-cd ~/controller_host_backup_$(date +%F)
-conda env list > conda_env_list.txt
-apt-mark showmanual > apt_manual.txt
-dpkg --get-selections > dpkg_selections.txt
-dkms status > dkms_status.txt || true
 ```
 
 #### 3.2 Check Secure Boot before building the RT kernel
@@ -191,6 +179,8 @@ You want to see:
 - `CONFIG_SYSTEM_TRUSTED_KEYS=""`
 - `CONFIG_MODULE_SIG_KEY="certs/signing_key.pem"`
 
+Output:
+
 ```
 (base) medair@medair:~/rt_kernel_build/linux-5.11$ grep -E 'CONFIG_(PREEMPT.*RT|SYSTEM_TRUSTED_KEYS|SYSTEM_REVOCATION_KEYS|MODULE_SIG_KEY)' .config
 CONFIG_PREEMPT_RT=y
@@ -201,21 +191,6 @@ CONFIG_SYSTEM_TRUSTED_KEYS=""
 #### 3.7 Build and install the RT kernel packages
 
 Use `bindeb-pkg` here so the build does not require a git repository.
-
-```bash
-cd ~/rt_kernel_build/linux-5.11
-make -j"$(nproc)" bindeb-pkg
-```
-
-This can take a long time.
-
-Diagnosis:
-
-- This failure is in the host-side `objtool` build, not in the RT patch itself.
-- `tools/objtool/elf.h` shadows the system `<elf.h>` through the compiler include path.
-- Once that happens, `/usr/include/libelf.h` never sees the real ELF base type definitions, which is why the first errors are `unknown type name 'Elf32_Word'`, `Elf64_Word`, and related symbols.
-
-Verified workaround:
 
 ```bash
 cd ~/rt_kernel_build/linux-5.11/tools/objtool
@@ -245,8 +220,6 @@ sudo dpkg -i linux-headers-5.11.0-rt7_*.deb linux-image-5.11.0-rt7_*.deb
 sudo update-grub
 ```
 
-Do not purge the current generic kernel packages. Keep them installed as a fallback.
-
 Reboot:
 
 ```bash
@@ -263,7 +236,13 @@ cat /sys/kernel/realtime
 dpkg -l | grep -E 'linux-(image|headers)' | grep -E 'generic|rt7'
 ```
 
-I got:
+You want:
+
+- `uname -a` to contain `PREEMPT_RT`
+- `/sys/kernel/realtime` to print `1`
+- both the RT kernel and the previous generic kernel packages to remain installed
+
+Output:
 
 ```
 (base) medair@medair:~/vt_franka$ uname -a
@@ -278,12 +257,6 @@ ii  linux-image-5.11.0-rt7                      5.11.0-rt7-1                    
 ii  linux-image-5.15.0-139-generic              5.15.0-139.149~20.04.1               amd64        Signed kernel image generic
 ii  linux-image-generic-hwe-20.04               5.15.0.139.149~20.04.1               amd64        Generic Linux kernel image
 ```
-
-You want:
-
-- `uname -a` to contain `PREEMPT_RT`
-- `/sys/kernel/realtime` to print `1`
-- both the RT kernel and the previous generic kernel packages to remain installed
 
 If `/sys/kernel/realtime` is missing, you are still booted into the generic kernel.
 
@@ -346,30 +319,30 @@ pip install -e ./polymetis
 ```
 
 ```bash
-  LIBFRANKA_SRC=/home/medair/vt_franka/fairo/polymetis/polymetis/src/clients/franka_panda_client/third_party/libfranka
-  LIBFRANKA_BUILD=/home/medair/vt_franka/fairo/polymetis/libfranka-openrobots-build
+LIBFRANKA_SRC=/home/medair/vt_franka/fairo/polymetis/polymetis/src/clients/franka_panda_client/third_party/libfranka
+LIBFRANKA_BUILD=/home/medair/vt_franka/fairo/polymetis/libfranka-openrobots-build
 
-  git -C "$LIBFRANKA_SRC" checkout 0.18.0
-  git -C "$LIBFRANKA_SRC" submodule update --init --recursive
+git -C "$LIBFRANKA_SRC" checkout 0.18.0
+git -C "$LIBFRANKA_SRC" submodule update --init --recursive
 
-  rm -rf "$LIBFRANKA_BUILD"
-  mkdir -p "$LIBFRANKA_BUILD"
+rm -rf "$LIBFRANKA_BUILD"
+mkdir -p "$LIBFRANKA_BUILD"
 
-  env -i HOME="$HOME" USER="$USER" SHELL=/bin/bash \
-    PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/opt/ros/noetic/bin \
-    LD_LIBRARY_PATH=/opt/ros/noetic/lib:/opt/ros/noetic/lib/x86_64-linux-gnu \
-    bash -lc "
-      cd '$LIBFRANKA_BUILD' &&
-      cmake '$LIBFRANKA_SRC' \
-        -Dpinocchio_DIR=/opt/openrobots/lib/cmake/pinocchio \
-        -DCMAKE_PREFIX_PATH=/opt/openrobots \
-        -Dfmt_DIR=/usr/lib/x86_64-linux-gnu/cmake/fmt \
-        -DCMAKE_POLICY_VERSION_MINIMUM=3.5 \
-        -DCMAKE_BUILD_TYPE=Release \
-        -DBUILD_TESTS=OFF \
-        -DBUILD_EXAMPLES=OFF &&
-      cmake --build . -j\$(nproc)
-    "
+env -i HOME="$HOME" USER="$USER" SHELL=/bin/bash \
+  PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/opt/ros/noetic/bin \
+  LD_LIBRARY_PATH=/opt/ros/noetic/lib:/opt/ros/noetic/lib/x86_64-linux-gnu \
+  bash -lc "
+    cd '$LIBFRANKA_BUILD' &&
+    cmake '$LIBFRANKA_SRC' \
+      -Dpinocchio_DIR=/opt/openrobots/lib/cmake/pinocchio \
+      -DCMAKE_PREFIX_PATH=/opt/openrobots \
+      -Dfmt_DIR=/usr/lib/x86_64-linux-gnu/cmake/fmt \
+      -DCMAKE_POLICY_VERSION_MINIMUM=3.5 \
+      -DCMAKE_BUILD_TYPE=Release \
+      -DBUILD_TESTS=OFF \
+      -DBUILD_EXAMPLES=OFF &&
+    cmake --build . -j\$(nproc)
+  "
 ```
 
 ```bash
@@ -393,26 +366,6 @@ make -j"$(nproc)"
 
 ```
 
-deprecated:
-```
-export LIBFRANKA_VERSION=0.18.0
-./scripts/build_libfranka.sh "$LIBFRANKA_VERSION"
-
-rm -rf ./polymetis/build
-mkdir -p ./polymetis/build
-cd ./polymetis/build
-
-cmake .. \
-  -DCMAKE_BUILD_TYPE=Release \
-  -DBUILD_FRANKA=ON \
-  -DBUILD_TESTS=OFF \
-  -DBUILD_DOCS=OFF \
-  -DCMAKE_PREFIX_PATH="$CONDA_PREFIX"
-
-make -j"$(nproc)"
-cmake --install . --prefix "$CONDA_PREFIX"
-```
-
 Keep this set when launching Franka-side binaries:
 
 ```bash
@@ -427,8 +380,6 @@ Install a few basic host tools first if they are missing:
 sudo apt update
 sudo apt install -y ethtool curl
 ```
-
-### Recommended for real hardware
 
 Install `robot_controller` into the same Conda environment that already contains your working Polymetis build.
 

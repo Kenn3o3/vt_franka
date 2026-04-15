@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import List, Literal
+from typing import List, Literal, Optional
 
 from pydantic import BaseModel, Field
 
@@ -24,10 +24,10 @@ class ControlSettings(BaseModel):
     state_cache_hz: float = 60.0
     cartesian_stiffness: List[float] = Field(default_factory=lambda: [750.0, 750.0, 750.0, 15.0, 15.0, 15.0])
     cartesian_damping: List[float] = Field(default_factory=lambda: [37.0, 37.0, 37.0, 2.0, 2.0, 2.0])
-    home_joint_positions: List[float] = Field(
-        default_factory=lambda: [-0.07, -0.96, -0.01, -2.55, -0.09, 2.14, 0.59]
-    )
+    home_ee_pose: List[float] = Field(default_factory=lambda: [0.4, 0.0, 0.3, 180.0, 0.0, 0.0])
     home_duration_sec: float = 8.0
+    ready_ee_pose: Optional[List[float]] = None
+    ready_duration_sec: float = 5.0
     max_queue_size: int = 256
 
 

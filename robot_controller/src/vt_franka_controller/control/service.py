@@ -76,8 +76,16 @@ class ControllerService:
 
     def go_home(self) -> None:
         self.backend.go_home(
-            self.settings.control.home_joint_positions,
+            self.settings.control.home_ee_pose,
             self.settings.control.home_duration_sec,
+        )
+
+    def go_ready(self) -> None:
+        if self.settings.control.ready_ee_pose is None:
+            raise RuntimeError("Ready EE pose is not configured")
+        self.backend.go_home(
+            self.settings.control.ready_ee_pose,
+            self.settings.control.ready_duration_sec,
         )
 
     def get_state(self) -> ControllerState:

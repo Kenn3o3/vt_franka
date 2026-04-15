@@ -20,6 +20,8 @@ teleop:
   gripper_force_close_threshold: 15.0
   gripper_force_open_threshold: 5.0
   gripper_width_vis_precision: 0.001
+  command_record_hz: 0.0
+  quest_message_record_hz: 0.0
 
 quest_feedback:
   quest_ip: 192.168.217.221
@@ -28,6 +30,7 @@ quest_feedback:
   force_udp_port: 10005
   state_publish_hz: 60.0
   force_scale_factor: 0.025
+  record_hz: 0.0
 
 gelsight:
   enabled: false
@@ -44,6 +47,7 @@ gelsight:
   teleop_status_host: 127.0.0.1
   teleop_status_port: 8082
   save_frames: false
+  record_hz: 0.0
 
 orbbec:
   enabled: true
@@ -55,11 +59,28 @@ orbbec:
   color_fps: 30
   frame_timeout_ms: 200
   save_frames: true
+  record_hz: 15.0
 
 recording:
   enabled: true
   root_dir: /home/zhenya/kenny/visuotact/vt_franka/robot_workspace/data/episodes
+  run_root: /home/zhenya/kenny/visuotact/vt_franka/robot_workspace/data/runs
   image_format: jpg
+  postprocess_target_hz: 10.0
+
+collect:
+  sync_hz: 10.0
+  controller_state_poll_hz: 60.0
+  controller_state_max_age_sec: 2.0
+  quest_message_timeout_sec: 2.0
+  require_quest_connection: true
+  start_countdown_sec: 2.0
+  auto_postprocess: true
+  auto_qc: true
+  controller_gap_warn_sec: 0.5
+  controller_gap_fail_sec: 2.0
+  status_print_hz: 1.0
+  record_raw_quest_messages: false
 
 calibration:
   calibration_dir: /home/zhenya/kenny/visuotact/vt_franka/robot_workspace/config/calibration/v6

@@ -10,7 +10,11 @@ def test_mock_controller_api_accepts_waypoint_and_reports_state():
     settings = ControllerSettings(
         server=ServerSettings(host="127.0.0.1", port=18092),
         backend=BackendSettings(kind="mock"),
-        control=ControlSettings(control_frequency_hz=50.0, teleop_command_hz=10.0),
+        control=ControlSettings(
+            control_frequency_hz=50.0,
+            teleop_command_hz=10.0,
+            ready_joint_positions=[-0.1, -0.8, 0.0, -2.3, 0.0, 1.9, 0.7],
+        ),
     )
     service = ControllerService(settings, MockFrankaBackend())
     app = create_app(service)
@@ -28,3 +32,6 @@ def test_mock_controller_api_accepts_waypoint_and_reports_state():
         state = client.get("/api/v1/state")
         assert state.status_code == 200
         assert len(state.json()["tcp_pose"]) == 7
+
+        ready = client.post("/api/v1/actions/ready")
+        assert ready.status_code == 200

@@ -42,6 +42,17 @@ class ControllerClient:
     def home(self) -> None:
         self._post_json("/api/v1/actions/home", {})
 
+    def ready(self) -> None:
+        try:
+            self._post_json("/api/v1/actions/ready", {})
+        except ControllerClientError as exc:
+            if "404" in str(exc):
+                raise ControllerClientError(
+                    "Controller API does not support /api/v1/actions/ready. "
+                    "Restart vt-franka-controller on the controller PC after updating it, or use --go-home / omit --go-ready."
+                ) from exc
+            raise
+
     def _get_json(self, path: str) -> dict[str, Any]:
         try:
             response = self.session.get(f"{self.base_url}{path}", timeout=self.request_timeout_sec)

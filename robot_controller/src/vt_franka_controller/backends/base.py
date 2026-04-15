@@ -40,10 +40,9 @@ class FrankaBackend(ABC):
         raise NotImplementedError
 
     @abstractmethod
-    def go_home(self, joint_positions: Sequence[float], duration_sec: float) -> None:
+    def go_home(self, ee_pose: Sequence[float], duration_sec: float) -> None:
         raise NotImplementedError
 
     @abstractmethod
     def shutdown(self) -> None:
         raise NotImplementedError
-

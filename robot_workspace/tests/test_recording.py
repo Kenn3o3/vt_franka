@@ -1,8 +1,13 @@
 from pathlib import Path
 
+import json
+
+import numpy as np
+
 from vt_franka_workspace.recording.postprocess import align_episode
 from vt_franka_workspace.recording.raw_recorder import JsonlStreamRecorder
-from vt_franka_workspace.recording.session import EpisodeSessionManager
+from vt_franka_workspace.recording.qc import analyze_episode
+from vt_franka_workspace.recording.session import EpisodeSessionManager, RunSessionManager
 
 
 def test_episode_session_and_alignment(tmp_path: Path):
@@ -20,6 +25,8 @@ def test_episode_session_and_alignment(tmp_path: Path):
                 "tcp_pose": [0.1] * 7,
                 "tcp_velocity": [0.0] * 6,
                 "tcp_wrench": [0.0] * 6,
+                "joint_positions": [0.1] * 7,
+                "joint_velocities": [0.0] * 7,
                 "gripper_width": 0.07,
                 "gripper_force": 0.0,
             },
@@ -32,6 +39,8 @@ def test_episode_session_and_alignment(tmp_path: Path):
                 "tcp_pose": [0.2] * 7,
                 "tcp_velocity": [0.0] * 6,
                 "tcp_wrench": [0.0] * 6,
+                "joint_positions": [0.2] * 7,
+                "joint_velocities": [0.0] * 7,
                 "gripper_width": 0.01,
                 "gripper_force": 5.0,
             },
@@ -43,3 +52,53 @@ def test_episode_session_and_alignment(tmp_path: Path):
 
     output_path = align_episode(episode_dir, target_hz=10.0)
     assert output_path.exists()
+    aligned = np.load(output_path, allow_pickle=True)
+    assert "robot_joint_positions" in aligned
+    assert aligned["robot_joint_positions"].shape[1] == 7
+
+
+def test_run_session_manager_creates_nested_run_and_qc(tmp_path: Path):
+    sessions = RunSessionManager(tmp_path / "runs")
+    run_dir = sessions.start_run("task_demo", metadata={"operator": "tester"})
+    episode_dir = sessions.start_episode()
+
+    controller = JsonlStreamRecorder(sessions, "controller_state")
+    teleop = JsonlStreamRecorder(sessions, "teleop_commands")
+    controller.record_event(
+        {
+            "source_wall_time": 1.0,
+            "state": {
+                "tcp_pose": [0.1] * 7,
+                "tcp_velocity": [0.0] * 6,
+                "tcp_wrench": [0.0] * 6,
+                "joint_positions": [0.1] * 7,
+                "joint_velocities": [0.0] * 7,
+                "gripper_width": 0.05,
+                "gripper_force": 0.0,
+            },
+        },
+        event_time=1.0,
+    )
+    teleop.record_event({"source_wall_time": 1.0, "target_tcp": [0.1] * 7, "gripper_closed": False}, event_time=1.0)
+    sessions.stop_episode(outcome="saved")
+    qc_path = analyze_episode(episode_dir)
+    sessions.stop_run()
+
+    run_manifest = json.loads((run_dir / "run_manifest.json").read_text(encoding="utf-8"))
+    assert run_manifest["run_name"] == "task_demo"
+    assert episode_dir.parent.name == "episodes"
+    assert qc_path.exists()
+
+
+def test_jsonl_stream_recorder_respects_record_hz(tmp_path: Path):
+    sessions = EpisodeSessionManager(tmp_path)
+    sessions.start_episode("rate_limited")
+    recorder = JsonlStreamRecorder(sessions, "controller_state", record_hz=2.0)
+
+    recorder.record_event({"source_wall_time": 1.0, "state": {"tcp_pose": [0.0] * 7}}, event_time=1.0)
+    recorder.record_event({"source_wall_time": 1.1, "state": {"tcp_pose": [0.0] * 7}}, event_time=1.1)
+    recorder.record_event({"source_wall_time": 1.6, "state": {"tcp_pose": [0.0] * 7}}, event_time=1.6)
+
+    path = sessions.get_active_episode_dir() / "streams" / "controller_state.jsonl"
+    lines = path.read_text(encoding="utf-8").strip().splitlines()
+    assert len(lines) == 2

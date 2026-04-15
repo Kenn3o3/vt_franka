@@ -1,0 +1,993 @@
+[04/14 20:37:59.470363][info][117625][LinuxUsbPal.cpp:335] Create PollingDeviceWatcher!
+[04/14 20:37:59.470460][info][117625][DeviceManager.cpp:25] Current found device(s): (1)
+[04/14 20:37:59.470481][info][117625][DeviceManager.cpp:34] 	- Name: Gemini 335, PID: 0x0800, SN/ID: CP0E753000KA, Connection: USB3.2
+[04/14 20:37:59.470490][info][117625][DeviceManager.cpp:339] Enable net device enumeration: true
+[04/14 20:38:01.479874][info][117625][DeviceManager.cpp:25] Current device(s) list: (1)
+[04/14 20:38:01.479915][info][117625][DeviceManager.cpp:34] 	- Name: Gemini 335, PID: 0x0800, SN/ID: CP0E753000KA, Connection: USB3.2
+[04/14 20:38:01.483094][info][117625][DeviceBase.cpp:651] key: AppSlot,value:1
+[04/14 20:38:01.483119][info][117625][DeviceBase.cpp:651] key: HwType,value:R1
+[04/14 20:38:01.483122][info][117625][DeviceBase.cpp:651] key: HwVer,value:V1.1
+[04/14 20:38:01.483125][info][117625][DeviceBase.cpp:651] key: IspFwVer,value:20241125
+[04/14 20:38:01.483127][info][117625][DeviceBase.cpp:651] key: IspNeedVer,value:20241125
+[04/14 20:38:01.483132][info][117625][DeviceBase.cpp:651] key: PresetVer,value:1.2.2
+[04/14 20:38:01.641371][info][117625][DeviceManager.cpp:194] Device created successfully! Name: Gemini 335, PID: 0x0800, SN/ID: CP0E753000KA FW: 1.4.60
+[04/14 20:38:01.641479][info][117625][Pipeline.cpp:42] [CP0E753000KA] Pipeline created with device: {name: Gemini 335, sn: CP0E753000KA}, @0x60B24BF7D7F0
+[04/14 20:38:01.664380][info][117625][Pipeline.cpp:216] [CP0E753000KA] Check and set config done!
+[04/14 20:38:01.664635][info][117625][Pipeline.cpp:254] [CP0E753000KA] Try to start streams!
+[04/14 20:38:01.664649][info][117625][VideoSensor.cpp:58] [CP0E753000KA] Try to start stream: {type: Color, format: RGB, width: 640, height: 480, fps: 30}
+[04/14 20:38:01.664664][info][117625][SensorBase.cpp:213] [CP0E753000KA] Stream state changed to STARTING@Color
+[04/14 20:38:01.664672][info][117625][VideoSensor.cpp:127] [CP0E753000KA] Start backend stream: {type: Color, format: YUYV, width: 640, height: 480, fps: 30}
+[04/14 20:38:01.665962][info][117625][Pipeline.cpp:270] [CP0E753000KA] Start streams done!
+[04/14 20:38:01.665975][info][117625][Pipeline.cpp:238] [CP0E753000KA] Pipeline start done!
+[04/14 20:38:01.866407][warning][117625][Pipeline.cpp:305] [CP0E753000KA] Wait for frame timeout, you can try to increase the wait time! current timeout=200
+[04/14 20:38:02.203446][info][117760][SensorBase.cpp:213] [CP0E753000KA] Stream state changed to STREAMING@Color
+[04/14 20:38:05.066833][warning][117761][Pipeline.cpp:305] [CP0E753000KA] Wait for frame timeout, you can try to increase the wait time! current timeout=200 [**1 logs in 3200ms, last: 20:38:02.066566**]
+[04/14 20:38:07.208695][info][117760][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=30.169830fps
+[04/14 20:38:07.243660][info][117763][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=30.345379fps
+[04/14 20:38:12.214414][info][117760][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.964043fps
+[04/14 20:38:12.248111][info][117763][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.970030fps
+[04/14 20:38:17.220332][info][117760][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.964043fps
+[04/14 20:38:17.254197][info][117763][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.964043fps
+[04/14 20:38:22.226357][info][117760][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.964043fps
+[04/14 20:38:22.259875][info][117763][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.970030fps
+[04/14 20:38:27.232159][info][117760][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.964043fps
+[04/14 20:38:27.265917][info][117763][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.964043fps
+[04/14 20:38:32.238164][info][117760][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.964043fps
+[04/14 20:38:32.271817][info][117763][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.964043fps
+[04/14 20:38:37.243960][info][117760][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.970030fps
+[04/14 20:38:37.277751][info][117763][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.964043fps
+[04/14 20:38:42.249885][info][117760][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.964043fps
+[04/14 20:38:42.283626][info][117763][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.964043fps
+[04/14 20:38:47.255779][info][117760][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.964043fps
+[04/14 20:38:47.289907][info][117763][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.964043fps
+[04/14 20:38:52.261710][info][117760][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.964043fps
+[04/14 20:38:52.295413][info][117763][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.964043fps
+[04/14 20:38:57.267647][info][117760][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.964043fps
+[04/14 20:38:57.301441][info][117763][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.964043fps
+[04/14 20:39:02.273494][info][117760][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.964043fps
+[04/14 20:39:02.307296][info][117763][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.964043fps
+[04/14 20:39:07.279426][info][117760][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.964043fps
+[04/14 20:39:07.313201][info][117763][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.964043fps
+[04/14 20:39:12.285545][info][117760][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.964043fps
+[04/14 20:39:12.319300][info][117763][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.964043fps
+[04/14 20:39:17.291188][info][117760][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.964043fps
+[04/14 20:39:17.324850][info][117763][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.970030fps
+[04/14 20:39:22.297196][info][117760][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.964043fps
+[04/14 20:39:22.330851][info][117763][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.964043fps
+[04/14 20:39:27.303194][info][117760][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.964043fps
+[04/14 20:39:27.339720][info][117763][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.946098fps
+[04/14 20:39:32.309122][info][117760][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.964043fps
+[04/14 20:39:32.342606][info][117763][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.982012fps
+[04/14 20:39:37.315057][info][117760][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.964043fps
+[04/14 20:39:37.348641][info][117763][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.964043fps
+[04/14 20:39:42.320937][info][117760][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.970030fps
+[04/14 20:39:42.357426][info][117763][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.946098fps
+[04/14 20:39:47.326696][info][117760][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.964043fps
+[04/14 20:39:47.360400][info][117763][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.982012fps
+[04/14 20:39:48.661938][info][117625][Pipeline.cpp:336] [CP0E753000KA] Try to stop pipeline!
+[04/14 20:39:48.661989][info][117625][Pipeline.cpp:312] [CP0E753000KA] Try to stop streams!
+[04/14 20:39:48.662014][info][117625][SensorBase.cpp:213] [CP0E753000KA] Stream state changed to STOPPING@Color
+[04/14 20:39:48.704023][info][117625][SensorBase.cpp:213] [CP0E753000KA] Stream state changed to STOPPED@Color
+[04/14 20:39:48.704250][info][117625][Pipeline.cpp:326] [CP0E753000KA] Sensor stream stopped, sensorType=Color
+[04/14 20:39:48.704260][info][117625][Pipeline.cpp:332] [CP0E753000KA] Stop streams done!
+[04/14 20:39:48.704450][info][117625][Pipeline.cpp:356] [CP0E753000KA] Stop pipeline done!
+[04/14 20:39:48.704482][info][117625][Pipeline.cpp:53] [CP0E753000KA] Pipeline destroyed! @0x60B24BF7D7F0
+[04/14 20:39:48.704622][info][117625][SensorBase.cpp:47] [CP0E753000KA] SensorBase is destroyed
+[04/14 20:39:48.705636][info][117625][ObLibuvcDevicePort.cpp:87] uvc_close done.
+[04/14 20:39:48.705661][info][117625][ObLibuvcDevicePort.cpp:88] ~ObLibuvcDevicePort done
+[04/14 20:39:48.711383][info][117625][ObLibuvcDevicePort.cpp:87] uvc_close done.
+[04/14 20:39:48.711421][info][117625][ObLibuvcDevicePort.cpp:88] ~ObLibuvcDevicePort done
+[04/14 20:41:02.054083][info][121255][LinuxUsbPal.cpp:335] Create PollingDeviceWatcher!
+[04/14 20:41:02.054143][info][121255][DeviceManager.cpp:25] Current found device(s): (1)
+[04/14 20:41:02.054149][info][121255][DeviceManager.cpp:34] 	- Name: Gemini 335, PID: 0x0800, SN/ID: CP0E753000KA, Connection: USB3.2
+[04/14 20:41:02.054157][info][121255][DeviceManager.cpp:339] Enable net device enumeration: true
+[04/14 20:41:04.058644][info][121255][DeviceManager.cpp:25] Current device(s) list: (1)
+[04/14 20:41:04.058693][info][121255][DeviceManager.cpp:34] 	- Name: Gemini 335, PID: 0x0800, SN/ID: CP0E753000KA, Connection: USB3.2
+[04/14 20:41:04.060942][info][121255][DeviceBase.cpp:651] key: AppSlot,value:1
+[04/14 20:41:04.060969][info][121255][DeviceBase.cpp:651] key: HwType,value:R1
+[04/14 20:41:04.060975][info][121255][DeviceBase.cpp:651] key: HwVer,value:V1.1
+[04/14 20:41:04.060980][info][121255][DeviceBase.cpp:651] key: IspFwVer,value:20241125
+[04/14 20:41:04.060984][info][121255][DeviceBase.cpp:651] key: IspNeedVer,value:20241125
+[04/14 20:41:04.060989][info][121255][DeviceBase.cpp:651] key: PresetVer,value:1.2.2
+[04/14 20:41:04.220156][info][121255][DeviceManager.cpp:194] Device created successfully! Name: Gemini 335, PID: 0x0800, SN/ID: CP0E753000KA FW: 1.4.60
+[04/14 20:41:04.220280][info][121255][Pipeline.cpp:42] [CP0E753000KA] Pipeline created with device: {name: Gemini 335, sn: CP0E753000KA}, @0x5BC9D7C3D200
+[04/14 20:41:04.241725][info][121255][Pipeline.cpp:216] [CP0E753000KA] Check and set config done!
+[04/14 20:41:04.242031][info][121255][Pipeline.cpp:254] [CP0E753000KA] Try to start streams!
+[04/14 20:41:04.242115][info][121255][VideoSensor.cpp:58] [CP0E753000KA] Try to start stream: {type: Color, format: RGB, width: 640, height: 480, fps: 30}
+[04/14 20:41:04.242129][info][121255][SensorBase.cpp:213] [CP0E753000KA] Stream state changed to STARTING@Color
+[04/14 20:41:04.242135][info][121255][VideoSensor.cpp:127] [CP0E753000KA] Start backend stream: {type: Color, format: YUYV, width: 640, height: 480, fps: 30}
+[04/14 20:41:04.243239][info][121255][Pipeline.cpp:270] [CP0E753000KA] Start streams done!
+[04/14 20:41:04.243250][info][121255][Pipeline.cpp:238] [CP0E753000KA] Pipeline start done!
+[04/14 20:41:04.443587][warning][121255][Pipeline.cpp:305] [CP0E753000KA] Wait for frame timeout, you can try to increase the wait time! current timeout=200
+[04/14 20:41:04.785747][info][121373][SensorBase.cpp:213] [CP0E753000KA] Stream state changed to STREAMING@Color
+[04/14 20:41:07.644090][warning][121374][Pipeline.cpp:305] [CP0E753000KA] Wait for frame timeout, you can try to increase the wait time! current timeout=200 [**1 logs in 3200ms, last: 20:41:04.643717**]
+[04/14 20:41:08.857180][info][121469][LinuxUsbPal.cpp:335] Create PollingDeviceWatcher!
+[04/14 20:41:08.857507][info][121469][DeviceManager.cpp:25] Current found device(s): (1)
+[04/14 20:41:08.857519][info][121469][DeviceManager.cpp:34] 	- Name: Gemini 335, PID: 0x0800, SN/ID: CP0E753000KA, Connection: USB3.2
+[04/14 20:41:08.857526][info][121469][DeviceManager.cpp:339] Enable net device enumeration: true
+[04/14 20:41:09.790675][info][121373][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=30.169830fps
+[04/14 20:41:09.790972][info][121376][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=30.181892fps
+[04/14 20:41:10.866689][info][121469][DeviceManager.cpp:25] Current device(s) list: (1)
+[04/14 20:41:10.866759][info][121469][DeviceManager.cpp:34] 	- Name: Gemini 335, PID: 0x0800, SN/ID: CP0E753000KA, Connection: USB3.2
+[04/14 20:41:10.868146][warning][121469][ObLibuvcDevicePort.cpp:71] uvc_open failed: [Path: 2-5.3-7.0, Return Code: -6]
+[04/14 20:41:10.912423][warning][121469][DeviceBase.cpp:343] Execute failure! A std::exception has occurred!
+ - where: DeviceBase.cpp(343):getComponent
+ - msg: uvc_open failed: [Path: 2-5.3-7.0, Return Code: -6]
+ - type: St13runtime_error
+[04/14 20:41:10.913389][warning][121469][ObLibuvcDevicePort.cpp:71] uvc_open failed: [Path: 2-5.3-7.0, Return Code: -6]
+[04/14 20:41:10.913442][warning][121469][DeviceBase.cpp:343] Execute failure! A std::exception has occurred!
+ - where: DeviceBase.cpp(343):getComponent
+ - msg: uvc_open failed: [Path: 2-5.3-7.0, Return Code: -6]
+ - type: St13runtime_error
+[04/14 20:41:10.914384][warning][121469][ObLibuvcDevicePort.cpp:71] uvc_open failed: [Path: 2-5.3-7.0, Return Code: -6]
+[04/14 20:41:10.914416][warning][121469][DeviceBase.cpp:343] Execute failure! A std::exception has occurred!
+ - where: DeviceBase.cpp(343):getComponent
+ - msg: uvc_open failed: [Path: 2-5.3-7.0, Return Code: -6]
+ - type: St13runtime_error
+[04/14 20:41:10.915118][warning][121469][ObLibuvcDevicePort.cpp:71] uvc_open failed: [Path: 2-5.3-7.0, Return Code: -6]
+[04/14 20:41:10.915162][warning][121469][DeviceBase.cpp:343] Execute failure! A std::exception has occurred!
+ - where: DeviceBase.cpp(343):getComponent
+ - msg: uvc_open failed: [Path: 2-5.3-7.0, Return Code: -6]
+ - type: St13runtime_error
+[04/14 20:41:14.796673][info][121373][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.964043fps
+[04/14 20:41:14.797024][info][121376][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.958059fps
+[04/14 20:41:19.802558][info][121373][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.964043fps
+[04/14 20:41:19.802870][info][121376][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.970030fps
+[04/14 20:41:24.808491][info][121373][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.964043fps
+[04/14 20:41:24.809231][info][121376][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.958059fps
+[04/14 20:41:29.814354][info][121373][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.964043fps
+[04/14 20:41:29.815083][info][121376][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.964043fps
+[04/14 20:41:34.820328][info][121373][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.964043fps
+[04/14 20:41:34.820777][info][121376][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.970030fps
+[04/14 20:41:38.558501][info][121255][Pipeline.cpp:336] [CP0E753000KA] Try to stop pipeline!
+[04/14 20:41:38.558576][info][121255][Pipeline.cpp:312] [CP0E753000KA] Try to stop streams!
+[04/14 20:41:38.558617][info][121255][SensorBase.cpp:213] [CP0E753000KA] Stream state changed to STOPPING@Color
+[04/14 20:41:38.601877][info][121255][SensorBase.cpp:213] [CP0E753000KA] Stream state changed to STOPPED@Color
+[04/14 20:41:38.602098][info][121255][Pipeline.cpp:326] [CP0E753000KA] Sensor stream stopped, sensorType=Color
+[04/14 20:41:38.602115][info][121255][Pipeline.cpp:332] [CP0E753000KA] Stop streams done!
+[04/14 20:41:38.602349][info][121255][Pipeline.cpp:356] [CP0E753000KA] Stop pipeline done!
+[04/14 20:41:38.602399][info][121255][Pipeline.cpp:53] [CP0E753000KA] Pipeline destroyed! @0x5BC9D7C3D200
+[04/14 20:41:38.602595][info][121255][SensorBase.cpp:47] [CP0E753000KA] SensorBase is destroyed
+[04/14 20:41:38.603976][info][121255][ObLibuvcDevicePort.cpp:87] uvc_close done.
+[04/14 20:41:38.604037][info][121255][ObLibuvcDevicePort.cpp:88] ~ObLibuvcDevicePort done
+[04/14 20:41:38.610189][info][121255][ObLibuvcDevicePort.cpp:87] uvc_close done.
+[04/14 20:41:38.610246][info][121255][ObLibuvcDevicePort.cpp:88] ~ObLibuvcDevicePort done
+[04/14 20:47:38.002063][info][128486][LinuxUsbPal.cpp:335] Create PollingDeviceWatcher!
+[04/14 20:47:38.017694][info][128486][DeviceManager.cpp:25] Current found device(s): (1)
+[04/14 20:47:38.017942][info][128486][DeviceManager.cpp:34] 	- Name: Gemini 335, PID: 0x0800, SN/ID: CP0E753000KA, Connection: USB3.2
+[04/14 20:47:38.018117][info][128486][DeviceManager.cpp:339] Enable net device enumeration: true
+[04/14 20:47:40.040071][info][128486][DeviceManager.cpp:25] Current device(s) list: (1)
+[04/14 20:47:40.040132][info][128486][DeviceManager.cpp:34] 	- Name: Gemini 335, PID: 0x0800, SN/ID: CP0E753000KA, Connection: USB3.2
+[04/14 20:47:40.042647][info][128486][DeviceBase.cpp:651] key: AppSlot,value:1
+[04/14 20:47:40.042680][info][128486][DeviceBase.cpp:651] key: HwType,value:R1
+[04/14 20:47:40.042686][info][128486][DeviceBase.cpp:651] key: HwVer,value:V1.1
+[04/14 20:47:40.042690][info][128486][DeviceBase.cpp:651] key: IspFwVer,value:20241125
+[04/14 20:47:40.042694][info][128486][DeviceBase.cpp:651] key: IspNeedVer,value:20241125
+[04/14 20:47:40.042699][info][128486][DeviceBase.cpp:651] key: PresetVer,value:1.2.2
+[04/14 20:47:40.201537][info][128486][DeviceManager.cpp:194] Device created successfully! Name: Gemini 335, PID: 0x0800, SN/ID: CP0E753000KA FW: 1.4.60
+[04/14 20:47:40.201703][info][128486][Pipeline.cpp:42] [CP0E753000KA] Pipeline created with device: {name: Gemini 335, sn: CP0E753000KA}, @0x5F2D64BF14D0
+[04/14 20:47:40.228674][info][128486][Pipeline.cpp:216] [CP0E753000KA] Check and set config done!
+[04/14 20:47:40.229081][info][128486][Pipeline.cpp:254] [CP0E753000KA] Try to start streams!
+[04/14 20:47:40.229119][info][128486][VideoSensor.cpp:58] [CP0E753000KA] Try to start stream: {type: Color, format: RGB, width: 640, height: 480, fps: 30}
+[04/14 20:47:40.229141][info][128486][SensorBase.cpp:213] [CP0E753000KA] Stream state changed to STARTING@Color
+[04/14 20:47:40.229154][info][128486][VideoSensor.cpp:127] [CP0E753000KA] Start backend stream: {type: Color, format: YUYV, width: 640, height: 480, fps: 30}
+[04/14 20:47:40.230577][info][128486][Pipeline.cpp:270] [CP0E753000KA] Start streams done!
+[04/14 20:47:40.230592][info][128486][Pipeline.cpp:238] [CP0E753000KA] Pipeline start done!
+[04/14 20:47:40.430996][warning][128486][Pipeline.cpp:305] [CP0E753000KA] Wait for frame timeout, you can try to increase the wait time! current timeout=200
+[04/14 20:47:40.753715][info][128589][SensorBase.cpp:213] [CP0E753000KA] Stream state changed to STREAMING@Color
+[04/14 20:47:43.631454][warning][128604][Pipeline.cpp:305] [CP0E753000KA] Wait for frame timeout, you can try to increase the wait time! current timeout=200 [**1 logs in 3200ms, last: 20:47:40.631152**]
+[04/14 20:47:45.758927][info][128589][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=30.169830fps
+[04/14 20:47:45.759311][info][128606][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=30.169830fps
+[04/14 20:47:50.764862][info][128589][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.964043fps
+[04/14 20:47:50.765359][info][128606][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.964043fps
+[04/14 20:47:55.770773][info][128589][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.964043fps
+[04/14 20:47:55.771295][info][128606][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.964043fps
+[04/14 20:48:00.776728][info][128589][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.964043fps
+[04/14 20:48:00.777329][info][128606][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.964043fps
+[04/14 20:48:05.782602][info][128589][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.964043fps
+[04/14 20:48:05.783101][info][128606][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.964043fps
+[04/14 20:48:10.788504][info][128589][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.964043fps
+[04/14 20:48:10.788985][info][128606][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.970030fps
+[04/14 20:48:15.794433][info][128589][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.964043fps
+[04/14 20:48:15.832256][info][128606][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.738302fps
+[04/14 20:48:20.800317][info][128589][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.964043fps
+[04/14 20:48:20.834250][info][128606][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=30.187925fps
+[04/14 20:48:25.806224][info][128589][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.964043fps
+[04/14 20:48:25.840003][info][128606][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.970030fps
+[04/14 20:48:30.812137][info][128589][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.964043fps
+[04/14 20:48:30.845804][info][128606][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.964043fps
+[04/14 20:48:35.818022][info][128589][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.964043fps
+[04/14 20:48:35.851761][info][128606][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.964043fps
+[04/14 20:48:40.823934][info][128589][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.970030fps
+[04/14 20:48:40.857711][info][128606][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.964043fps
+[04/14 20:48:45.829928][info][128589][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.964043fps
+[04/14 20:48:45.863678][info][128606][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.964043fps
+[04/14 20:48:50.835748][info][128589][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.964043fps
+[04/14 20:48:50.869624][info][128606][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.964043fps
+[04/14 20:48:55.841700][info][128589][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.964043fps
+[04/14 20:48:55.875338][info][128606][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.964043fps
+[04/14 20:49:00.847607][info][128589][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.964043fps
+[04/14 20:49:00.881286][info][128606][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.964043fps
+[04/14 20:49:05.853492][info][128589][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.964043fps
+[04/14 20:49:05.887212][info][128606][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.964043fps
+[04/14 20:49:10.859395][info][128589][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.964043fps
+[04/14 20:49:10.893204][info][128606][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.964043fps
+[04/14 20:49:15.865298][info][128589][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.964043fps
+[04/14 20:49:15.898976][info][128606][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.970030fps
+[04/14 20:49:20.871251][info][128589][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.964043fps
+[04/14 20:49:20.904931][info][128606][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.964043fps
+[04/14 20:49:25.877128][info][128589][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.964043fps
+[04/14 20:49:25.910945][info][128606][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.964043fps
+[04/14 20:49:30.883139][info][128589][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.964043fps
+[04/14 20:49:30.916883][info][128606][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.964043fps
+[04/14 20:49:35.889010][info][128589][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.970030fps
+[04/14 20:49:35.922717][info][128606][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.964043fps
+[04/14 20:49:40.894943][info][128589][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.964043fps
+[04/14 20:49:40.928578][info][128606][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.964043fps
+[04/14 20:49:45.900989][info][128589][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.964043fps
+[04/14 20:49:45.934643][info][128606][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.964043fps
+[04/14 20:49:50.906699][info][128589][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.964043fps
+[04/14 20:49:50.940386][info][128606][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.964043fps
+[04/14 20:49:55.912601][info][128589][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.964043fps
+[04/14 20:49:55.946618][info][128606][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.964043fps
+[04/14 20:50:00.918707][info][128589][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.964043fps
+[04/14 20:50:00.952392][info][128606][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.964043fps
+[04/14 20:50:05.924430][info][128589][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.964043fps
+[04/14 20:50:05.958194][info][128606][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.964043fps
+[04/14 20:50:10.930413][info][128589][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.964043fps
+[04/14 20:50:10.963998][info][128606][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.970030fps
+[04/14 20:50:15.936284][info][128589][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.964043fps
+[04/14 20:50:15.970055][info][128606][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.958059fps
+[04/14 20:50:20.942149][info][128589][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.964043fps
+[04/14 20:50:20.975855][info][128606][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.970030fps
+[04/14 20:50:25.948076][info][128589][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.964043fps
+[04/14 20:50:25.982367][info][128606][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.958059fps
+[04/14 20:50:30.953985][info][128589][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.970030fps
+[04/14 20:50:30.987718][info][128606][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.970030fps
+[04/14 20:50:35.959902][info][128589][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.964043fps
+[04/14 20:50:35.993521][info][128606][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.964043fps
+[04/14 20:50:40.965803][info][128589][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.964043fps
+[04/14 20:50:40.999508][info][128606][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.964043fps
+[04/14 20:50:45.971766][info][128589][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.964043fps
+[04/14 20:50:46.005414][info][128606][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.964043fps
+[04/14 20:50:50.977652][info][128589][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.964043fps
+[04/14 20:50:51.011424][info][128606][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.964043fps
+[04/14 20:50:55.983619][info][128589][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.964043fps
+[04/14 20:50:56.017307][info][128606][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.964043fps
+[04/14 20:51:00.989461][info][128589][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.964043fps
+[04/14 20:51:01.023260][info][128606][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.964043fps
+[04/14 20:51:05.995376][info][128589][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.964043fps
+[04/14 20:51:06.029082][info][128606][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.964043fps
+[04/14 20:51:11.001307][info][128589][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.964043fps
+[04/14 20:51:11.035145][info][128606][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.964043fps
+[04/14 20:51:16.007188][info][128589][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.964043fps
+[04/14 20:51:16.040926][info][128606][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.970030fps
+[04/14 20:51:21.013198][info][128589][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.964043fps
+[04/14 20:51:21.048349][info][128606][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.952078fps
+[04/14 20:51:26.019032][info][128589][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.964043fps
+[04/14 20:51:26.052856][info][128606][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.976019fps
+[04/14 20:51:31.024966][info][128589][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.970030fps
+[04/14 20:51:31.058833][info][128606][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.964043fps
+[04/14 20:51:36.030871][info][128589][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.964043fps
+[04/14 20:51:36.064555][info][128606][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.964043fps
+[04/14 20:51:41.036791][info][128589][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.964043fps
+[04/14 20:51:41.070574][info][128606][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.964043fps
+[04/14 20:51:46.042681][info][128589][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.964043fps
+[04/14 20:51:46.076603][info][128606][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.964043fps
+[04/14 20:51:51.048587][info][128589][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.964043fps
+[04/14 20:51:51.082357][info][128606][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.964043fps
+[04/14 20:51:56.054487][info][128589][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.964043fps
+[04/14 20:51:56.088225][info][128606][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.964043fps
+[04/14 20:52:01.060401][info][128589][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.964043fps
+[04/14 20:52:01.094200][info][128606][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.964043fps
+[04/14 20:52:06.066334][info][128589][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.964043fps
+[04/14 20:52:06.100312][info][128606][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.964043fps
+[04/14 20:52:11.072399][info][128589][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.964043fps
+[04/14 20:52:11.106299][info][128606][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.964043fps
+[04/14 20:52:16.078234][info][128589][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.964043fps
+[04/14 20:52:16.111939][info][128606][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.970030fps
+[04/14 20:52:21.088702][info][128589][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.940119fps
+[04/14 20:52:21.117947][info][128606][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.964043fps
+[04/14 20:52:26.090014][info][128589][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.994001fps
+[04/14 20:52:26.123812][info][128606][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.964043fps
+[04/14 20:52:31.095890][info][128589][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.964043fps
+[04/14 20:52:31.129684][info][128606][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.964043fps
+[04/14 20:52:36.101844][info][128589][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.964043fps
+[04/14 20:52:36.135663][info][128606][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.964043fps
+[04/14 20:52:41.107816][info][128589][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.964043fps
+[04/14 20:52:41.141418][info][128606][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.964043fps
+[04/14 20:52:46.113618][info][128589][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.964043fps
+[04/14 20:52:46.147356][info][128606][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.964043fps
+[04/14 20:52:51.119578][info][128589][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.964043fps
+[04/14 20:52:51.153391][info][128606][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.964043fps
+[04/14 20:52:56.125441][info][128589][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.964043fps
+[04/14 20:52:56.159428][info][128606][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.964043fps
+[04/14 20:53:01.131439][info][128589][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.964043fps
+[04/14 20:53:01.165185][info][128606][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.964043fps
+[04/14 20:53:04.402182][info][128486][Pipeline.cpp:336] [CP0E753000KA] Try to stop pipeline!
+[04/14 20:53:04.402235][info][128486][Pipeline.cpp:312] [CP0E753000KA] Try to stop streams!
+[04/14 20:53:04.402262][info][128486][SensorBase.cpp:213] [CP0E753000KA] Stream state changed to STOPPING@Color
+[04/14 20:53:04.444974][info][128486][SensorBase.cpp:213] [CP0E753000KA] Stream state changed to STOPPED@Color
+[04/14 20:53:04.445113][info][128486][Pipeline.cpp:326] [CP0E753000KA] Sensor stream stopped, sensorType=Color
+[04/14 20:53:04.445126][info][128486][Pipeline.cpp:332] [CP0E753000KA] Stop streams done!
+[04/14 20:53:04.445310][info][128486][Pipeline.cpp:356] [CP0E753000KA] Stop pipeline done!
+[04/14 20:53:04.445351][info][128486][Pipeline.cpp:53] [CP0E753000KA] Pipeline destroyed! @0x5F2D64BF14D0
+[04/14 20:53:04.445529][info][128486][SensorBase.cpp:47] [CP0E753000KA] SensorBase is destroyed
+[04/14 20:53:04.446518][info][128486][ObLibuvcDevicePort.cpp:87] uvc_close done.
+[04/14 20:53:04.446531][info][128486][ObLibuvcDevicePort.cpp:88] ~ObLibuvcDevicePort done
+[04/14 20:53:04.452091][info][128486][ObLibuvcDevicePort.cpp:87] uvc_close done.
+[04/14 20:53:04.452133][info][128486][ObLibuvcDevicePort.cpp:88] ~ObLibuvcDevicePort done
+[04/14 21:26:03.053795][info][167407][LinuxUsbPal.cpp:335] Create PollingDeviceWatcher!
+[04/14 21:26:03.053892][info][167407][DeviceManager.cpp:25] Current found device(s): (1)
+[04/14 21:26:03.053904][info][167407][DeviceManager.cpp:34] 	- Name: Gemini 335, PID: 0x0800, SN/ID: CP0E753000KA, Connection: USB3.2
+[04/14 21:26:03.053913][info][167407][DeviceManager.cpp:339] Enable net device enumeration: true
+[04/14 21:26:05.066847][info][167407][DeviceManager.cpp:25] Current device(s) list: (1)
+[04/14 21:26:05.066927][info][167407][DeviceManager.cpp:34] 	- Name: Gemini 335, PID: 0x0800, SN/ID: CP0E753000KA, Connection: USB3.2
+[04/14 21:26:05.070117][info][167407][DeviceBase.cpp:651] key: AppSlot,value:1
+[04/14 21:26:05.070146][info][167407][DeviceBase.cpp:651] key: HwType,value:R1
+[04/14 21:26:05.070152][info][167407][DeviceBase.cpp:651] key: HwVer,value:V1.1
+[04/14 21:26:05.070157][info][167407][DeviceBase.cpp:651] key: IspFwVer,value:20241125
+[04/14 21:26:05.070172][info][167407][DeviceBase.cpp:651] key: IspNeedVer,value:20241125
+[04/14 21:26:05.070176][info][167407][DeviceBase.cpp:651] key: PresetVer,value:1.2.2
+[04/14 21:26:05.228275][info][167407][DeviceManager.cpp:194] Device created successfully! Name: Gemini 335, PID: 0x0800, SN/ID: CP0E753000KA FW: 1.4.60
+[04/14 21:26:05.266835][info][167407][Pipeline.cpp:42] [CP0E753000KA] Pipeline created with device: {name: Gemini 335, sn: CP0E753000KA}, @0x737FEC2DCB00
+[04/14 21:26:05.294070][info][167407][Pipeline.cpp:216] [CP0E753000KA] Check and set config done!
+[04/14 21:26:05.294306][info][167407][Pipeline.cpp:254] [CP0E753000KA] Try to start streams!
+[04/14 21:26:05.294322][info][167407][VideoSensor.cpp:58] [CP0E753000KA] Try to start stream: {type: Color, format: RGB, width: 640, height: 480, fps: 30}
+[04/14 21:26:05.294340][info][167407][SensorBase.cpp:213] [CP0E753000KA] Stream state changed to STARTING@Color
+[04/14 21:26:05.294351][info][167407][VideoSensor.cpp:127] [CP0E753000KA] Start backend stream: {type: Color, format: YUYV, width: 640, height: 480, fps: 30}
+[04/14 21:26:05.295786][info][167407][Pipeline.cpp:270] [CP0E753000KA] Start streams done!
+[04/14 21:26:05.295807][info][167407][Pipeline.cpp:238] [CP0E753000KA] Pipeline start done!
+[04/14 21:26:05.496218][warning][167407][Pipeline.cpp:305] [CP0E753000KA] Wait for frame timeout, you can try to increase the wait time! current timeout=200
+[04/14 21:26:05.840136][info][167483][SensorBase.cpp:213] [CP0E753000KA] Stream state changed to STREAMING@Color
+[04/14 21:26:06.040364][info][167407][Pipeline.cpp:336] [CP0E753000KA] Try to stop pipeline!
+[04/14 21:26:06.040423][info][167407][Pipeline.cpp:312] [CP0E753000KA] Try to stop streams!
+[04/14 21:26:06.040455][info][167407][SensorBase.cpp:213] [CP0E753000KA] Stream state changed to STOPPING@Color
+[04/14 21:26:06.083945][info][167407][SensorBase.cpp:213] [CP0E753000KA] Stream state changed to STOPPED@Color
+[04/14 21:26:06.084128][info][167407][Pipeline.cpp:326] [CP0E753000KA] Sensor stream stopped, sensorType=Color
+[04/14 21:26:06.084137][info][167407][Pipeline.cpp:332] [CP0E753000KA] Stop streams done!
+[04/14 21:26:06.084307][info][167407][Pipeline.cpp:356] [CP0E753000KA] Stop pipeline done!
+[04/14 21:26:06.084845][info][167407][Pipeline.cpp:53] [CP0E753000KA] Pipeline destroyed! @0x737FEC2DCB00
+[04/14 21:26:06.084964][info][167407][SensorBase.cpp:47] [CP0E753000KA] SensorBase is destroyed
+[04/14 21:26:06.085900][info][167407][ObLibuvcDevicePort.cpp:87] uvc_close done.
+[04/14 21:26:06.085910][info][167407][ObLibuvcDevicePort.cpp:88] ~ObLibuvcDevicePort done
+[04/14 21:26:06.092497][info][167407][ObLibuvcDevicePort.cpp:87] uvc_close done.
+[04/14 21:26:06.092532][info][167407][ObLibuvcDevicePort.cpp:88] ~ObLibuvcDevicePort done
+[04/14 21:26:06.094934][warning][167495][Pipeline.cpp:305] [CP0E753000KA] Wait for frame timeout, you can try to increase the wait time! current timeout=200 [**1 logs in 598ms, last: 21:26:05.696377**]
+[04/14 21:27:33.662215][info][168918][LinuxUsbPal.cpp:335] Create PollingDeviceWatcher!
+[04/14 21:27:33.662275][info][168918][DeviceManager.cpp:25] Current found device(s): (1)
+[04/14 21:27:33.662283][info][168918][DeviceManager.cpp:34] 	- Name: Gemini 335, PID: 0x0800, SN/ID: CP0E753000KA, Connection: USB3.2
+[04/14 21:27:33.662292][info][168918][DeviceManager.cpp:339] Enable net device enumeration: true
+[04/14 21:27:35.678304][info][168918][DeviceManager.cpp:25] Current device(s) list: (1)
+[04/14 21:27:35.678393][info][168918][DeviceManager.cpp:34] 	- Name: Gemini 335, PID: 0x0800, SN/ID: CP0E753000KA, Connection: USB3.2
+[04/14 21:27:35.683511][info][168918][DeviceBase.cpp:651] key: AppSlot,value:1
+[04/14 21:27:35.683537][info][168918][DeviceBase.cpp:651] key: HwType,value:R1
+[04/14 21:27:35.683542][info][168918][DeviceBase.cpp:651] key: HwVer,value:V1.1
+[04/14 21:27:35.683547][info][168918][DeviceBase.cpp:651] key: IspFwVer,value:20241125
+[04/14 21:27:35.683555][info][168918][DeviceBase.cpp:651] key: IspNeedVer,value:20241125
+[04/14 21:27:35.683560][info][168918][DeviceBase.cpp:651] key: PresetVer,value:1.2.2
+[04/14 21:27:35.859837][info][168918][DeviceManager.cpp:194] Device created successfully! Name: Gemini 335, PID: 0x0800, SN/ID: CP0E753000KA FW: 1.4.60
+[04/14 21:27:35.860497][info][168918][Pipeline.cpp:42] [CP0E753000KA] Pipeline created with device: {name: Gemini 335, sn: CP0E753000KA}, @0x77906C2DC350
+[04/14 21:27:35.910617][info][168918][Pipeline.cpp:216] [CP0E753000KA] Check and set config done!
+[04/14 21:27:35.911002][info][168918][Pipeline.cpp:254] [CP0E753000KA] Try to start streams!
+[04/14 21:27:35.911028][info][168918][VideoSensor.cpp:58] [CP0E753000KA] Try to start stream: {type: Color, format: RGB, width: 640, height: 480, fps: 30}
+[04/14 21:27:35.911046][info][168918][SensorBase.cpp:213] [CP0E753000KA] Stream state changed to STARTING@Color
+[04/14 21:27:35.911055][info][168918][VideoSensor.cpp:127] [CP0E753000KA] Start backend stream: {type: Color, format: YUYV, width: 640, height: 480, fps: 30}
+[04/14 21:27:35.912979][info][168918][Pipeline.cpp:270] [CP0E753000KA] Start streams done!
+[04/14 21:27:35.913022][info][168918][Pipeline.cpp:238] [CP0E753000KA] Pipeline start done!
+[04/14 21:27:36.116546][warning][168918][Pipeline.cpp:305] [CP0E753000KA] Wait for frame timeout, you can try to increase the wait time! current timeout=200
+[04/14 21:27:36.448512][info][168991][SensorBase.cpp:213] [CP0E753000KA] Stream state changed to STREAMING@Color
+[04/14 21:27:39.324780][warning][168992][Pipeline.cpp:305] [CP0E753000KA] Wait for frame timeout, you can try to increase the wait time! current timeout=200 [**1 logs in 3208ms, last: 21:27:36.316933**]
+[04/14 21:27:41.452043][info][168991][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=30.181892fps
+[04/14 21:27:41.485758][info][168994][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=30.212681fps
+[04/14 21:27:46.457950][info][168991][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.964043fps
+[04/14 21:27:46.491727][info][168994][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.964043fps
+[04/14 21:27:51.463938][info][168991][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.964043fps
+[04/14 21:27:51.501775][info][168994][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.940119fps
+[04/14 21:27:56.469764][info][168991][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.964043fps
+[04/14 21:27:56.503597][info][168994][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.988007fps
+[04/14 21:28:01.475641][info][168991][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.964043fps
+[04/14 21:28:01.509397][info][168994][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.964043fps
+[04/14 21:28:06.481685][info][168991][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.964043fps
+[04/14 21:28:06.515369][info][168994][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.964043fps
+[04/14 21:28:11.487486][info][168991][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.964043fps
+[04/14 21:28:11.521504][info][168994][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.964043fps
+[04/14 21:28:16.493417][info][168991][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.964043fps
+[04/14 21:28:16.527342][info][168994][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.964043fps
+[04/14 21:28:21.499335][info][168991][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.964043fps
+[04/14 21:28:21.533065][info][168994][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.964043fps
+[04/14 21:28:26.505224][info][168991][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.964043fps
+[04/14 21:28:26.539070][info][168994][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.964043fps
+[04/14 21:28:31.511102][info][168991][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.964043fps
+[04/14 21:28:31.544909][info][168994][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.970030fps
+[04/14 21:28:36.517034][info][168991][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.964043fps
+[04/14 21:28:36.550808][info][168994][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.964043fps
+[04/14 21:28:41.522894][info][168991][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.970030fps
+[04/14 21:28:41.556727][info][168994][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.964043fps
+[04/14 21:28:46.529066][info][168991][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.958059fps
+[04/14 21:28:46.562586][info][168994][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.964043fps
+[04/14 21:28:51.534749][info][168991][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.970030fps
+[04/14 21:28:51.568544][info][168994][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.964043fps
+[04/14 21:28:56.540639][info][168991][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.964043fps
+[04/14 21:28:56.574388][info][168994][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.964043fps
+[04/14 21:29:01.546756][info][168991][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.964043fps
+[04/14 21:29:01.582176][info][168994][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.952078fps
+[04/14 21:29:06.552505][info][168991][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.964043fps
+[04/14 21:29:06.586256][info][168994][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.976019fps
+[04/14 21:29:11.558524][info][168991][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.964043fps
+[04/14 21:29:11.592242][info][168994][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.964043fps
+[04/14 21:29:16.564285][info][168991][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.964043fps
+[04/14 21:29:16.598110][info][168994][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.964043fps
+[04/14 21:29:21.570236][info][168991][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.964043fps
+[04/14 21:29:21.603911][info][168994][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.970030fps
+[04/14 21:29:26.576128][info][168991][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.964043fps
+[04/14 21:29:26.610222][info][168994][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.958059fps
+[04/14 21:29:31.582006][info][168991][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.970030fps
+[04/14 21:29:31.615899][info][168994][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.970030fps
+[04/14 21:29:36.587937][info][168991][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.964043fps
+[04/14 21:29:36.621892][info][168994][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.964043fps
+[04/14 21:29:41.594873][info][168991][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.958059fps
+[04/14 21:29:41.627639][info][168994][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.964043fps
+[04/14 21:29:46.599755][info][168991][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.970030fps
+[04/14 21:29:46.633490][info][168994][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.964043fps
+[04/14 21:29:51.605649][info][168991][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.964043fps
+[04/14 21:29:51.639651][info][168994][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.964043fps
+[04/14 21:29:56.611600][info][168991][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.964043fps
+[04/14 21:29:56.645418][info][168994][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.964043fps
+[04/14 21:30:01.617480][info][168991][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.964043fps
+[04/14 21:30:01.651288][info][168994][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.964043fps
+[04/14 21:30:06.623463][info][168991][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.964043fps
+[04/14 21:30:06.657386][info][168994][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.964043fps
+[04/14 21:30:11.629307][info][168991][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.964043fps
+[04/14 21:30:11.663218][info][168994][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.964043fps
+[04/14 21:30:12.999254][info][168918][Pipeline.cpp:336] [CP0E753000KA] Try to stop pipeline!
+[04/14 21:30:12.999321][info][168918][Pipeline.cpp:312] [CP0E753000KA] Try to stop streams!
+[04/14 21:30:12.999365][info][168918][SensorBase.cpp:213] [CP0E753000KA] Stream state changed to STOPPING@Color
+[04/14 21:30:13.041601][info][168918][SensorBase.cpp:213] [CP0E753000KA] Stream state changed to STOPPED@Color
+[04/14 21:30:13.041814][info][168918][Pipeline.cpp:326] [CP0E753000KA] Sensor stream stopped, sensorType=Color
+[04/14 21:30:13.041827][info][168918][Pipeline.cpp:332] [CP0E753000KA] Stop streams done!
+[04/14 21:30:13.042023][info][168918][Pipeline.cpp:356] [CP0E753000KA] Stop pipeline done!
+[04/14 21:30:13.042117][info][168918][Pipeline.cpp:53] [CP0E753000KA] Pipeline destroyed! @0x77906C2DC350
+[04/14 21:30:13.042262][info][168918][SensorBase.cpp:47] [CP0E753000KA] SensorBase is destroyed
+[04/14 21:30:13.043322][info][168918][ObLibuvcDevicePort.cpp:87] uvc_close done.
+[04/14 21:30:13.043345][info][168918][ObLibuvcDevicePort.cpp:88] ~ObLibuvcDevicePort done
+[04/14 21:30:13.049313][info][168918][ObLibuvcDevicePort.cpp:87] uvc_close done.
+[04/14 21:30:13.049357][info][168918][ObLibuvcDevicePort.cpp:88] ~ObLibuvcDevicePort done
+[04/14 21:30:55.264950][info][172604][LinuxUsbPal.cpp:335] Create PollingDeviceWatcher!
+[04/14 21:30:55.265043][info][172604][DeviceManager.cpp:25] Current found device(s): (1)
+[04/14 21:30:55.265058][info][172604][DeviceManager.cpp:34] 	- Name: Gemini 335, PID: 0x0800, SN/ID: CP0E753000KA, Connection: USB3.2
+[04/14 21:30:55.265073][info][172604][DeviceManager.cpp:339] Enable net device enumeration: true
+[04/14 21:30:57.269916][info][172604][DeviceManager.cpp:25] Current device(s) list: (1)
+[04/14 21:30:57.269993][info][172604][DeviceManager.cpp:34] 	- Name: Gemini 335, PID: 0x0800, SN/ID: CP0E753000KA, Connection: USB3.2
+[04/14 21:30:57.273968][info][172604][DeviceBase.cpp:651] key: AppSlot,value:1
+[04/14 21:30:57.273995][info][172604][DeviceBase.cpp:651] key: HwType,value:R1
+[04/14 21:30:57.274001][info][172604][DeviceBase.cpp:651] key: HwVer,value:V1.1
+[04/14 21:30:57.274006][info][172604][DeviceBase.cpp:651] key: IspFwVer,value:20241125
+[04/14 21:30:57.274010][info][172604][DeviceBase.cpp:651] key: IspNeedVer,value:20241125
+[04/14 21:30:57.274014][info][172604][DeviceBase.cpp:651] key: PresetVer,value:1.2.2
+[04/14 21:30:57.433672][info][172604][DeviceManager.cpp:194] Device created successfully! Name: Gemini 335, PID: 0x0800, SN/ID: CP0E753000KA FW: 1.4.60
+[04/14 21:30:57.433892][info][172604][Pipeline.cpp:42] [CP0E753000KA] Pipeline created with device: {name: Gemini 335, sn: CP0E753000KA}, @0x71C4C02DC3F0
+[04/14 21:30:57.472169][info][172604][Pipeline.cpp:216] [CP0E753000KA] Check and set config done!
+[04/14 21:30:57.472435][info][172604][Pipeline.cpp:254] [CP0E753000KA] Try to start streams!
+[04/14 21:30:57.472503][info][172604][VideoSensor.cpp:58] [CP0E753000KA] Try to start stream: {type: Color, format: RGB, width: 640, height: 480, fps: 30}
+[04/14 21:30:57.472529][info][172604][SensorBase.cpp:213] [CP0E753000KA] Stream state changed to STARTING@Color
+[04/14 21:30:57.472544][info][172604][VideoSensor.cpp:127] [CP0E753000KA] Start backend stream: {type: Color, format: YUYV, width: 640, height: 480, fps: 30}
+[04/14 21:30:57.474399][info][172604][Pipeline.cpp:270] [CP0E753000KA] Start streams done!
+[04/14 21:30:57.474418][info][172604][Pipeline.cpp:238] [CP0E753000KA] Pipeline start done!
+[04/14 21:30:57.677891][warning][172604][Pipeline.cpp:305] [CP0E753000KA] Wait for frame timeout, you can try to increase the wait time! current timeout=200
+[04/14 21:30:58.018130][info][172691][SensorBase.cpp:213] [CP0E753000KA] Stream state changed to STREAMING@Color
+[04/14 21:31:00.878330][warning][172703][Pipeline.cpp:305] [CP0E753000KA] Wait for frame timeout, you can try to increase the wait time! current timeout=200 [**1 logs in 3200ms, last: 21:30:57.878035**]
+[04/14 21:31:03.023318][info][172691][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=30.169830fps
+[04/14 21:31:03.023716][info][172705][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=30.181892fps
+[04/14 21:31:08.029222][info][172691][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.964043fps
+[04/14 21:31:08.029574][info][172705][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.964043fps
+[04/14 21:31:13.035152][info][172691][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.964043fps
+[04/14 21:31:13.035590][info][172705][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.964043fps
+[04/14 21:31:18.041166][info][172691][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.964043fps
+[04/14 21:31:18.041744][info][172705][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.964043fps
+[04/14 21:31:23.046986][info][172691][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.970030fps
+[04/14 21:31:23.047431][info][172705][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.964043fps
+[04/14 21:31:28.054852][info][172691][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.952078fps
+[04/14 21:31:28.055975][info][172705][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.952078fps
+[04/14 21:31:33.058833][info][172691][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.976019fps
+[04/14 21:31:33.059265][info][172705][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.976019fps
+[04/14 21:31:38.064682][info][172691][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.964043fps
+[04/14 21:31:38.065170][info][172705][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.964043fps
+[04/14 21:31:43.070766][info][172691][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.964043fps
+[04/14 21:31:43.071507][info][172705][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.964043fps
+[04/14 21:31:48.076576][info][172691][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.964043fps
+[04/14 21:31:48.077109][info][172705][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.964043fps
+[04/14 21:31:53.082512][info][172691][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.964043fps
+[04/14 21:31:53.083068][info][172705][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.964043fps
+[04/14 21:31:58.088426][info][172691][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.964043fps
+[04/14 21:31:58.088861][info][172705][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.970030fps
+[04/14 21:32:03.094257][info][172691][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.964043fps
+[04/14 21:32:03.094763][info][172705][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.964043fps
+[04/14 21:32:08.100158][info][172691][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.964043fps
+[04/14 21:32:08.100584][info][172705][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.964043fps
+[04/14 21:32:13.106055][info][172691][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.964043fps
+[04/14 21:32:13.106474][info][172705][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.964043fps
+[04/14 21:32:18.111999][info][172691][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.970030fps
+[04/14 21:32:18.112384][info][172705][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.964043fps
+[04/14 21:32:23.117892][info][172691][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.964043fps
+[04/14 21:32:23.118310][info][172705][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.964043fps
+[04/14 21:32:28.123829][info][172691][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.964043fps
+[04/14 21:32:28.124228][info][172705][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.964043fps
+[04/14 21:32:33.129777][info][172691][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.964043fps
+[04/14 21:32:33.130299][info][172705][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.964043fps
+[04/14 21:32:38.135619][info][172691][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.964043fps
+[04/14 21:32:38.136060][info][172705][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.964043fps
+[04/14 21:32:40.772835][info][172604][Pipeline.cpp:336] [CP0E753000KA] Try to stop pipeline!
+[04/14 21:32:40.772891][info][172604][Pipeline.cpp:312] [CP0E753000KA] Try to stop streams!
+[04/14 21:32:40.772916][info][172604][SensorBase.cpp:213] [CP0E753000KA] Stream state changed to STOPPING@Color
+[04/14 21:32:40.816799][info][172604][SensorBase.cpp:213] [CP0E753000KA] Stream state changed to STOPPED@Color
+[04/14 21:32:40.817010][info][172604][Pipeline.cpp:326] [CP0E753000KA] Sensor stream stopped, sensorType=Color
+[04/14 21:32:40.817023][info][172604][Pipeline.cpp:332] [CP0E753000KA] Stop streams done!
+[04/14 21:32:40.817205][info][172604][Pipeline.cpp:356] [CP0E753000KA] Stop pipeline done!
+[04/14 21:32:40.817351][info][172604][Pipeline.cpp:53] [CP0E753000KA] Pipeline destroyed! @0x71C4C02DC3F0
+[04/14 21:32:40.817500][info][172604][SensorBase.cpp:47] [CP0E753000KA] SensorBase is destroyed
+[04/14 21:32:40.818579][info][172604][ObLibuvcDevicePort.cpp:87] uvc_close done.
+[04/14 21:32:40.818598][info][172604][ObLibuvcDevicePort.cpp:88] ~ObLibuvcDevicePort done
+[04/14 21:32:40.825021][info][172604][ObLibuvcDevicePort.cpp:87] uvc_close done.
+[04/14 21:32:40.825069][info][172604][ObLibuvcDevicePort.cpp:88] ~ObLibuvcDevicePort done
+[04/14 21:33:02.233687][info][175048][LinuxUsbPal.cpp:335] Create PollingDeviceWatcher!
+[04/14 21:33:02.233741][info][175048][DeviceManager.cpp:25] Current found device(s): (1)
+[04/14 21:33:02.233748][info][175048][DeviceManager.cpp:34] 	- Name: Gemini 335, PID: 0x0800, SN/ID: CP0E753000KA, Connection: USB3.2
+[04/14 21:33:02.233754][info][175048][DeviceManager.cpp:339] Enable net device enumeration: true
+[04/14 21:33:04.253740][info][175048][DeviceManager.cpp:25] Current device(s) list: (1)
+[04/14 21:33:04.253825][info][175048][DeviceManager.cpp:34] 	- Name: Gemini 335, PID: 0x0800, SN/ID: CP0E753000KA, Connection: USB3.2
+[04/14 21:33:04.279810][info][175048][DeviceBase.cpp:651] key: AppSlot,value:1
+[04/14 21:33:04.280149][info][175048][DeviceBase.cpp:651] key: HwType,value:R1
+[04/14 21:33:04.280319][info][175048][DeviceBase.cpp:651] key: HwVer,value:V1.1
+[04/14 21:33:04.280452][info][175048][DeviceBase.cpp:651] key: IspFwVer,value:20241125
+[04/14 21:33:04.280601][info][175048][DeviceBase.cpp:651] key: IspNeedVer,value:20241125
+[04/14 21:33:04.280740][info][175048][DeviceBase.cpp:651] key: PresetVer,value:1.2.2
+[04/14 21:33:04.454832][info][175048][DeviceManager.cpp:194] Device created successfully! Name: Gemini 335, PID: 0x0800, SN/ID: CP0E753000KA FW: 1.4.60
+[04/14 21:33:04.456343][info][175048][Pipeline.cpp:42] [CP0E753000KA] Pipeline created with device: {name: Gemini 335, sn: CP0E753000KA}, @0x74C1FC2DCB20
+[04/14 21:33:04.622500][info][175048][Pipeline.cpp:216] [CP0E753000KA] Check and set config done!
+[04/14 21:33:04.622788][info][175048][Pipeline.cpp:254] [CP0E753000KA] Try to start streams!
+[04/14 21:33:04.622827][info][175048][VideoSensor.cpp:58] [CP0E753000KA] Try to start stream: {type: Color, format: RGB, width: 640, height: 480, fps: 30}
+[04/14 21:33:04.622855][info][175048][SensorBase.cpp:213] [CP0E753000KA] Stream state changed to STARTING@Color
+[04/14 21:33:04.622868][info][175048][VideoSensor.cpp:127] [CP0E753000KA] Start backend stream: {type: Color, format: YUYV, width: 640, height: 480, fps: 30}
+[04/14 21:33:04.625067][info][175048][Pipeline.cpp:270] [CP0E753000KA] Start streams done!
+[04/14 21:33:04.625107][info][175048][Pipeline.cpp:238] [CP0E753000KA] Pipeline start done!
+[04/14 21:33:04.827991][warning][175048][Pipeline.cpp:305] [CP0E753000KA] Wait for frame timeout, you can try to increase the wait time! current timeout=200
+[04/14 21:33:05.168188][info][175137][SensorBase.cpp:213] [CP0E753000KA] Stream state changed to STREAMING@Color
+[04/14 21:33:08.032752][warning][175138][Pipeline.cpp:305] [CP0E753000KA] Wait for frame timeout, you can try to increase the wait time! current timeout=200 [**1 logs in 3204ms, last: 21:33:05.032431**]
+[04/14 21:33:10.173486][info][175137][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=30.169830fps
+[04/14 21:33:10.173947][info][175140][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=30.175858fps
+[04/14 21:33:15.179388][info][175137][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.964043fps
+[04/14 21:33:15.179718][info][175140][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.964043fps
+[04/14 21:33:20.185262][info][175137][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.964043fps
+[04/14 21:33:20.185680][info][175140][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.964043fps
+[04/14 21:33:25.191160][info][175137][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.964043fps
+[04/14 21:33:25.191571][info][175140][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.964043fps
+[04/14 21:33:30.198845][info][175137][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.958059fps
+[04/14 21:33:30.199625][info][175140][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.952078fps
+[04/14 21:33:35.203019][info][175137][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.976019fps
+[04/14 21:33:35.203513][info][175140][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.976019fps
+[04/14 21:33:40.208982][info][175137][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.964043fps
+[04/14 21:33:40.209377][info][175140][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.964043fps
+[04/14 21:33:45.214852][info][175137][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.964043fps
+[04/14 21:33:45.215288][info][175140][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.964043fps
+[04/14 21:33:50.220907][info][175137][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.964043fps
+[04/14 21:33:50.221398][info][175140][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.964043fps
+[04/14 21:33:55.226644][info][175137][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.964043fps
+[04/14 21:33:55.227016][info][175140][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.964043fps
+[04/14 21:34:00.232601][info][175137][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.964043fps
+[04/14 21:34:00.233084][info][175140][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.964043fps
+[04/14 21:34:05.238571][info][175137][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.964043fps
+[04/14 21:34:05.238995][info][175140][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.970030fps
+[04/14 21:34:10.244521][info][175137][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.964043fps
+[04/14 21:34:10.245062][info][175140][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.958059fps
+[04/14 21:34:15.250328][info][175137][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.964043fps
+[04/14 21:34:15.250733][info][175140][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.970030fps
+[04/14 21:34:20.256270][info][175137][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.964043fps
+[04/14 21:34:20.256924][info][175140][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.964043fps
+[04/14 21:34:25.262106][info][175137][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.964043fps
+[04/14 21:34:25.262574][info][175140][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.964043fps
+[04/14 21:34:30.268040][info][175137][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.964043fps
+[04/14 21:34:30.268487][info][175140][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.964043fps
+[04/14 21:34:35.273929][info][175137][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.970030fps
+[04/14 21:34:35.274265][info][175140][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.964043fps
+[04/14 21:34:40.279989][info][175137][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.964043fps
+[04/14 21:34:40.282666][info][175140][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.952078fps
+[04/14 21:34:45.285773][info][175137][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.964043fps
+[04/14 21:34:45.286179][info][175140][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.976019fps
+[04/14 21:34:50.291745][info][175137][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.964043fps
+[04/14 21:34:50.292193][info][175140][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.964043fps
+[04/14 21:34:55.297605][info][175137][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.964043fps
+[04/14 21:34:55.298096][info][175140][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.964043fps
+[04/14 21:35:00.303564][info][175137][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.964043fps
+[04/14 21:35:00.303984][info][175140][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.970030fps
+[04/14 21:35:05.309450][info][175137][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.964043fps
+[04/14 21:35:05.309833][info][175140][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.964043fps
+[04/14 21:35:10.315380][info][175137][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.964043fps
+[04/14 21:35:10.315787][info][175140][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.964043fps
+[04/14 21:35:15.321285][info][175137][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.964043fps
+[04/14 21:35:15.321743][info][175140][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.964043fps
+[04/14 21:35:20.327238][info][175137][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.964043fps
+[04/14 21:35:20.327708][info][175140][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.964043fps
+[04/14 21:35:25.333132][info][175137][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.964043fps
+[04/14 21:35:25.333532][info][175140][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.964043fps
+[04/14 21:35:30.339012][info][175137][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.970030fps
+[04/14 21:35:30.339466][info][175140][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.964043fps
+[04/14 21:35:35.344909][info][175137][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.964043fps
+[04/14 21:35:35.345508][info][175140][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.964043fps
+[04/14 21:35:40.350839][info][175137][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.964043fps
+[04/14 21:35:40.351449][info][175140][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.964043fps
+[04/14 21:35:45.356746][info][175137][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.964043fps
+[04/14 21:35:45.357056][info][175140][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.964043fps
+[04/14 21:35:50.362687][info][175137][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.964043fps
+[04/14 21:35:50.363018][info][175140][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.964043fps
+[04/14 21:35:55.368577][info][175137][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.964043fps
+[04/14 21:35:55.368980][info][175140][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.970030fps
+[04/14 21:36:00.374482][info][175137][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.964043fps
+[04/14 21:36:00.374809][info][175140][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.964043fps
+[04/14 21:36:05.380421][info][175137][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.964043fps
+[04/14 21:36:05.380872][info][175140][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.964043fps
+[04/14 21:36:10.386296][info][175137][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.964043fps
+[04/14 21:36:10.386838][info][175140][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.964043fps
+[04/14 21:36:15.392387][info][175137][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.964043fps
+[04/14 21:36:15.393025][info][175140][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.958059fps
+[04/14 21:36:20.398156][info][175137][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.964043fps
+[04/14 21:36:20.398556][info][175140][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.970030fps
+[04/14 21:36:25.404171][info][175137][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.964043fps
+[04/14 21:36:25.404587][info][175140][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.964043fps
+[04/14 21:36:30.409978][info][175137][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.970030fps
+[04/14 21:36:30.410368][info][175140][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.964043fps
+[04/14 21:36:35.415883][info][175137][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.964043fps
+[04/14 21:36:35.416273][info][175140][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.964043fps
+[04/14 21:36:40.421810][info][175137][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.964043fps
+[04/14 21:36:40.422202][info][175140][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.964043fps
+[04/14 21:36:45.427697][info][175137][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.964043fps
+[04/14 21:36:45.428194][info][175140][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.964043fps
+[04/14 21:36:50.433698][info][175137][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.964043fps
+[04/14 21:36:50.434075][info][175140][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.964043fps
+[04/14 21:36:55.439512][info][175137][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.964043fps
+[04/14 21:36:55.439904][info][175140][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.970030fps
+[04/14 21:37:00.445474][info][175137][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.964043fps
+[04/14 21:37:00.445802][info][175140][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.964043fps
+[04/14 21:37:05.451398][info][175137][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.964043fps
+[04/14 21:37:05.451751][info][175140][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.964043fps
+[04/14 21:37:10.457369][info][175137][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.964043fps
+[04/14 21:37:10.457820][info][175140][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.964043fps
+[04/14 21:37:15.463192][info][175137][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.964043fps
+[04/14 21:37:15.463631][info][175140][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.964043fps
+[04/14 21:37:20.469111][info][175137][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.964043fps
+[04/14 21:37:20.469702][info][175140][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.964043fps
+[04/14 21:37:25.475009][info][175137][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.970030fps
+[04/14 21:37:25.475471][info][175140][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.964043fps
+[04/14 21:37:30.480955][info][175137][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.964043fps
+[04/14 21:37:30.481321][info][175140][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.964043fps
+[04/14 21:37:35.487098][info][175137][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.958059fps
+[04/14 21:37:35.487697][info][175140][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.964043fps
+[04/14 21:37:40.492809][info][175137][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.970030fps
+[04/14 21:37:40.493270][info][175140][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.964043fps
+[04/14 21:37:45.498754][info][175137][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.964043fps
+[04/14 21:37:45.499150][info][175140][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.964043fps
+[04/14 21:37:50.504755][info][175137][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.964043fps
+[04/14 21:37:50.505205][info][175140][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.964043fps
+[04/14 21:37:55.510675][info][175137][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.964043fps
+[04/14 21:37:55.511408][info][175140][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.964043fps
+[04/14 21:38:00.516413][info][175137][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.964043fps
+[04/14 21:38:00.517087][info][175140][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.964043fps
+[04/14 21:38:05.522598][info][175137][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.964043fps
+[04/14 21:38:05.523391][info][175140][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.964043fps
+[04/14 21:38:10.528271][info][175137][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.964043fps
+[04/14 21:38:10.528715][info][175140][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.970030fps
+[04/14 21:38:15.534385][info][175137][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.964043fps
+[04/14 21:38:15.538711][info][175140][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.940119fps
+[04/14 21:38:20.540216][info][175137][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.964043fps
+[04/14 21:38:20.540806][info][175140][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.988007fps
+[04/14 21:38:25.546030][info][175137][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.964043fps
+[04/14 21:38:25.546734][info][175140][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.964043fps
+[04/14 21:38:30.552165][info][175137][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.964043fps
+[04/14 21:38:30.552856][info][175140][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.964043fps
+[04/14 21:38:35.557937][info][175137][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.970030fps
+[04/14 21:38:35.558280][info][175140][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.964043fps
+[04/14 21:38:40.563824][info][175137][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.964043fps
+[04/14 21:38:40.564271][info][175140][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.964043fps
+[04/14 21:38:45.569684][info][175137][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.964043fps
+[04/14 21:38:45.570075][info][175140][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.964043fps
+[04/14 21:38:50.575608][info][175137][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.964043fps
+[04/14 21:38:50.576056][info][175140][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.964043fps
+[04/14 21:38:55.581686][info][175137][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.964043fps
+[04/14 21:38:55.582328][info][175140][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.964043fps
+[04/14 21:39:00.587440][info][175137][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.964043fps
+[04/14 21:39:00.587847][info][175140][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.970030fps
+[04/14 21:39:05.593473][info][175137][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.964043fps
+[04/14 21:39:05.593931][info][175140][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.964043fps
+[04/14 21:39:10.599398][info][175137][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.964043fps
+[04/14 21:39:10.599995][info][175140][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.964043fps
+[04/14 21:39:15.605192][info][175137][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.964043fps
+[04/14 21:39:15.605669][info][175140][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.964043fps
+[04/14 21:39:20.611128][info][175137][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.964043fps
+[04/14 21:39:20.611518][info][175140][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.964043fps
+[04/14 21:39:25.617037][info][175137][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.964043fps
+[04/14 21:39:25.617682][info][175140][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.964043fps
+[04/14 21:39:30.622910][info][175137][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.970030fps
+[04/14 21:39:30.623372][info][175140][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.964043fps
+[04/14 21:39:35.628822][info][175137][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.964043fps
+[04/14 21:39:35.629207][info][175140][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.964043fps
+[04/14 21:39:40.634758][info][175137][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.964043fps
+[04/14 21:39:40.635166][info][175140][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.964043fps
+[04/14 21:39:45.640695][info][175137][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.964043fps
+[04/14 21:39:45.641235][info][175140][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.964043fps
+[04/14 21:39:50.646758][info][175137][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.964043fps
+[04/14 21:39:50.648132][info][175140][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.958059fps
+[04/14 21:39:55.652682][info][175137][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.964043fps
+[04/14 21:39:55.653146][info][175140][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.970030fps
+[04/14 21:40:00.658592][info][175137][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.964043fps
+[04/14 21:40:00.658977][info][175140][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.970030fps
+[04/14 21:40:05.664328][info][175137][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.964043fps
+[04/14 21:40:05.664702][info][175140][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.964043fps
+[04/14 21:40:10.670256][info][175137][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.964043fps
+[04/14 21:40:10.670592][info][175140][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.964043fps
+[04/14 21:40:15.676246][info][175137][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.964043fps
+[04/14 21:40:15.677006][info][175140][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.958059fps
+[04/14 21:40:20.682118][info][175137][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.964043fps
+[04/14 21:40:20.682528][info][175140][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.970030fps
+[04/14 21:40:25.688035][info][175137][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.964043fps
+[04/14 21:40:25.688538][info][175140][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.964043fps
+[04/14 21:40:30.693926][info][175137][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.970030fps
+[04/14 21:40:30.694683][info][175140][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.964043fps
+[04/14 21:40:35.699882][info][175137][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.964043fps
+[04/14 21:40:35.700333][info][175140][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.964043fps
+[04/14 21:40:40.705791][info][175137][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.964043fps
+[04/14 21:40:40.706225][info][175140][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.964043fps
+[04/14 21:40:45.711741][info][175137][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.964043fps
+[04/14 21:40:45.712151][info][175140][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.964043fps
+[04/14 21:40:50.717590][info][175137][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.964043fps
+[04/14 21:40:50.718006][info][175140][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.964043fps
+[04/14 21:40:55.723514][info][175137][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.964043fps
+[04/14 21:40:55.723897][info][175140][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.970030fps
+[04/14 21:41:00.729497][info][175137][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.964043fps
+[04/14 21:41:00.729946][info][175140][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.964043fps
+[04/14 21:41:05.735329][info][175137][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.964043fps
+[04/14 21:41:05.735722][info][175140][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.964043fps
+[04/14 21:41:10.741229][info][175137][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.964043fps
+[04/14 21:41:10.741504][info][175140][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.964043fps
+[04/14 21:41:15.747147][info][175137][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.964043fps
+[04/14 21:41:15.747612][info][175140][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.964043fps
+[04/14 21:41:20.753162][info][175137][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.964043fps
+[04/14 21:41:20.753842][info][175140][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.964043fps
+[04/14 21:41:25.758980][info][175137][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.970030fps
+[04/14 21:41:25.759683][info][175140][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.964043fps
+[04/14 21:41:30.764987][info][175137][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.964043fps
+[04/14 21:41:30.765488][info][175140][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.964043fps
+[04/14 21:41:35.770865][info][175137][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.964043fps
+[04/14 21:41:35.771275][info][175140][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.964043fps
+[04/14 21:41:40.776743][info][175137][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.964043fps
+[04/14 21:41:40.777115][info][175140][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.964043fps
+[04/14 21:41:45.782715][info][175137][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.964043fps
+[04/14 21:41:45.783241][info][175140][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.964043fps
+[04/14 21:41:50.788632][info][175137][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.964043fps
+[04/14 21:41:50.789075][info][175140][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.964043fps
+[04/14 21:41:55.794494][info][175137][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.964043fps
+[04/14 21:41:55.794924][info][175140][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.970030fps
+[04/14 21:42:00.800443][info][175137][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.964043fps
+[04/14 21:42:00.800867][info][175140][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.964043fps
+[04/14 21:42:05.806484][info][175137][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.964043fps
+[04/14 21:42:05.807284][info][175140][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.958059fps
+[04/14 21:42:10.812402][info][175137][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.964043fps
+[04/14 21:42:10.812884][info][175140][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.970030fps
+[04/14 21:42:15.818210][info][175137][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.964043fps
+[04/14 21:42:15.818880][info][175140][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.964043fps
+[04/14 21:42:20.824089][info][175137][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.964043fps
+[04/14 21:42:20.824446][info][175140][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.964043fps
+[04/14 21:42:25.830012][info][175137][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.970030fps
+[04/14 21:42:25.830391][info][175140][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.964043fps
+[04/14 21:42:30.835979][info][175137][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.964043fps
+[04/14 21:42:30.836470][info][175140][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.964043fps
+[04/14 21:42:35.841859][info][175137][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.964043fps
+[04/14 21:42:35.842359][info][175140][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.964043fps
+[04/14 21:42:40.847795][info][175137][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.964043fps
+[04/14 21:42:40.848215][info][175140][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.964043fps
+[04/14 21:42:45.853812][info][175137][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.964043fps
+[04/14 21:42:45.855684][info][175140][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.958059fps
+[04/14 21:42:47.557842][info][175048][Pipeline.cpp:336] [CP0E753000KA] Try to stop pipeline!
+[04/14 21:42:47.557908][info][175048][Pipeline.cpp:312] [CP0E753000KA] Try to stop streams!
+[04/14 21:42:47.557944][info][175048][SensorBase.cpp:213] [CP0E753000KA] Stream state changed to STOPPING@Color
+[04/14 21:42:47.600985][info][175048][SensorBase.cpp:213] [CP0E753000KA] Stream state changed to STOPPED@Color
+[04/14 21:42:47.601123][info][175048][Pipeline.cpp:326] [CP0E753000KA] Sensor stream stopped, sensorType=Color
+[04/14 21:42:47.601129][info][175048][Pipeline.cpp:332] [CP0E753000KA] Stop streams done!
+[04/14 21:42:47.601292][info][175048][Pipeline.cpp:356] [CP0E753000KA] Stop pipeline done!
+[04/14 21:42:47.601317][info][175048][Pipeline.cpp:53] [CP0E753000KA] Pipeline destroyed! @0x74C1FC2DCB20
+[04/14 21:42:47.601419][info][175048][SensorBase.cpp:47] [CP0E753000KA] SensorBase is destroyed
+[04/14 21:42:47.602305][info][175048][ObLibuvcDevicePort.cpp:87] uvc_close done.
+[04/14 21:42:47.602314][info][175048][ObLibuvcDevicePort.cpp:88] ~ObLibuvcDevicePort done
+[04/14 21:42:47.609937][info][175048][ObLibuvcDevicePort.cpp:87] uvc_close done.
+[04/14 21:42:47.609986][info][175048][ObLibuvcDevicePort.cpp:88] ~ObLibuvcDevicePort done
+[04/14 22:19:17.728958][info][218342][LinuxUsbPal.cpp:335] Create PollingDeviceWatcher!
+[04/14 22:19:17.763921][info][218342][DeviceManager.cpp:25] Current found device(s): (1)
+[04/14 22:19:17.763935][info][218342][DeviceManager.cpp:34] 	- Name: Gemini 335, PID: 0x0800, SN/ID: CP0E753000KA, Connection: USB3.2
+[04/14 22:19:17.763941][info][218342][DeviceManager.cpp:339] Enable net device enumeration: true
+[04/14 22:19:19.770861][info][218342][DeviceManager.cpp:25] Current device(s) list: (1)
+[04/14 22:19:19.770909][info][218342][DeviceManager.cpp:34] 	- Name: Gemini 335, PID: 0x0800, SN/ID: CP0E753000KA, Connection: USB3.2
+[04/14 22:19:19.814114][info][218342][DeviceBase.cpp:651] key: AppSlot,value:1
+[04/14 22:19:19.814157][info][218342][DeviceBase.cpp:651] key: HwType,value:R1
+[04/14 22:19:19.814165][info][218342][DeviceBase.cpp:651] key: HwVer,value:V1.1
+[04/14 22:19:19.814171][info][218342][DeviceBase.cpp:651] key: IspFwVer,value:20241125
+[04/14 22:19:19.814177][info][218342][DeviceBase.cpp:651] key: IspNeedVer,value:20241125
+[04/14 22:19:19.814182][info][218342][DeviceBase.cpp:651] key: PresetVer,value:1.2.2
+[04/14 22:19:19.973587][info][218342][DeviceManager.cpp:194] Device created successfully! Name: Gemini 335, PID: 0x0800, SN/ID: CP0E753000KA FW: 1.4.60
+[04/14 22:19:19.974161][info][218342][Pipeline.cpp:42] [CP0E753000KA] Pipeline created with device: {name: Gemini 335, sn: CP0E753000KA}, @0x705B282DC350
+[04/14 22:19:20.002194][info][218342][Pipeline.cpp:216] [CP0E753000KA] Check and set config done!
+[04/14 22:19:20.002442][info][218342][Pipeline.cpp:254] [CP0E753000KA] Try to start streams!
+[04/14 22:19:20.002451][info][218342][VideoSensor.cpp:58] [CP0E753000KA] Try to start stream: {type: Color, format: RGB, width: 640, height: 480, fps: 30}
+[04/14 22:19:20.002465][info][218342][SensorBase.cpp:213] [CP0E753000KA] Stream state changed to STARTING@Color
+[04/14 22:19:20.002472][info][218342][VideoSensor.cpp:127] [CP0E753000KA] Start backend stream: {type: Color, format: YUYV, width: 640, height: 480, fps: 30}
+[04/14 22:19:20.004189][info][218342][Pipeline.cpp:270] [CP0E753000KA] Start streams done!
+[04/14 22:19:20.004228][info][218342][Pipeline.cpp:238] [CP0E753000KA] Pipeline start done!
+[04/14 22:19:20.204688][warning][218342][Pipeline.cpp:305] [CP0E753000KA] Wait for frame timeout, you can try to increase the wait time! current timeout=200
+[04/14 22:19:20.544502][info][218428][SensorBase.cpp:213] [CP0E753000KA] Stream state changed to STREAMING@Color
+[04/14 22:19:23.405480][warning][218435][Pipeline.cpp:305] [CP0E753000KA] Wait for frame timeout, you can try to increase the wait time! current timeout=200 [**1 logs in 3200ms, last: 22:19:20.405129**]
+[04/14 22:19:25.549950][info][218428][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=30.169830fps
+[04/14 22:19:25.550373][info][218437][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=30.169830fps
+[04/14 22:19:30.555792][info][218428][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.964043fps
+[04/14 22:19:30.556184][info][218437][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.964043fps
+[04/14 22:19:35.561695][info][218428][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.964043fps
+[04/14 22:19:35.562128][info][218437][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.964043fps
+[04/14 22:19:40.567578][info][218428][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.964043fps
+[04/14 22:19:40.567942][info][218437][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.970030fps
+[04/14 22:19:45.573513][info][218428][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.964043fps
+[04/14 22:19:45.573973][info][218437][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.964043fps
+[04/14 22:19:50.579472][info][218428][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.964043fps
+[04/14 22:19:50.579899][info][218437][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.964043fps
+[04/14 22:19:55.585393][info][218428][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.964043fps
+[04/14 22:19:55.586139][info][218437][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.958059fps
+[04/14 22:20:00.591207][info][218428][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.964043fps
+[04/14 22:20:00.591982][info][218437][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.970030fps
+[04/14 22:20:05.597192][info][218428][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.964043fps
+[04/14 22:20:05.597690][info][218437][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.964043fps
+[04/14 22:20:10.603032][info][218428][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.964043fps
+[04/14 22:20:10.603585][info][218437][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.964043fps
+[04/14 22:20:15.608908][info][218428][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.970030fps
+[04/14 22:20:15.609308][info][218437][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.964043fps
+[04/14 22:20:20.614821][info][218428][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.964043fps
+[04/14 22:20:20.615557][info][218437][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.964043fps
+[04/14 22:20:25.620741][info][218428][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.964043fps
+[04/14 22:20:25.621134][info][218437][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.964043fps
+[04/14 22:20:30.626676][info][218428][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.964043fps
+[04/14 22:20:30.627083][info][218437][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.964043fps
+[04/14 22:20:35.632570][info][218428][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.964043fps
+[04/14 22:20:35.633027][info][218437][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.964043fps
+[04/14 22:20:40.638594][info][218428][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.964043fps
+[04/14 22:20:40.638955][info][218437][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.970030fps
+[04/14 22:20:45.644392][info][218428][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.964043fps
+[04/14 22:20:45.644809][info][218437][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.964043fps
+[04/14 22:20:50.650341][info][218428][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.964043fps
+[04/14 22:20:50.650809][info][218437][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.964043fps
+[04/14 22:20:55.656231][info][218428][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.964043fps
+[04/14 22:20:55.656780][info][218437][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.964043fps
+[04/14 22:21:00.662136][info][218428][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.964043fps
+[04/14 22:21:00.662617][info][218437][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.964043fps
+[04/14 22:21:05.668081][info][218428][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.964043fps
+[04/14 22:21:05.668510][info][218437][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.964043fps
+[04/14 22:21:10.677936][info][218428][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.946098fps
+[04/14 22:21:10.678531][info][218437][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.940119fps
+[04/14 22:21:15.679849][info][218428][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.988007fps
+[04/14 22:21:15.680251][info][218437][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.988007fps
+[04/14 22:21:20.685889][info][218428][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.964043fps
+[04/14 22:21:20.686600][info][218437][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.964043fps
+[04/14 22:21:25.692231][info][218428][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.958059fps
+[04/14 22:21:25.692719][info][218437][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.964043fps
+[04/14 22:21:30.697632][info][218428][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.970030fps
+[04/14 22:21:30.698066][info][218437][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.964043fps
+[04/14 22:21:35.703509][info][218428][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.964043fps
+[04/14 22:21:35.703914][info][218437][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.970030fps
+[04/14 22:21:40.709415][info][218428][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.964043fps
+[04/14 22:21:40.709825][info][218437][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.964043fps
+[04/14 22:21:45.715343][info][218428][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.964043fps
+[04/14 22:21:45.715784][info][218437][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.964043fps
+[04/14 22:21:47.585009][warning][218437][Pipeline.cpp:295] [CP0E753000KA] Output frameset queue is full, drop oldest frameset!
+[04/14 22:21:50.618171][warning][220935][Pipeline.cpp:295] [CP0E753000KA] Output frameset queue is full, drop oldest frameset! [**1 logs in 3033ms, last: 22:21:47.617984**]
+[04/14 22:21:50.721252][info][218428][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.964043fps
+[04/14 22:21:50.721642][info][218437][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.964043fps
+[04/14 22:21:55.727322][info][218428][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.964043fps
+[04/14 22:21:55.731136][info][218437][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.940119fps
+[04/14 22:22:00.733053][info][218428][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.964043fps
+[04/14 22:22:00.733409][info][218437][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.988007fps
+[04/14 22:22:05.738976][info][218428][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.970030fps
+[04/14 22:22:05.739415][info][218437][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.964043fps
+[04/14 22:22:10.744999][info][218428][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.964043fps
+[04/14 22:22:10.745429][info][218437][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.964043fps
+[04/14 22:22:12.484205][info][218342][Pipeline.cpp:336] [CP0E753000KA] Try to stop pipeline!
+[04/14 22:22:12.484258][info][218342][Pipeline.cpp:312] [CP0E753000KA] Try to stop streams!
+[04/14 22:22:12.484291][info][218342][SensorBase.cpp:213] [CP0E753000KA] Stream state changed to STOPPING@Color
+[04/14 22:22:12.524628][info][218342][SensorBase.cpp:213] [CP0E753000KA] Stream state changed to STOPPED@Color
+[04/14 22:22:12.524801][info][218342][Pipeline.cpp:326] [CP0E753000KA] Sensor stream stopped, sensorType=Color
+[04/14 22:22:12.524811][info][218342][Pipeline.cpp:332] [CP0E753000KA] Stop streams done!
+[04/14 22:22:12.525009][info][218342][Pipeline.cpp:356] [CP0E753000KA] Stop pipeline done!
+[04/14 22:22:12.525938][info][218342][Pipeline.cpp:53] [CP0E753000KA] Pipeline destroyed! @0x705B282DC350
+[04/14 22:22:12.526121][info][218342][SensorBase.cpp:47] [CP0E753000KA] SensorBase is destroyed
+[04/14 22:22:12.527253][info][218342][ObLibuvcDevicePort.cpp:87] uvc_close done.
+[04/14 22:22:12.527276][info][218342][ObLibuvcDevicePort.cpp:88] ~ObLibuvcDevicePort done
+[04/14 22:22:12.541355][info][218342][ObLibuvcDevicePort.cpp:87] uvc_close done.
+[04/14 22:22:12.541755][info][218342][ObLibuvcDevicePort.cpp:88] ~ObLibuvcDevicePort done
+[04/14 22:22:42.502749][info][222069][LinuxUsbPal.cpp:335] Create PollingDeviceWatcher!
+[04/14 22:22:42.502808][info][222069][DeviceManager.cpp:25] Current found device(s): (1)
+[04/14 22:22:42.502816][info][222069][DeviceManager.cpp:34] 	- Name: Gemini 335, PID: 0x0800, SN/ID: CP0E753000KA, Connection: USB3.2
+[04/14 22:22:42.502823][info][222069][DeviceManager.cpp:339] Enable net device enumeration: true
+[04/14 22:22:44.507614][info][222069][DeviceManager.cpp:25] Current device(s) list: (1)
+[04/14 22:22:44.507670][info][222069][DeviceManager.cpp:34] 	- Name: Gemini 335, PID: 0x0800, SN/ID: CP0E753000KA, Connection: USB3.2
+[04/14 22:22:44.510975][info][222069][DeviceBase.cpp:651] key: AppSlot,value:1
+[04/14 22:22:44.511033][info][222069][DeviceBase.cpp:651] key: HwType,value:R1
+[04/14 22:22:44.511044][info][222069][DeviceBase.cpp:651] key: HwVer,value:V1.1
+[04/14 22:22:44.511054][info][222069][DeviceBase.cpp:651] key: IspFwVer,value:20241125
+[04/14 22:22:44.511063][info][222069][DeviceBase.cpp:651] key: IspNeedVer,value:20241125
+[04/14 22:22:44.511072][info][222069][DeviceBase.cpp:651] key: PresetVer,value:1.2.2
+[04/14 22:22:44.669633][info][222069][DeviceManager.cpp:194] Device created successfully! Name: Gemini 335, PID: 0x0800, SN/ID: CP0E753000KA FW: 1.4.60
+[04/14 22:22:44.669997][info][222069][Pipeline.cpp:42] [CP0E753000KA] Pipeline created with device: {name: Gemini 335, sn: CP0E753000KA}, @0x788E7C2DCB40
+[04/14 22:22:44.699057][info][222069][Pipeline.cpp:216] [CP0E753000KA] Check and set config done!
+[04/14 22:22:44.699408][info][222069][Pipeline.cpp:254] [CP0E753000KA] Try to start streams!
+[04/14 22:22:44.699444][info][222069][VideoSensor.cpp:58] [CP0E753000KA] Try to start stream: {type: Color, format: RGB, width: 640, height: 480, fps: 30}
+[04/14 22:22:44.699463][info][222069][SensorBase.cpp:213] [CP0E753000KA] Stream state changed to STARTING@Color
+[04/14 22:22:44.699491][info][222069][VideoSensor.cpp:127] [CP0E753000KA] Start backend stream: {type: Color, format: YUYV, width: 640, height: 480, fps: 30}
+[04/14 22:22:44.700980][info][222069][Pipeline.cpp:270] [CP0E753000KA] Start streams done!
+[04/14 22:22:44.700993][info][222069][Pipeline.cpp:238] [CP0E753000KA] Pipeline start done!
+[04/14 22:22:44.901403][warning][222069][Pipeline.cpp:305] [CP0E753000KA] Wait for frame timeout, you can try to increase the wait time! current timeout=200
+[04/14 22:22:45.220606][info][222139][SensorBase.cpp:213] [CP0E753000KA] Stream state changed to STREAMING@Color
+[04/14 22:22:48.101802][warning][222140][Pipeline.cpp:305] [CP0E753000KA] Wait for frame timeout, you can try to increase the wait time! current timeout=200 [**1 logs in 3200ms, last: 22:22:45.101563**]
+[04/14 22:22:50.225817][info][222139][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=30.169830fps
+[04/14 22:22:50.226287][info][222142][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=30.175858fps
+[04/14 22:22:55.231916][info][222139][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.964043fps
+[04/14 22:22:55.234530][info][222142][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.952078fps
+[04/14 22:23:00.237693][info][222139][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.964043fps
+[04/14 22:23:00.238323][info][222142][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.976019fps
+[04/14 22:23:05.243533][info][222139][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.964043fps
+[04/14 22:23:05.243975][info][222142][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.970030fps
+[04/14 22:23:10.249535][info][222139][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.964043fps
+[04/14 22:23:10.250062][info][222142][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.958059fps
+[04/14 22:23:15.255338][info][222139][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.964043fps
+[04/14 22:23:15.255801][info][222142][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.970030fps
+[04/14 22:23:20.261240][info][222139][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.964043fps
+[04/14 22:23:20.261689][info][222142][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.964043fps
+[04/14 22:23:25.267156][info][222139][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.964043fps
+[04/14 22:23:25.267690][info][222142][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.964043fps
+[04/14 22:23:30.273193][info][222139][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.964043fps
+[04/14 22:23:30.273638][info][222142][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.964043fps
+[04/14 22:23:35.279023][info][222139][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.970030fps
+[04/14 22:23:35.279616][info][222142][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.964043fps
+[04/14 22:23:40.284987][info][222139][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.964043fps
+[04/14 22:23:40.285410][info][222142][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.964043fps
+[04/14 22:23:45.290839][info][222139][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.964043fps
+[04/14 22:23:45.291491][info][222142][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.964043fps
+[04/14 22:23:50.296724][info][222139][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.964043fps
+[04/14 22:23:50.297183][info][222142][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.964043fps
+[04/14 22:23:55.302648][info][222139][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.964043fps
+[04/14 22:23:55.302971][info][222142][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.970030fps
+[04/14 22:24:00.308526][info][222139][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.964043fps
+[04/14 22:24:00.308907][info][222142][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.964043fps
+[04/14 22:24:05.314488][info][222139][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.964043fps
+[04/14 22:24:05.314842][info][222142][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.964043fps
+[04/14 22:24:10.320386][info][222139][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.964043fps
+[04/14 22:24:10.320877][info][222142][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.964043fps
+[04/14 22:24:15.326282][info][222139][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.964043fps
+[04/14 22:24:15.326700][info][222142][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.964043fps
+[04/14 22:24:20.332203][info][222139][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.964043fps
+[04/14 22:24:20.332576][info][222142][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.964043fps
+[04/14 22:24:25.338172][info][222139][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.964043fps
+[04/14 22:24:25.338675][info][222142][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.964043fps
+[04/14 22:24:30.344076][info][222139][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.964043fps
+[04/14 22:24:30.344526][info][222142][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.964043fps
+[04/14 22:24:35.349987][info][222139][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.970030fps
+[04/14 22:24:35.350500][info][222142][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.964043fps
+[04/14 22:24:40.355854][info][222139][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.964043fps
+[04/14 22:24:40.356250][info][222142][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.964043fps
+[04/14 22:24:45.361809][info][222139][VideoSensor.cpp:153] [CP0E753000KA] Color backend frame callback, frameRate=29.964043fps
+[04/14 22:24:45.362249][info][222142][SensorBase.cpp:370] [CP0E753000KA] Color Streaming... frameRate=29.964043fps
+[04/14 22:24:48.569082][info][222069][Pipeline.cpp:336] [CP0E753000KA] Try to stop pipeline!
+[04/14 22:24:48.569142][info][222069][Pipeline.cpp:312] [CP0E753000KA] Try to stop streams!
+[04/14 22:24:48.569171][info][222069][SensorBase.cpp:213] [CP0E753000KA] Stream state changed to STOPPING@Color
+[04/14 22:24:48.618047][info][222069][SensorBase.cpp:213] [CP0E753000KA] Stream state changed to STOPPED@Color
+[04/14 22:24:48.618194][info][222069][Pipeline.cpp:326] [CP0E753000KA] Sensor stream stopped, sensorType=Color
+[04/14 22:24:48.618203][info][222069][Pipeline.cpp:332] [CP0E753000KA] Stop streams done!
+[04/14 22:24:48.618416][info][222069][Pipeline.cpp:356] [CP0E753000KA] Stop pipeline done!
+[04/14 22:24:48.619043][info][222069][Pipeline.cpp:53] [CP0E753000KA] Pipeline destroyed! @0x788E7C2DCB40
+[04/14 22:24:48.619184][info][222069][SensorBase.cpp:47] [CP0E753000KA] SensorBase is destroyed
+[04/14 22:24:48.620108][info][222069][ObLibuvcDevicePort.cpp:87] uvc_close done.
+[04/14 22:24:48.620119][info][222069][ObLibuvcDevicePort.cpp:88] ~ObLibuvcDevicePort done
+[04/14 22:24:48.625690][info][222069][ObLibuvcDevicePort.cpp:87] uvc_close done.
+[04/14 22:24:48.625734][info][222069][ObLibuvcDevicePort.cpp:88] ~ObLibuvcDevicePort done

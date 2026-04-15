@@ -63,11 +63,11 @@ class MockFrankaBackend(FrankaBackend):
     def stop_gripper(self) -> None:
         return None
 
-    def go_home(self, joint_positions: Sequence[float], duration_sec: float) -> None:
+    def go_home(self, ee_pose: Sequence[float], duration_sec: float) -> None:
         with self._lock:
-            self._pose6d = pose7d_to_pose6d([0.4, 0.0, 0.3, 1.0, 0.0, 0.0, 0.0])
+            ee_pose = np.asarray(ee_pose, dtype=np.float64)
+            self._pose6d = np.concatenate([ee_pose[:3], np.deg2rad(ee_pose[3:])])
         time.sleep(min(duration_sec, 0.01))
 
     def shutdown(self) -> None:
         self._impedance_started = False
-

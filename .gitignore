@@ -25,3 +25,4 @@ venv/
 /fairo/
 /linux-5.11.tar
 /patch-5.11-rt7.patch.xz
+/robot_workspace/data
