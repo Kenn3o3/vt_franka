@@ -141,6 +141,9 @@ class CollectSupervisor:
         self.workers: dict[str, _ThreadWorker] = {}
         self._last_status_print_wall_time = 0.0
         self._status_lock = threading.Lock()
+        self._reset_completed = False
+        self._current_episode_dir: Path | None = None
+        self._latest_saved_episode_dir: Path | None = None
 
     def run(self) -> None:
         run_dir = self.sessions.start_run(
@@ -153,6 +156,7 @@ class CollectSupervisor:
                 "config": self.settings.model_dump(mode="json"),
             },
         )
+        self._latest_saved_episode_dir = self.sessions.get_latest_saved_episode_dir()
         self.sessions.record_operator_event("run_started", {"run_dir": str(run_dir)})
         try:
             self._start_workers()
@@ -189,6 +193,7 @@ class CollectSupervisor:
             command_recorder=command_recorder,
             state_provider=state_provider,
         )
+        self.teleop_service.set_teleop_enabled(False)
         teleop_app = create_teleop_app(self.teleop_service)
         self.teleop_server = _UvicornWorker(teleop_app, self.settings.teleop.host, self.settings.teleop.port)
         self.teleop_server.start()
@@ -285,9 +290,9 @@ class CollectSupervisor:
             if command == "r":
                 self._handle_start_episode()
             elif command == "e":
-                self._handle_stop_episode(outcome="saved")
+                self._handle_stop_episode()
             elif command == "d":
-                self._handle_stop_episode(outcome="discarded")
+                self._handle_discard_episode(key_reader)
             elif command == "h":
                 self._handle_ready_pose()
             elif command == "q":
@@ -299,43 +304,82 @@ class CollectSupervisor:
         if not ready:
             LOGGER.warning("Cannot start episode: %s", "; ".join(reasons))
             return
-        if self.sessions.get_active_episode_dir() is not None:
+        if self._current_episode_dir is not None:
             LOGGER.warning("An episode is already active")
             return
 
+        if not self._reset_completed:
+            LOGGER.warning("Reset the robot pose with H before starting the next episode")
+            return
         countdown = self.settings.collect.start_countdown_sec
         self.sessions.record_operator_event("episode_start_requested", {"countdown_sec": countdown})
         if countdown > 0.0:
             LOGGER.info("Starting episode in %.1f seconds", countdown)
             time.sleep(countdown)
+        episode_index = self.sessions.get_next_episode_index()
         episode_dir = self.sessions.start_episode(
+            name=f"episode_{episode_index:04d}",
             metadata={
                 "use_orbbec": self.use_orbbec,
                 "use_gelsight": self.use_gelsight,
                 "controller_status": self.state_monitor.snapshot(),
             }
         )
+        self._current_episode_dir = episode_dir
+        self._reset_completed = False
+        if self.teleop_service is not None:
+            self.teleop_service.set_teleop_enabled(True)
         self.sessions.record_operator_event("episode_started", {"episode_dir": str(episode_dir)})
         LOGGER.info("Episode started: %s", episode_dir)
 
-    def _handle_stop_episode(self, outcome: str) -> None:
-        episode_dir = self.sessions.stop_episode(outcome=outcome)
-        if episode_dir is None:
+    def _handle_stop_episode(self) -> None:
+        if self._current_episode_dir is None:
             LOGGER.warning("No active episode to stop")
             return
-        self.sessions.record_operator_event("episode_stopped", {"episode_dir": str(episode_dir), "outcome": outcome})
-        LOGGER.info("Episode %s: %s", outcome, episode_dir)
-        if outcome == "saved":
-            self._finalize_episode(episode_dir)
+        episode_dir = self.sessions.stop_episode(outcome="saved")
+        self._current_episode_dir = None
+        self._latest_saved_episode_dir = episode_dir
+        if self.teleop_service is not None:
+            self.teleop_service.set_teleop_enabled(False)
+        self.sessions.record_operator_event("episode_stopped", {"episode_dir": str(episode_dir), "outcome": "saved"})
+        LOGGER.info("Episode saved: %s", episode_dir)
+        self._finalize_episode(episode_dir)
+
+    def _handle_discard_episode(self, key_reader: _KeyReader) -> None:
+        if self._current_episode_dir is not None:
+            LOGGER.warning("Cannot discard while recording. Press E first.")
+            return
+        episode_dir = self._latest_saved_episode_dir or self.sessions.get_latest_saved_episode_dir()
+        if episode_dir is None:
+            LOGGER.warning("No saved episode to discard")
+            return
+        print(f"Press Enter to confirm discarding {episode_dir.name}, or any other key to cancel.", flush=True)
+        key = key_reader.read_key(30.0)
+        if key not in ("\n", "\r"):
+            LOGGER.info("Discard cancelled")
+            return
+        self.sessions.discard_episode(episode_dir)
+        self.sessions.record_operator_event("episode_discarded", {"episode_dir": str(episode_dir)})
+        LOGGER.info("Discarded episode: %s", episode_dir)
+        self._latest_saved_episode_dir = self.sessions.get_latest_saved_episode_dir()
 
     def _handle_ready_pose(self) -> None:
+        if self._current_episode_dir is not None:
+            LOGGER.warning("Cannot reset while recording. Press E first.")
+            return
+        ready_pose = self.settings.model_dump(mode="json").get("controller", {})
+        del ready_pose
+        if self.teleop_service is not None:
+            self.teleop_service.set_teleop_enabled(False)
+        print("Resetting robot pose to controller ready pose...", flush=True)
         try:
             self.controller.ready()
         except Exception as exc:
             LOGGER.warning("Failed to move robot to ready pose: %s", exc)
             return
+        self._reset_completed = True
         self.sessions.record_operator_event("ready_pose_requested")
-        LOGGER.info("Ready pose requested")
+        print("Robot pose reset finished. Ready.", flush=True)
 
     def _finalize_episode(self, episode_dir: Path) -> None:
         if self.settings.collect.auto_postprocess:
@@ -361,6 +405,8 @@ class CollectSupervisor:
             reasons.append("teleop server is not running")
         if not self.state_monitor.is_healthy(max_age_sec=self.settings.collect.controller_state_max_age_sec):
             reasons.append("controller state is not healthy")
+        if not self._reset_completed:
+            reasons.append("robot pose has not been reset with H")
         if self.settings.collect.require_quest_connection and (
             self.teleop_service is None
             or not self.teleop_service.has_recent_message(self.settings.collect.quest_message_timeout_sec)
@@ -378,16 +424,19 @@ class CollectSupervisor:
         self._last_status_print_wall_time = now
 
         ready, reasons = self._is_ready_for_episode()
-        episode_dir = self.sessions.get_active_episode_dir()
+        next_episode_index = self.sessions.get_next_episode_index()
         state_snapshot = self.state_monitor.snapshot()
         quest_connected = self.teleop_service is not None and self.teleop_service.has_recent_message(
             self.settings.collect.quest_message_timeout_sec
         )
+        teleop_enabled = self.teleop_service is not None and self.teleop_service.is_teleop_enabled()
         status = {
             "ready": ready,
             "reasons": reasons,
-            "active_episode": str(episode_dir) if episode_dir is not None else None,
+            "active_episode": str(self._current_episode_dir) if self._current_episode_dir is not None else None,
+            "next_episode_index": next_episode_index,
             "quest_connected": quest_connected,
+            "teleop_enabled": teleop_enabled,
             "controller_state": state_snapshot,
             "workers": {
                 name: {"alive": worker.is_alive(), "error": None if worker.error is None else str(worker.error)}
@@ -397,8 +446,10 @@ class CollectSupervisor:
         self.sessions.write_latest_status(status)
         summary = (
             f"[{'READY' if ready else 'WAIT'}] "
-            f"episode={episode_dir.name if episode_dir is not None else '-'} "
+            f"next=episode_{next_episode_index:04d} "
+            f"recording={self._current_episode_dir.name if self._current_episode_dir is not None else 'off'} "
             f"quest={'ok' if quest_connected else 'missing'} "
+            f"teleop={'on' if teleop_enabled else 'blocked'} "
             f"controller_age={state_snapshot['age_sec'] if state_snapshot['age_sec'] is not None else 'n/a'} "
             f"orbbec={'on' if self.use_orbbec else 'off'} "
             f"gelsight={'on' if self.use_gelsight else 'off'}"
@@ -409,12 +460,16 @@ class CollectSupervisor:
 
     def _print_banner(self, run_dir: Path) -> None:
         print(f"Run started: {run_dir}", flush=True)
-        print("Hotkeys: R=start episode  E=end/save  D=discard  H=ready pose  Q=quit", flush=True)
+        print(f"Task: {self.run_name}", flush=True)
+        print("Checklist:", flush=True)
+        print("- Controller PC: launch robot, launch gripper, vt-franka-controller run", flush=True)
+        print("- Workspace PC: Quest connected and streaming", flush=True)
+        print("- Press H to reset pose before each episode", flush=True)
+        print("Hotkeys: H=reset pose  R=start recording  E=end/save  D=discard last saved  Q=quit", flush=True)
 
     def _shutdown(self) -> None:
-        active_episode = self.sessions.get_active_episode_dir()
-        if active_episode is not None:
-            self.sessions.stop_episode(outcome="interrupted")
+        if self.teleop_service is not None:
+            self.teleop_service.set_teleop_enabled(False)
         self.sessions.record_operator_event("run_stopped")
 
         for worker in self.workers.values():

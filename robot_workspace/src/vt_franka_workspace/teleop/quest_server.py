@@ -53,6 +53,7 @@ class QuestTeleopService:
         self._gripper_force = 0.0
         self._gripper_width_history = deque(maxlen=self.settings.gripper_stability_window)
         self._last_message_wall_time: float | None = None
+        self._teleop_enabled = False
 
     def submit_message(self, message: UnityTeleopMessage) -> None:
         source_wall_time = time.time()
@@ -98,6 +99,14 @@ class QuestTeleopService:
             return False
         return time.time() - last_message_wall_time <= timeout_sec
 
+    def set_teleop_enabled(self, enabled: bool) -> None:
+        self._teleop_enabled = enabled
+        if not enabled:
+            self._tracking = False
+
+    def is_teleop_enabled(self) -> bool:
+        return self._teleop_enabled
+
     def _control_loop(self) -> None:
         period = 1.0 / self.settings.loop_hz
         while self._running.is_set():
@@ -106,6 +115,9 @@ class QuestTeleopService:
                 self._update_gripper_state(state)
                 message = self._latest_message_copy()
                 if message is None:
+                    precise_sleep(period)
+                    continue
+                if not self._teleop_enabled:
                     precise_sleep(period)
                     continue
 

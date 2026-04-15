@@ -90,6 +90,22 @@ def test_run_session_manager_creates_nested_run_and_qc(tmp_path: Path):
     assert qc_path.exists()
 
 
+def test_run_session_manager_resumes_and_increments_episode_index(tmp_path: Path):
+    sessions = RunSessionManager(tmp_path / "runs")
+    run_dir = sessions.start_run("task_demo")
+    episode_dir = sessions.start_episode()
+    sessions.stop_episode(outcome="saved")
+    sessions.stop_run()
+
+    resumed = RunSessionManager(tmp_path / "runs")
+    resumed_run_dir = resumed.start_run("task_demo")
+    next_episode_dir = resumed.start_episode()
+
+    assert resumed_run_dir == run_dir
+    assert episode_dir.name == "episode_0000"
+    assert next_episode_dir.name == "episode_0001"
+
+
 def test_jsonl_stream_recorder_respects_record_hz(tmp_path: Path):
     sessions = EpisodeSessionManager(tmp_path)
     sessions.start_episode("rate_limited")
