@@ -40,11 +40,11 @@ class ControllerClient:
         self._post_json("/stop_gripper/left", {})
 
     def home(self) -> None:
-        self._post_json("/api/v1/actions/home", {})
+        self._post_json("/api/v1/actions/home", {}, timeout_sec=max(self.request_timeout_sec, 30.0))
 
     def ready(self) -> None:
         try:
-            self._post_json("/api/v1/actions/ready", {})
+            self._post_json("/api/v1/actions/ready", {}, timeout_sec=max(self.request_timeout_sec, 30.0))
         except ControllerClientError as exc:
             if "404" in str(exc):
                 raise ControllerClientError(
@@ -63,9 +63,13 @@ class ControllerClient:
         except ValueError as exc:
             raise ControllerClientError(f"GET {self.base_url}{path} returned invalid JSON") from exc
 
-    def _post_json(self, path: str, payload: dict[str, Any]) -> dict[str, Any]:
+    def _post_json(self, path: str, payload: dict[str, Any], timeout_sec: float | None = None) -> dict[str, Any]:
         try:
-            response = self.session.post(f"{self.base_url}{path}", json=payload, timeout=self.request_timeout_sec)
+            response = self.session.post(
+                f"{self.base_url}{path}",
+                json=payload,
+                timeout=self.request_timeout_sec if timeout_sec is None else timeout_sec,
+            )
             response.raise_for_status()
             return response.json()
         except requests.RequestException as exc:

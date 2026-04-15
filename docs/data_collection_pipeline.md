@@ -10,24 +10,27 @@ The controller machine still runs the low-level robot stack as a long-lived serv
 
 Run the following commands in three terminals:
 
-C1:
+Terminal C1:
+
 ```bash
 conda activate polymetis-local
 cd /home/medair/vt_franka/fairo/polymetis
 launch_robot.py robot_client=franka_hardware robot_client.executable_cfg.robot_ip=172.16.0.2
 ```
 
-C2:
+Terminal C2:
+
 ```bash
 conda activate polymetis-local
 cd /home/medair/vt_franka/fairo/polymetis
 launch_gripper.py gripper=franka_hand gripper.executable_cfg.robot_ip=172.16.0.2
 ```
 
-C3:
+Terminal C3:
+
 ```bash
 conda activate polymetis-local
-cd /home/medair/vt_franka/fairo/polymetis
+cd /home/medair/vt_franka/robot_controller
 vt-franka-controller run --config /home/medair/vt_franka/robot_controller/config/controller.yaml
 ```
 

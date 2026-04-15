@@ -13,7 +13,7 @@ def test_mock_controller_api_accepts_waypoint_and_reports_state():
         control=ControlSettings(
             control_frequency_hz=50.0,
             teleop_command_hz=10.0,
-            ready_joint_positions=[-0.1, -0.8, 0.0, -2.3, 0.0, 1.9, 0.7],
+            ready_ee_pose=[0.4, 0.0, 0.3, 180.0, 0.0, 0.0],
         ),
     )
     service = ControllerService(settings, MockFrankaBackend())

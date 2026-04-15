@@ -34,23 +34,20 @@ class ControllerService:
         self._control_thread: Optional[threading.Thread] = None
         self._running = threading.Event()
         self._gripper_lock = threading.Lock()
+        self._mode_lock = threading.RLock()
         self._pose_interp: Optional[PoseTrajectoryInterpolator] = None
         self._last_waypoint_time: Optional[float] = None
         self._state_cache_period = 1.0 / max(self.settings.control.state_cache_hz, 1e-6)
         self._next_state_refresh_time: Optional[float] = None
 
     def start(self) -> None:
-        if self._running.is_set():
-            return
-        self._running.set()
-        self._control_thread = threading.Thread(target=self._control_loop, name="controller-loop", daemon=True)
-        self._control_thread.start()
+        with self._mode_lock:
+            self._start_control_loop_locked()
 
     def shutdown(self) -> None:
-        self._running.clear()
-        if self._control_thread is not None:
-            self._control_thread.join(timeout=2.0)
-        self.backend.shutdown()
+        with self._mode_lock:
+            self._stop_control_loop_locked()
+            self.backend.shutdown()
 
     def queue_tcp_command(self, command: TcpTargetCommand) -> None:
         target_pose = pose7d_to_pose6d(command.target_tcp)
@@ -75,18 +72,12 @@ class ControllerService:
         self.backend.stop_gripper()
 
     def go_home(self) -> None:
-        self.backend.go_home(
-            self.settings.control.home_ee_pose,
-            self.settings.control.home_duration_sec,
-        )
+        self._run_blocking_reset(self.settings.control.home_ee_pose, self.settings.control.home_duration_sec)
 
     def go_ready(self) -> None:
         if self.settings.control.ready_ee_pose is None:
             raise RuntimeError("Ready EE pose is not configured")
-        self.backend.go_home(
-            self.settings.control.ready_ee_pose,
-            self.settings.control.ready_duration_sec,
-        )
+        self._run_blocking_reset(self.settings.control.ready_ee_pose, self.settings.control.ready_duration_sec)
 
     def get_state(self) -> ControllerState:
         with self._state_lock:
@@ -112,6 +103,29 @@ class ControllerService:
         state = self.backend.get_controller_state(self.settings.control.control_frequency_hz)
         with self._state_lock:
             self._cached_state = state
+
+    def _run_blocking_reset(self, ee_pose, duration_sec: float) -> None:
+        with self._mode_lock:
+            self._stop_control_loop_locked()
+            self.command_queue.clear()
+            self.backend.shutdown()
+            self.backend.go_home(ee_pose, duration_sec)
+            self.backend.shutdown()
+            self._refresh_state()
+            self._start_control_loop_locked()
+
+    def _start_control_loop_locked(self) -> None:
+        if self._running.is_set():
+            return
+        self._running.set()
+        self._control_thread = threading.Thread(target=self._control_loop, name="controller-loop", daemon=True)
+        self._control_thread.start()
+
+    def _stop_control_loop_locked(self) -> None:
+        self._running.clear()
+        if self._control_thread is not None:
+            self._control_thread.join(timeout=2.0)
+            self._control_thread = None
 
     def _control_loop(self) -> None:
         current_pose = pose7d_to_pose6d(self.backend.get_tcp_pose())
