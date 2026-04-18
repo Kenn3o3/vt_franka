@@ -27,6 +27,7 @@ quest_feedback:
   quest_ip: 192.168.217.221
   robot_state_udp_port: 10001
   tactile_udp_port: 10002
+  image_udp_port: 10004
   force_udp_port: 10005
   state_publish_hz: 60.0
   force_scale_factor: 0.025
@@ -36,6 +37,9 @@ gelsight:
   enabled: false
   camera_name: left_gripper_camera_1
   camera_index: 0
+  camera_path: /dev/v4l/by-id/usb-Arducam_Technology_Co.__Ltd._GelSight_Mini_R0B_2BUU-CE3E_2BUUCE3E-video-index0
+  device_name_contains: GelSight Mini
+  device_serial_number: 2BUUCE3E
   fps: 30
   width: 640
   height: 480
@@ -48,24 +52,87 @@ gelsight:
   teleop_status_port: 8082
   save_frames: false
   record_hz: 0.0
+  quest_stream:
+    enabled: false
+    image_id: gelsight_left_overlay
+    in_head_space: false
+    left_or_right: false
+    position: [-0.2, 0.6, 0.5]
+    rotation: [0.0, 0.0, -90.0]
+    scale: [0.002, 0.0015, 0.001]
+    max_width: 320
+    max_height: 240
+    quality: 30
+    chunk_size: 1024
+    max_publish_hz: 12.0
+  quest_overlay_arrow_scale: 12.0
 
-orbbec:
-  enabled: true
-  camera_name: workspace_orbbec_rgb
-  serial_number: ""
-  color_width: 640
-  color_height: 0
-  color_format: RGB
-  color_fps: 30
-  frame_timeout_ms: 200
-  save_frames: true
-  record_hz: 15.0
+rgb_cameras:
+  wrist:
+    enabled: true
+    backend: orbbec
+    stream_name: rgb_wrist
+    camera_name: wrist_orbbec_rgb
+    serial_number: CP0E753000KA
+    color_width: 640
+    color_height: 0
+    color_format: RGB
+    color_fps: 30
+    frame_timeout_ms: 200
+    save_frames: true
+    record_hz: 15.0
+    quest_stream:
+      enabled: true
+      image_id: wrist_rgb
+      in_head_space: false
+      left_or_right: false
+      position: [-0.2, 0.4, 0.5]
+      rotation: [0.0, 0.0, 0.0]
+      scale: [0.002, 0.0015, 0.001]
+      max_width: 320
+      max_height: 240
+      quality: 30
+      chunk_size: 1024
+      max_publish_hz: 12.0
+  third_person:
+    enabled: true
+    backend: orbbec
+    stream_name: rgb_third_person
+    camera_name: third_person_orbbec_rgb
+    serial_number: CP0HC530002T
+    color_width: 640
+    color_height: 0
+    color_format: RGB
+    color_fps: 30
+    frame_timeout_ms: 200
+    save_frames: true
+    record_hz: 15.0
+    quest_stream:
+      enabled: false
+      image_id: third_person_rgb
+      in_head_space: false
+      left_or_right: false
+      position: [0.0, 0.4, 0.5]
+      rotation: [0.0, 180.0, 0.0]
+      scale: [0.002, 0.0015, 0.001]
+      max_width: 320
+      max_height: 240
+      quality: 30
+      chunk_size: 1024
+      max_publish_hz: 12.0
 
 recording:
   enabled: true
   run_root: /home/zhenya/kenny/visuotact/vt_franka/robot_workspace/data/runs
   image_format: jpg
   postprocess_target_hz: 10.0
+
+operator_ui:
+  enabled: true
+  host: 127.0.0.1
+  port: 8083
+  log_buffer_size: 1000
+  snapshot_max_age_sec: 1.5
 
 collect:
   sync_hz: 10.0
@@ -81,9 +148,48 @@ collect:
   status_print_hz: 1.0
   record_raw_quest_messages: false
 
+auto_collect:
+  command_hz: 15.0
+  controller_state_poll_hz: 15.0
+  init_pose_xyz_rpy_deg: [0.03, 0.4, 0.3, -180.0, 0.0, 45.0]
+  hover_z_m: 0.35
+  lift_z_m: 0.24
+  table_z_m: 0.14
+  grasp_force: 5.0
+  pose_tolerance_m: 0.015
+  yaw_tolerance_deg: 10.0
+  pose_settle_timeout_sec: 8.0
+  settle_dwell_sec: 0.3
+  post_grasp_dwell_sec: 0.5
+  post_release_dwell_sec: 0.5
+  gripper_close_wait_sec: 1.8
+  gripper_settle_timeout_sec: 3.0
+  gripper_open_tolerance_m: 0.015
+  auto_continue: false
+  segment_durations_sec:
+    approach: 3.0
+    descend: 3.0
+    lift: 2.0
+    transfer: 3.0
+    place_descend: 3.0
+    retreat: 2.0
+
 calibration:
   calibration_dir: /home/zhenya/kenny/visuotact/vt_franka/robot_workspace/config/calibration/v6
 
 rollout:
   control_hz: 12.0
   max_duration_sec: 30.0
+  start_countdown_sec: 2.0
+  status_print_hz: 1.0
+  policy:
+    entrypoint: ""
+    kwargs: {}
+    inputs:
+      controller_state: true
+      rgb_cameras: []
+      gelsight_markers: false
+      gelsight_frame: false
+      controller_state_max_age_sec: 2.0
+      rgb_camera_max_age_sec: 2.0
+      gelsight_max_age_sec: 2.0

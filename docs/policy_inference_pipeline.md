@@ -119,25 +119,9 @@ curl http://127.0.0.1:8092/api/v1/state
 
 ## 4. Start the Workspace Side
 
-Open up to four terminals on the workspace machine.
+Open up to three terminals on the workspace machine.
 
-### Terminal W1: Optional episode recording
-
-If you want to record the rollout:
-
-```bash
-conda activate vt-franka-workspace
-cd /home/zhenya/kenny/visuotact/vt_franka/robot_workspace
-vt-franka-workspace episode-start \
-  --config /home/zhenya/kenny/visuotact/vt_franka/robot_workspace/config/workspace.yaml \
-  --name rollout_001
-```
-
-What this does:
-
-- Creates an active rollout episode directory
-
-### Terminal W2: Robot state bridge
+### Terminal W1: Robot state bridge
 
 ```bash
 conda activate vt-franka-workspace
@@ -150,7 +134,7 @@ What this launches:
 
 - Controller-state polling and Quest UDP feedback publishing
 
-### Terminal W3: Optional teleop server
+### Terminal W2: Optional teleop server
 
 Recommended if you want manual takeover or proper GelSight latency matching:
 
@@ -166,7 +150,7 @@ What this launches:
 - Quest teleop HTTP server on `<WORKSPACE_IP>:8082`
 - Manual takeover path if you want to interrupt rollout
 
-### Terminal W4: Optional GelSight publisher
+### Terminal W3: Optional GelSight publisher
 
 If you want tactile arrows and tactile recording during rollout:
 
@@ -181,49 +165,67 @@ What this launches:
 
 - GelSight capture and tactile recording or Quest tactile visualization
 
-## 5. Smoke-Test the Rollout Stack
+## 5. Interactive Policy Rollout
 
-The built-in `hold_current_pose` policy simply keeps the robot at its current TCP pose and current gripper width.
+The public `rollout` command is now an interactive supervisor, not a one-shot loop.
 
-Run this first before connecting your real model wrapper:
-
-```bash
-conda activate vt-franka-workspace
-cd /home/zhenya/kenny/visuotact/vt_franka/robot_workspace
-vt-franka-workspace rollout \
-  --config /home/zhenya/kenny/visuotact/vt_franka/robot_workspace/config/workspace.yaml \
-  --policy vt_franka_workspace.examples.policies:hold_current_pose
-```
-
-A second smoke-test policy moves the TCP slightly along `+x`:
+Start a rollout run with:
 
 ```bash
 conda activate vt-franka-workspace
 cd /home/zhenya/kenny/visuotact/vt_franka/robot_workspace
 vt-franka-workspace rollout \
   --config /home/zhenya/kenny/visuotact/vt_franka/robot_workspace/config/workspace.yaml \
-  --policy vt_franka_workspace.examples.policies:nudge_x
+  --run fold_cloth_policy \
+  --policy local_policies.my_policy:rollout_policy
 ```
 
-## 5.1 Replay An Episode Through The Same Policy Pipeline
+This enters an operator mode with:
 
-If you want to test the current inference path with recorded teleop targets instead of a learned model, use the replay policy factory:
+- health checks
+- required-modality readiness checks
+- browser operator UI on `http://127.0.0.1:8083/operator`
+- hotkeys
+- episode lifecycle management
+- exact policy-step recording
+
+The browser UI is the primary operator surface:
+
+- readiness and blocked reasons
+- recent logs
+- worker health
+- buttons for reset/start/stop/discard/quit
+- a frozen Orbbec snapshot when rollout is ready and Orbbec is enabled as an input
+
+Terminal hotkeys remain available as a fallback.
+
+Hotkeys:
+
+- `H`: reset robot to the controller ready pose
+- `R`: start the next rollout episode
+- `E`: stop and save the active rollout episode
+- `D`: discard the latest saved episode when idle
+- `Q`: quit rollout mode
+
+Rollout constraints:
+
+- The robot must be reset with `H` before every episode.
+- `R` is blocked until all required policy inputs are producing fresh samples.
+- Rollout ends on `E`, timeout, or `terminate=True` from the policy.
+
+## 5.1 One-Shot Replay / Compatibility Path
+
+If you want the old one-shot rollout behavior, including replaying an aligned episode through the same controller chain, use `rollout-once`:
 
 ```bash
 conda activate vt-franka-workspace
 cd /home/zhenya/kenny/visuotact/vt_franka/robot_workspace
-vt-franka-workspace rollout \
+vt-franka-workspace rollout-once \
   --config /home/zhenya/kenny/visuotact/vt_franka/robot_workspace/config/workspace.yaml \
   --policy vt_franka_workspace.rollout.replay_policy:build_replay_policy \
-  --episode-dir EPISODE_DIR \
+  --episode-dir /home/zhenya/kenny/visuotact/vt_franka/robot_workspace/data/runs/rotate_spoon_20260415_173352/episodes/episode_0000 \
   --go-ready
 ```
-
-This path:
-
-- loads `aligned_episode.npz`
-- turns the recorded teleop targets into a rollout policy
-- runs them through the same `RealRunner -> RealWorldEnv -> ControllerClient` chain used by inference policies
 
 Useful flags:
 
@@ -256,7 +258,9 @@ def my_policy(observation: dict) -> dict:
 The current observation always includes:
 
 - `observation["controller_state"]`
-- optionally `observation["tactile"]` if you extend `RealWorldEnv`
+- optionally `observation["orbbec_rgb"]`
+- optionally `observation["gelsight_markers"]`
+- optionally `observation["gelsight_frame"]`
 
 ### Example: local wrapper module
 
@@ -285,6 +289,7 @@ conda activate vt-franka-workspace
 cd /home/zhenya/kenny/visuotact/vt_franka/robot_workspace
 vt-franka-workspace rollout \
   --config /home/zhenya/kenny/visuotact/vt_franka/robot_workspace/config/workspace.yaml \
+  --run fold_cloth_policy \
   --policy local_policies.my_policy:rollout_policy
 ```
 
@@ -295,28 +300,29 @@ If you want to roll out an actual RDP checkpoint, wrap your model-loading code b
 Typical pattern:
 
 1. Load the checkpoint once at module import time or on first call.
-2. Convert `observation["controller_state"]` and optional tactile inputs into your model input tensors.
-3. Run the forward pass.
-4. Convert model output into `target_tcp` and gripper commands.
+2. Keep any observation horizon or history buffers inside the wrapper object.
+3. Convert `observation["controller_state"]` and optional camera or tactile-style inputs into model tensors.
+4. Run the forward pass.
+5. Convert model output into `target_tcp` and gripper commands.
 
 The new repo does not yet include the original training workspace or checkpoint format loader, so this wrapper is the integration point.
 
-## 8. Stop And Postprocess Recorded Rollouts
+## 8. Rollout Recording
 
-If you started an episode:
+Rollout recording is finalized online during execution. There is no rollout postprocess step.
 
-```bash
-conda activate vt-franka-workspace
-cd /home/zhenya/kenny/visuotact/vt_franka/robot_workspace
-vt-franka-workspace episode-stop \
-  --config /home/zhenya/kenny/visuotact/vt_franka/robot_workspace/config/workspace.yaml
-```
+Each saved rollout episode writes:
 
-Then align the recorded streams:
+- `episode_manifest.json`
+- `streams/policy_steps.jsonl`
+- image files only for enabled image modalities such as Orbbec RGB or GelSight frame input
 
-```bash
-conda activate vt-franka-workspace
-cd /home/zhenya/kenny/visuotact/vt_franka/robot_workspace
-vt-franka-workspace postprocess \
-  --episode-dir EPISODE_DIR
-```
+Each `policy_steps.jsonl` record contains the exact per-step policy input snapshot and the action returned by the policy:
+
+- step timing
+- inline proprioception
+- inline GelSight markers if enabled
+- image paths and timestamps for image modalities
+- exact action dict passed to the controller client
+
+If you want synchronized raw teleop collection instead, use `vt-franka-workspace collect` and the existing postprocess flow.

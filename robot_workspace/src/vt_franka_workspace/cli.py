@@ -11,15 +11,19 @@ import uvicorn
 from vt_franka_shared.config import load_yaml_model
 from vt_franka_shared.transforms import SingleArmCalibration
 
-from .collect import CollectSupervisor
+from .auto_collect import AutoCollectBowlRunner
+from .collect.controller_state import ControllerStateMonitor
+from .collect.supervisor import CollectSupervisor
 from .controller.client import ControllerClient
+from .demo_publish import DemoPublisher
+from .operator import OperatorLogBuffer, install_operator_logging
 from .publishers.quest_udp import QuestUdpPublisher
 from .publishers.state_bridge import StateBridge
 from .recording import JsonlStreamRecorder, align_episode
 from .rollout.real_env import RealWorldEnv
 from .rollout.real_runner import RealRunner
+from .rollout.supervisor import RolloutSupervisor
 from .sensors.gelsight.publisher import GelsightPublisher
-from .sensors.orbbec import OrbbecRgbRecorder
 from .settings import WorkspaceSettings
 from .teleop.quest_server import QuestTeleopService, create_teleop_app
 from .visualization import export_episode_composite_video
@@ -29,7 +33,18 @@ def main() -> None:
     parser = argparse.ArgumentParser(description="VT Franka workspace CLI")
     parser.add_argument(
         "command",
-        choices=["teleop", "state-bridge", "gelsight", "orbbec", "postprocess", "rollout", "collect", "visualize"],
+        choices=[
+            "demo-publish",
+            "teleop",
+            "state-bridge",
+            "gelsight",
+            "postprocess",
+            "rollout",
+            "rollout-once",
+            "collect",
+            "visualize",
+            "auto-collect-bowl",
+        ],
     )
     parser.add_argument("--config", default="config/workspace.yaml", help="Path to workspace config YAML")
     parser.add_argument("--run", default=None, help="Run name for collect mode")
@@ -40,8 +55,6 @@ def main() -> None:
     parser.add_argument("--skip-gripper", action="store_true", help="Replay-policy TCP only")
     parser.add_argument("--go-ready", action="store_true", help="Move robot to ready pose before rollout")
     parser.add_argument("--go-home", action="store_true", help="Move robot to home pose before rollout")
-    parser.add_argument("--with-orbbec", action="store_true", help="Force-enable Orbbec for collect mode")
-    parser.add_argument("--without-orbbec", action="store_true", help="Force-disable Orbbec for collect mode")
     parser.add_argument("--with-gelsight", action="store_true", help="Force-enable GelSight for collect mode")
     parser.add_argument("--without-gelsight", action="store_true", help="Force-disable GelSight for collect mode")
     parser.add_argument(
@@ -54,7 +67,7 @@ def main() -> None:
         action="store_true",
         help="Disable raw Quest message recording in collect mode",
     )
-    parser.add_argument("--orbbec-record-hz", type=float, default=None, help="Per-episode Orbbec recording rate override")
+    parser.add_argument("--rgb-record-hz", type=float, default=None, help="Per-episode RGB camera recording rate override")
     parser.add_argument("--gelsight-record-hz", type=float, default=None, help="Per-episode GelSight recording rate override")
     parser.add_argument(
         "--controller-record-hz",
@@ -80,11 +93,16 @@ def main() -> None:
         help="Allow collect mode to start episodes before a Quest message heartbeat is present",
     )
     parser.add_argument("--output", default=None, help="Optional output path for visualize commands")
+    parser.add_argument("--episodes", type=int, default=None, help="Number of episodes for auto-collection")
+    parser.add_argument("--seed", type=int, default=None, help="Random seed for auto-collection")
+    parser.add_argument("--auto-continue", action="store_true", help="Skip Enter prompts between auto-collected episodes")
     args = parser.parse_args()
 
     logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(name)s: %(message)s")
     settings = _load_and_resolve_settings(args.config)
     _apply_collect_overrides(settings, args)
+    log_buffer = OperatorLogBuffer(settings.operator_ui.log_buffer_size)
+    install_operator_logging(log_buffer, suppress_console_noise=settings.operator_ui.enabled)
 
     if args.command == "postprocess":
         if args.episode_dir is None:
@@ -114,6 +132,7 @@ def main() -> None:
         quest_ip=settings.quest_feedback.quest_ip,
         robot_state_udp_port=settings.quest_feedback.robot_state_udp_port,
         tactile_udp_port=settings.quest_feedback.tactile_udp_port,
+        image_udp_port=settings.quest_feedback.image_udp_port,
         force_udp_port=settings.quest_feedback.force_udp_port,
         calibration=calibration,
         force_scale_factor=settings.quest_feedback.force_scale_factor,
@@ -138,6 +157,11 @@ def main() -> None:
             bridge.stop()
         return
 
+    if args.command == "demo-publish":
+        publisher = DemoPublisher(settings, controller, calibration, quest_publisher)
+        publisher.run()
+        return
+
     if args.command == "gelsight":
         if not settings.gelsight.enabled:
             raise SystemExit("GelSight is disabled in the workspace config")
@@ -152,16 +176,6 @@ def main() -> None:
             return
         return
 
-    if args.command == "orbbec":
-        if not settings.orbbec.enabled:
-            raise SystemExit("Orbbec is disabled in the workspace config")
-        service = OrbbecRgbRecorder(settings.orbbec, image_format=settings.recording.image_format)
-        try:
-            service.run()
-        except KeyboardInterrupt:
-            return
-        return
-
     if args.command == "collect":
         if args.run is None:
             raise SystemExit("--run is required for collect")
@@ -172,15 +186,60 @@ def main() -> None:
             controller,
             calibration,
             run_name=args.run,
-            use_orbbec=settings.orbbec.enabled,
             use_gelsight=settings.gelsight.enabled,
+            log_buffer=log_buffer,
         )
         supervisor.run()
         return
 
+    if args.command == "auto-collect-bowl":
+        if args.run is None:
+            raise SystemExit(f"--run is required for {args.command}")
+        if args.episodes is None:
+            raise SystemExit(f"--episodes is required for {args.command}")
+        if not settings.recording.enabled:
+            raise SystemExit("Auto collect mode requires recording.enabled=true")
+        runner = AutoCollectBowlRunner(
+            settings,
+            controller,
+            run_name=args.run,
+            num_episodes=args.episodes,
+            seed=args.seed,
+            auto_continue=args.auto_continue,
+        )
+        runner.run()
+        return
+
     if args.command == "rollout":
+        policy_spec = args.policy or settings.rollout.policy.entrypoint
+        if not policy_spec:
+            raise SystemExit("--policy is required for rollout when rollout.policy.entrypoint is not set in config")
+        if args.run is None:
+            raise SystemExit("--run is required for rollout")
+        supervisor = RolloutSupervisor(
+            settings,
+            controller,
+            calibration,
+            run_name=args.run,
+            policy_spec=policy_spec,
+            policy_kwargs={
+                **settings.rollout.policy.kwargs,
+                "episode_dir": args.episode_dir,
+                "hz": args.hz,
+                "speed_scale": args.speed_scale,
+                "skip_gripper": args.skip_gripper,
+                "teleop_settings": settings.teleop,
+                "workspace_settings": settings,
+            },
+            control_hz_override=args.hz,
+            log_buffer=log_buffer,
+        )
+        supervisor.run()
+        return
+
+    if args.command == "rollout-once":
         if args.policy is None:
-            raise SystemExit("--policy is required for rollout")
+            raise SystemExit("--policy is required for rollout-once")
         if args.go_ready and args.go_home:
             raise SystemExit("Cannot use --go-ready and --go-home together")
         if args.go_ready:
@@ -222,34 +281,39 @@ def _load_and_resolve_settings(config_path: str | Path) -> WorkspaceSettings:
 
 
 def _apply_collect_overrides(settings: WorkspaceSettings, args: argparse.Namespace) -> None:
-    if args.with_orbbec and args.without_orbbec:
-        raise SystemExit("Cannot use --with-orbbec and --without-orbbec together")
-    if args.with_gelsight and args.without_gelsight:
+    with_gelsight = getattr(args, "with_gelsight", False)
+    without_gelsight = getattr(args, "without_gelsight", False)
+    record_quest_messages = getattr(args, "record_quest_messages", False)
+    no_record_quest_messages = getattr(args, "no_record_quest_messages", False)
+    allow_without_quest = getattr(args, "allow_without_quest", False)
+
+    if with_gelsight and without_gelsight:
         raise SystemExit("Cannot use --with-gelsight and --without-gelsight together")
-    if args.record_quest_messages and args.no_record_quest_messages:
+    if record_quest_messages and no_record_quest_messages:
         raise SystemExit("Cannot use --record-quest-messages and --no-record-quest-messages together")
 
-    if args.with_orbbec:
-        settings.orbbec.enabled = True
-    if args.without_orbbec:
-        settings.orbbec.enabled = False
-    if args.with_gelsight:
+    if with_gelsight:
         settings.gelsight.enabled = True
-    if args.without_gelsight:
+    if without_gelsight:
         settings.gelsight.enabled = False
-    if args.record_quest_messages:
+    if record_quest_messages:
         settings.collect.record_raw_quest_messages = True
-    if args.no_record_quest_messages:
+    if no_record_quest_messages:
         settings.collect.record_raw_quest_messages = False
-    if args.allow_without_quest:
+    if allow_without_quest:
         settings.collect.require_quest_connection = False
 
     for value, setter in (
-        (args.orbbec_record_hz, lambda x: setattr(settings.orbbec, "record_hz", x)),
-        (args.gelsight_record_hz, lambda x: setattr(settings.gelsight, "record_hz", x)),
-        (args.controller_record_hz, lambda x: setattr(settings.quest_feedback, "record_hz", x)),
-        (args.teleop_command_record_hz, lambda x: setattr(settings.teleop, "command_record_hz", x)),
-        (args.quest_message_record_hz, lambda x: setattr(settings.teleop, "quest_message_record_hz", x)),
+        (getattr(args, "rgb_record_hz", None), lambda x: _set_rgb_record_hz(settings, x)),
+        (getattr(args, "gelsight_record_hz", None), lambda x: setattr(settings.gelsight, "record_hz", x)),
+        (getattr(args, "controller_record_hz", None), lambda x: setattr(settings.quest_feedback, "record_hz", x)),
+        (getattr(args, "teleop_command_record_hz", None), lambda x: setattr(settings.teleop, "command_record_hz", x)),
+        (getattr(args, "quest_message_record_hz", None), lambda x: setattr(settings.teleop, "quest_message_record_hz", x)),
     ):
         if value is not None:
             setter(value)
+
+
+def _set_rgb_record_hz(settings: WorkspaceSettings, record_hz: float) -> None:
+    for camera_settings in settings.rgb_cameras.values():
+        camera_settings.record_hz = float(record_hz)

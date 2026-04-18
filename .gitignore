@@ -26,3 +26,5 @@ venv/
 /linux-5.11.tar
 /patch-5.11-rt7.patch.xz
 /robot_workspace/data
+/UNTOUCHED_REFERENCE
+/openpi

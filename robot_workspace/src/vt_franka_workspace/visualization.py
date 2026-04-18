@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import json
 from pathlib import Path
 
 import numpy as np
@@ -18,11 +19,13 @@ def export_episode_composite_video(
 
     episode_dir, npz_path = _resolve_episode_paths(episode_dir_or_npz)
     data = np.load(npz_path, allow_pickle=True)
+    manifest = _load_episode_manifest(episode_dir)
 
     timestamps = np.asarray(data["timestamps"], dtype=np.float64)
     action_pose = _pose7_array_to_xyz_rpy(np.asarray(data["teleop_target_tcp"], dtype=np.float64))
     proprio_pose = _pose7_array_to_xyz_rpy(np.asarray(data["robot_tcp_pose"], dtype=np.float64))
-    rgb_paths = np.asarray(data["orbbec_rgb_frame_paths"], dtype=object)
+    rgb_stream_name = _select_primary_rgb_stream(data)
+    rgb_paths = np.asarray(data[f"{rgb_stream_name}_frame_paths"], dtype=object)
     if timestamps.size == 0:
         raise RuntimeError(f"No aligned timestamps found in {npz_path}")
 
@@ -46,6 +49,7 @@ def export_episode_composite_video(
                 rgb_paths=rgb_paths,
                 action_pose=action_pose,
                 proprio_pose=proprio_pose,
+                manifest=manifest,
                 canvas_width=video_size[0],
                 canvas_height=video_size[1],
                 cv2=cv2,
@@ -55,6 +59,18 @@ def export_episode_composite_video(
         writer.release()
 
     return output_path
+
+
+def _select_primary_rgb_stream(data: np.lib.npyio.NpzFile) -> str:
+    frame_path_keys = sorted(key for key in data.files if key.endswith("_frame_paths"))
+    if not frame_path_keys:
+        raise RuntimeError("No aligned RGB frame stream found in aligned_episode.npz")
+    preferred_order = ["rgb_third_person", "rgb_wrist"]
+    for stream_name in preferred_order:
+        key = f"{stream_name}_frame_paths"
+        if key in frame_path_keys:
+            return stream_name
+    return frame_path_keys[0][: -len("_frame_paths")]
 
 
 def _resolve_episode_paths(episode_dir_or_npz: str | Path) -> tuple[Path, Path]:
@@ -91,6 +107,13 @@ def _infer_video_fps(timestamps: np.ndarray, fps: float | None) -> float:
     return float(1.0 / np.median(dt))
 
 
+def _load_episode_manifest(episode_dir: Path) -> dict:
+    manifest_path = episode_dir / "episode_manifest.json"
+    if not manifest_path.exists():
+        return {}
+    return json.loads(manifest_path.read_text(encoding="utf-8"))
+
+
 def _render_composite_frame(
     *,
     index: int,
@@ -99,21 +122,22 @@ def _render_composite_frame(
     rgb_paths: np.ndarray,
     action_pose: np.ndarray,
     proprio_pose: np.ndarray,
+    manifest: dict,
     canvas_width: int,
     canvas_height: int,
     cv2,
 ) -> np.ndarray:
     canvas = np.full((canvas_height, canvas_width, 3), 246, dtype=np.uint8)
-    _draw_header(canvas, episode_dir.name, index, timestamps, cv2)
+    _draw_header(canvas, episode_dir.name, index, timestamps, manifest, cv2)
 
     left_x0 = 36
-    left_y0 = 92
+    left_y0 = 158
     left_width = 760
-    left_height = 952
+    left_height = 886
     right_x0 = 830
-    right_y0 = 92
+    right_y0 = 158
     right_width = canvas_width - right_x0 - 36
-    right_height = 952
+    right_height = 886
 
     _draw_rgb_panel(
         canvas,
@@ -168,8 +192,8 @@ def _render_composite_frame(
     return canvas
 
 
-def _draw_header(canvas: np.ndarray, episode_name: str, index: int, timestamps: np.ndarray, cv2) -> None:
-    cv2.rectangle(canvas, (0, 0), (canvas.shape[1], 74), (231, 236, 243), thickness=-1)
+def _draw_header(canvas: np.ndarray, episode_name: str, index: int, timestamps: np.ndarray, manifest: dict, cv2) -> None:
+    cv2.rectangle(canvas, (0, 0), (canvas.shape[1], 140), (231, 236, 243), thickness=-1)
     cv2.putText(
         canvas,
         f"Episode Composite: {episode_name}",
@@ -191,6 +215,52 @@ def _draw_header(canvas: np.ndarray, episode_name: str, index: int, timestamps: 
         2,
         cv2.LINE_AA,
     )
+    metadata = manifest.get("metadata", {})
+    instruction = str(metadata.get("instruction", "")).strip()
+    if instruction:
+        cv2.putText(
+            canvas,
+            f"instruction: {instruction}"[:140],
+            (32, 94),
+            cv2.FONT_HERSHEY_SIMPLEX,
+            0.64,
+            (47, 58, 71),
+            2,
+            cv2.LINE_AA,
+        )
+    start_state_text = _format_state(metadata.get("start_state"))
+    goal_state_text = _format_state(metadata.get("goal_state"))
+    if start_state_text:
+        cv2.putText(
+            canvas,
+            f"start: {start_state_text}",
+            (32, 118),
+            cv2.FONT_HERSHEY_SIMPLEX,
+            0.58,
+            (70, 78, 89),
+            2,
+            cv2.LINE_AA,
+        )
+    if goal_state_text:
+        cv2.putText(
+            canvas,
+            f"goal: {goal_state_text}",
+            (740, 118),
+            cv2.FONT_HERSHEY_SIMPLEX,
+            0.58,
+            (70, 78, 89),
+            2,
+            cv2.LINE_AA,
+        )
+
+
+def _format_state(state: object) -> str:
+    if not isinstance(state, dict):
+        return ""
+    try:
+        return f"x={float(state['x']):.2f} y={float(state['y']):.2f} z={float(state['z']):.2f} yaw={float(state['yaw_deg']):.0f}"
+    except Exception:
+        return ""
 
 
 def _draw_rgb_panel(

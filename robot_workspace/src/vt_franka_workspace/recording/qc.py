@@ -17,13 +17,12 @@ def analyze_episode(
     controller = _read_jsonl(streams_dir / "controller_state.jsonl")
     teleop = _read_jsonl(streams_dir / "teleop_commands.jsonl")
     quest = _read_jsonl(streams_dir / "quest_messages.jsonl")
-    orbbec = _read_jsonl(streams_dir / "orbbec_rgb.jsonl")
     gelsight = _read_jsonl(streams_dir / "gelsight_markers.jsonl")
+    image_streams = _discover_image_streams(streams_dir)
 
     controller_summary = _summarize_stream(controller, "source_wall_time")
     teleop_summary = _summarize_stream(teleop, "source_wall_time")
     quest_summary = _summarize_stream(quest, "source_wall_time")
-    orbbec_summary = _summarize_stream(orbbec, "captured_wall_time")
     gelsight_summary = _summarize_stream(gelsight, "captured_wall_time")
 
     usable_for_training = bool(controller) and controller_summary["max_gap_sec"] < controller_gap_fail_sec
@@ -44,8 +43,8 @@ def analyze_episode(
             "controller_state": controller_summary,
             "teleop_commands": teleop_summary,
             "quest_messages": quest_summary,
-            "orbbec_rgb": orbbec_summary,
             "gelsight_markers": gelsight_summary,
+            **{stream_name: _summarize_stream(records, "captured_wall_time") for stream_name, records in image_streams.items()},
         },
     }
 
@@ -89,3 +88,15 @@ def _summarize_stream(records: list[dict[str, Any]], timestamp_key: str) -> dict
         "effective_hz": effective_hz,
         "max_gap_sec": max_gap_sec,
     }
+
+
+def _discover_image_streams(streams_dir: Path) -> dict[str, list[dict[str, Any]]]:
+    streams: dict[str, list[dict[str, Any]]] = {}
+    for path in sorted(streams_dir.glob("*.jsonl")):
+        stream_name = path.stem
+        if stream_name in {"controller_state", "teleop_commands", "quest_messages", "gelsight_markers"}:
+            continue
+        records = _read_jsonl(path)
+        if records and "frame_path" in records[0] and "captured_wall_time" in records[0]:
+            streams[stream_name] = records
+    return streams

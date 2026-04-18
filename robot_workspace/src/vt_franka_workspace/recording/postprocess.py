@@ -68,7 +68,7 @@ def align_episode(
     controller = _read_jsonl(streams_dir / "controller_state.jsonl")
     teleop = _read_jsonl(streams_dir / "teleop_commands.jsonl")
     gelsight = _read_jsonl(streams_dir / "gelsight_markers.jsonl")
-    orbbec = _read_jsonl(streams_dir / "orbbec_rgb.jsonl")
+    rgb_streams = _discover_rgb_streams(streams_dir)
 
     if not controller:
         raise RuntimeError(f"No controller_state stream found in {episode_dir}")
@@ -76,7 +76,7 @@ def align_episode(
     controller_times = _timestamp_array(controller, "source_wall_time")
     teleop_times = _timestamp_array(teleop, "source_wall_time")
     gelsight_times = _timestamp_array(gelsight, "captured_wall_time")
-    orbbec_times = _timestamp_array(orbbec, "captured_wall_time")
+    rgb_stream_times = {stream_name: _timestamp_array(records, "captured_wall_time") for stream_name, records in rgb_streams.items()}
     start_time = controller_times[0]
     end_time = controller_times[-1]
     step = 1.0 / target_hz
@@ -103,8 +103,8 @@ def align_episode(
     marker_locations = []
     marker_offsets = []
     gelsight_capture_times = []
-    orbbec_frame_paths = []
-    orbbec_capture_times = []
+    rgb_frame_paths = {stream_name: [] for stream_name in rgb_streams}
+    rgb_capture_times = {stream_name: [] for stream_name in rgb_streams}
     dropped_without_future_action = 0
     dropped_action_outside_horizon = 0
 
@@ -151,15 +151,21 @@ def align_episode(
             marker_offsets.append(gelsight_item["marker_offsets"])
             gelsight_capture_times.append(gelsight_timestamp)
 
-        orbbec_item, orbbec_timestamp = _latest_record(orbbec, orbbec_times, timestamp)
-        if orbbec_item is None:
-            orbbec_frame_paths.append("")
-            orbbec_capture_times.append(np.nan)
-        else:
-            orbbec_frame_paths.append(orbbec_item.get("frame_path", ""))
-            orbbec_capture_times.append(orbbec_timestamp)
+        for stream_name, records in rgb_streams.items():
+            rgb_item, rgb_timestamp = _latest_record(records, rgb_stream_times[stream_name], timestamp)
+            if rgb_item is None:
+                rgb_frame_paths[stream_name].append("")
+                rgb_capture_times[stream_name].append(np.nan)
+            else:
+                rgb_frame_paths[stream_name].append(rgb_item.get("frame_path", ""))
+                rgb_capture_times[stream_name].append(rgb_timestamp)
 
     output_path = episode_dir / "aligned_episode.npz"
+    rgb_arrays: dict[str, np.ndarray] = {}
+    for stream_name in rgb_streams:
+        rgb_arrays[f"{stream_name}_frame_paths"] = np.asarray(rgb_frame_paths[stream_name], dtype=object)
+        rgb_arrays[f"{stream_name}_capture_timestamps"] = np.asarray(rgb_capture_times[stream_name], dtype=np.float64)
+
     np.savez_compressed(
         output_path,
         timestamps=np.asarray(aligned_timestamps, dtype=np.float64),
@@ -181,16 +187,14 @@ def align_episode(
         gelsight_marker_locations=np.asarray(marker_locations, dtype=object),
         gelsight_marker_offsets=np.asarray(marker_offsets, dtype=object),
         gelsight_capture_timestamps=np.asarray(gelsight_capture_times, dtype=np.float64),
-        orbbec_rgb_frame_paths=np.asarray(orbbec_frame_paths, dtype=object),
-        orbbec_rgb_capture_timestamps=np.asarray(orbbec_capture_times, dtype=np.float64),
+        **rgb_arrays,
     )
     streams_used = ["controller_state"]
     if teleop:
         streams_used.append("teleop_commands")
     if gelsight:
         streams_used.append("gelsight_markers")
-    if orbbec:
-        streams_used.append("orbbec_rgb")
+    streams_used.extend(stream_name for stream_name, records in rgb_streams.items() if records)
     manifest = {
         "target_hz": target_hz,
         "num_steps": int(len(aligned_timestamps)),
@@ -203,3 +207,15 @@ def align_episode(
     }
     (episode_dir / "aligned_episode_manifest.json").write_text(json.dumps(manifest, indent=2), encoding="utf-8")
     return output_path
+
+
+def _discover_rgb_streams(streams_dir: Path) -> dict[str, list[dict[str, Any]]]:
+    streams: dict[str, list[dict[str, Any]]] = {}
+    for path in sorted(streams_dir.glob("*.jsonl")):
+        stream_name = path.stem
+        if stream_name in {"controller_state", "teleop_commands", "quest_messages", "gelsight_markers"}:
+            continue
+        records = _read_jsonl(path)
+        if records and "frame_path" in records[0] and "captured_wall_time" in records[0]:
+            streams[stream_name] = records
+    return streams

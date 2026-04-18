@@ -6,8 +6,10 @@ import time
 from threading import Event
 from typing import Any
 
+from ...rollout.live_buffer import LiveSampleBuffer
 from ...recording.raw_recorder import JsonlStreamRecorder
-from ...settings import OrbbecSettings
+from ...publishers.quest_udp import QuestUdpPublisher
+from ...settings import RgbCameraSettings
 from .frame_decoder import decode_color_frame
 
 logger = logging.getLogger(__name__)
@@ -16,13 +18,17 @@ logger = logging.getLogger(__name__)
 class OrbbecRgbRecorder:
     def __init__(
         self,
-        settings: OrbbecSettings,
+        settings: RgbCameraSettings,
         recorder: JsonlStreamRecorder | None = None,
+        live_buffer: LiveSampleBuffer | None = None,
+        quest_publisher: QuestUdpPublisher | None = None,
         image_format: str = "jpg",
         sdk_module: Any | None = None,
     ) -> None:
         self.settings = settings
         self.recorder = recorder
+        self.live_buffer = live_buffer
+        self.quest_publisher = quest_publisher
         self.image_format = image_format
         self._sdk_module = sdk_module
         self._device_name = settings.camera_name
@@ -140,6 +146,15 @@ class OrbbecRgbRecorder:
             "frame_height": int(image.shape[0]),
             "color_format": str(_safe_call(color_frame, "get_format") or self.settings.color_format),
         }
+
+        if self.live_buffer is not None:
+            self.live_buffer.update(image.copy(), metadata=payload, captured_wall_time=captured_wall_time)
+
+        if self.quest_publisher is not None and self.settings.quest_stream.enabled:
+            try:
+                self.quest_publisher.publish_image(image, self.settings.quest_stream)
+            except Exception as exc:
+                logger.warning("Failed to publish Quest RGB image for %s: %s", self._device_name, exc)
 
         if self.recorder is not None:
             if self.settings.save_frames:

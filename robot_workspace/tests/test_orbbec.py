@@ -16,14 +16,14 @@ def test_decode_rgb_buffer_to_bgr():
     assert image.tolist() == [[[0, 0, 255], [0, 255, 0]]]
 
 
-def test_align_episode_includes_orbbec_stream(tmp_path: Path):
+def test_align_episode_includes_rgb_camera_stream(tmp_path: Path):
     sessions = RunSessionManager(tmp_path / "runs")
     sessions.start_run("orbbec")
     episode_dir = sessions.start_episode("orbbec")
 
     controller = JsonlStreamRecorder(sessions, "controller_state")
     teleop = JsonlStreamRecorder(sessions, "teleop_commands")
-    orbbec = JsonlStreamRecorder(sessions, "orbbec_rgb")
+    rgb_camera = JsonlStreamRecorder(sessions, "rgb_third_person")
 
     controller.record_event(
         {
@@ -53,10 +53,10 @@ def test_align_episode_includes_orbbec_stream(tmp_path: Path):
             },
         }
     )
-    orbbec.record_event(
+    rgb_camera.record_event(
         {
             "captured_wall_time": 1.0,
-            "frame_path": "streams/orbbec_rgb/000001.jpg",
+            "frame_path": "streams/rgb_third_person/000001.jpg",
             "frame_width": 640,
             "frame_height": 480,
         }
@@ -68,6 +68,6 @@ def test_align_episode_includes_orbbec_stream(tmp_path: Path):
     output_path = align_episode(episode_dir, target_hz=10.0)
     aligned = np.load(output_path, allow_pickle=True)
     assert output_path.exists()
-    assert "orbbec_rgb_frame_paths" in aligned
-    assert aligned["orbbec_rgb_frame_paths"][0] == "streams/orbbec_rgb/000001.jpg"
-    assert aligned["orbbec_rgb_capture_timestamps"].tolist() == [1.0, 1.0]
+    assert "rgb_third_person_frame_paths" in aligned
+    assert aligned["rgb_third_person_frame_paths"][0] == "streams/rgb_third_person/000001.jpg"
+    assert aligned["rgb_third_person_capture_timestamps"].tolist() == [1.0, 1.0]

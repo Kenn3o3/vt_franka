@@ -12,6 +12,7 @@ dependencies:
   - fastapi
   - uvicorn
   - pydantic>=2.6
+  - pymongo>=4.6
   - pyyaml
   - requests
   - pip:

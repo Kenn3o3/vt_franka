@@ -47,7 +47,8 @@ Edit [workspace.yaml](/home/zhenya/kenny/visuotact/vt_franka/robot_workspace/con
 - `orbbec.enabled`: enable the Orbbec RGB recorder
 - `orbbec.serial_number`: optional fixed Orbbec serial number if multiple cameras are connected
 - `orbbec.color_width`, `orbbec.color_height`, `orbbec.color_fps`: requested Orbbec color profile
-- `recording.root_dir`: episode storage root
+- `recording.run_root`: run storage root
+- `operator_ui.host`, `operator_ui.port`: browser operator UI bind address
 - `calibration.calibration_dir`: calibration JSON directory
 
 ## Run components
@@ -59,10 +60,27 @@ vt-franka-workspace gelsight --config /home/zhenya/kenny/visuotact/vt_franka/rob
 vt-franka-workspace orbbec --config /home/zhenya/kenny/visuotact/vt_franka/robot_workspace/config/workspace.yaml
 ```
 
-## Recording
+## Collection
 
 ```bash
-vt-franka-workspace episode-start --config /home/zhenya/kenny/visuotact/vt_franka/robot_workspace/config/workspace.yaml --name peel_trial
-vt-franka-workspace episode-stop --config /home/zhenya/kenny/visuotact/vt_franka/robot_workspace/config/workspace.yaml
-vt-franka-workspace postprocess --episode-dir /absolute/path/to/episode
+vt-franka-workspace collect \
+  --config /home/zhenya/kenny/visuotact/vt_franka/robot_workspace/config/workspace.yaml \
+  --run peel_trial
+```
+
+This writes data under `recording.run_root/<run_id>/episodes/episode_xxxx`.
+Open `http://127.0.0.1:8083/operator` on the workspace machine for the browser operator UI.
+
+The normal workflow is:
+
+- Press `H` before each episode to reset the robot to the ready pose.
+- Press `R` to start recording the current episode.
+- Press `E` to end and save the episode.
+- Press `D` to discard the latest saved episode when not recording.
+- Press `Q` to quit collect mode.
+
+To align one saved episode after collection:
+
+```bash
+vt-franka-workspace postprocess --episode-dir /absolute/path/to/run/episodes/episode_0000
 ```

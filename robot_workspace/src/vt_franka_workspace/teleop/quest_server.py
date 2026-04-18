@@ -18,6 +18,9 @@ from vt_franka_shared.timing import precise_sleep
 from vt_franka_shared.transforms import SingleArmCalibration
 
 from ..controller.client import ControllerClient
+from ..operator.app import create_operator_app
+from ..operator.control import SupportsOperatorUi
+from ..operator.logs import OperatorLogBuffer
 from ..recording.raw_recorder import JsonlStreamRecorder
 from ..settings import TeleopSettings
 
@@ -234,7 +237,12 @@ class QuestTeleopService:
         return bool(message.leftHand.buttonState[index])
 
 
-def create_teleop_app(service: QuestTeleopService) -> FastAPI:
+def create_teleop_app(
+    service: QuestTeleopService,
+    *,
+    operator_controller: SupportsOperatorUi | None = None,
+    operator_log_buffer: OperatorLogBuffer | None = None,
+) -> FastAPI:
     @asynccontextmanager
     async def lifespan(app: FastAPI):
         service.start()
@@ -265,6 +273,11 @@ def create_teleop_app(service: QuestTeleopService) -> FastAPI:
     @app.get("/get_current_gripper_state")
     def get_current_gripper_state():
         return service.get_gripper_status()
+
+    if operator_controller is not None and operator_log_buffer is not None:
+        operator_app = create_operator_app(operator_controller, operator_log_buffer)
+        for route in operator_app.router.routes:
+            app.router.routes.append(route)
 
     return app
 

@@ -16,6 +16,7 @@ def _fixed_length(values: List[float], expected: int, field_name: str) -> List[f
 
 class TcpTargetCommand(BaseModel):
     target_tcp: List[float] = Field(default_factory=lambda: [0.0] * 7)
+    target_duration_sec: Optional[float] = None
     issued_at_wall_time: float = Field(default_factory=time.time)
     issued_at_monotonic_time: float = Field(default_factory=time.monotonic)
     source: str = "unknown"
@@ -24,6 +25,13 @@ class TcpTargetCommand(BaseModel):
     @classmethod
     def _validate_pose(cls, value: List[float]) -> List[float]:
         return _fixed_length(value, 7, "target_tcp")
+
+    @field_validator("target_duration_sec")
+    @classmethod
+    def _validate_target_duration(cls, value: Optional[float]) -> Optional[float]:
+        if value is not None and value <= 0.0:
+            raise ValueError("target_duration_sec must be positive when provided")
+        return value
 
 
 class GripperWidthCommand(BaseModel):

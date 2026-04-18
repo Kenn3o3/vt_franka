@@ -1,0 +1,241 @@
+[04/15 23:26:02.578227][info][618117][LinuxUsbPal.cpp:335] Create PollingDeviceWatcher!
+[04/15 23:26:02.578310][info][618117][DeviceManager.cpp:25] Current found device(s): (2)
+[04/15 23:26:02.578317][info][618117][DeviceManager.cpp:34] 	- Name: Gemini 335, PID: 0x0800, SN/ID: CP0HC530002T, Connection: USB3.2
+[04/15 23:26:02.578320][info][618117][DeviceManager.cpp:34] 	- Name: Gemini 335, PID: 0x0800, SN/ID: CP0E753000KA, Connection: USB3.2
+[04/15 23:26:02.578325][info][618117][DeviceManager.cpp:339] Enable net device enumeration: true
+[04/15 23:26:04.583438][info][618117][DeviceManager.cpp:25] Current device(s) list: (2)
+[04/15 23:26:04.583491][info][618117][DeviceManager.cpp:34] 	- Name: Gemini 335, PID: 0x0800, SN/ID: CP0HC530002T, Connection: USB3.2
+[04/15 23:26:04.583495][info][618117][DeviceManager.cpp:34] 	- Name: Gemini 335, PID: 0x0800, SN/ID: CP0E753000KA, Connection: USB3.2
+[04/15 23:26:04.589095][info][618117][DeviceBase.cpp:651] key: AppSlot,value:2
+[04/15 23:26:04.589123][info][618117][DeviceBase.cpp:651] key: HwType,value:R1
+[04/15 23:26:04.589127][info][618117][DeviceBase.cpp:651] key: HwVer,value:V1.1
+[04/15 23:26:04.589130][info][618117][DeviceBase.cpp:651] key: IspFwVer,value:20241125
+[04/15 23:26:04.589132][info][618117][DeviceBase.cpp:651] key: IspNeedVer,value:20241125
+[04/15 23:26:04.589135][info][618117][DeviceBase.cpp:651] key: PresetVer,value:1.2.2
+[04/15 23:26:04.749886][info][618117][DeviceManager.cpp:194] Device created successfully! Name: Gemini 335, PID: 0x0800, SN/ID: CP0HC530002T FW: 1.4.60
+[04/15 23:26:04.751753][info][618117][Pipeline.cpp:42] [CP0HC530002T] Pipeline created with device: {name: Gemini 335, sn: CP0HC530002T}, @0x7C916C2DDAA0
+[04/15 23:26:04.778174][info][618117][Pipeline.cpp:216] [CP0HC530002T] Check and set config done!
+[04/15 23:26:04.778422][info][618117][Pipeline.cpp:254] [CP0HC530002T] Try to start streams!
+[04/15 23:26:04.778433][info][618117][VideoSensor.cpp:58] [CP0HC530002T] Try to start stream: {type: Color, format: RGB, width: 640, height: 480, fps: 30}
+[04/15 23:26:04.778449][info][618117][SensorBase.cpp:213] [CP0HC530002T] Stream state changed to STARTING@Color
+[04/15 23:26:04.778456][info][618117][VideoSensor.cpp:127] [CP0HC530002T] Start backend stream: {type: Color, format: YUYV, width: 640, height: 480, fps: 30}
+[04/15 23:26:04.780414][info][618117][Pipeline.cpp:270] [CP0HC530002T] Start streams done!
+[04/15 23:26:04.780431][info][618117][Pipeline.cpp:238] [CP0HC530002T] Pipeline start done!
+[04/15 23:26:04.980981][warning][618117][Pipeline.cpp:305] [CP0HC530002T] Wait for frame timeout, you can try to increase the wait time! current timeout=200
+[04/15 23:26:05.294605][info][618227][SensorBase.cpp:213] [CP0HC530002T] Stream state changed to STREAMING@Color
+[04/15 23:26:08.181650][warning][618228][Pipeline.cpp:305] [CP0HC530002T] Wait for frame timeout, you can try to increase the wait time! current timeout=200 [**1 logs in 3200ms, last: 23:26:05.181144**]
+[04/15 23:26:10.299337][info][618227][VideoSensor.cpp:153] [CP0HC530002T] Color backend frame callback, frameRate=30.169830fps
+[04/15 23:26:10.299878][info][618230][SensorBase.cpp:370] [CP0HC530002T] Color Streaming... frameRate=30.187925fps
+[04/15 23:26:15.305451][info][618227][VideoSensor.cpp:153] [CP0HC530002T] Color backend frame callback, frameRate=29.964043fps
+[04/15 23:26:15.306056][info][618230][SensorBase.cpp:370] [CP0HC530002T] Color Streaming... frameRate=29.958059fps
+[04/15 23:26:20.311078][info][618227][VideoSensor.cpp:153] [CP0HC530002T] Color backend frame callback, frameRate=29.964043fps
+[04/15 23:26:20.311646][info][618230][SensorBase.cpp:370] [CP0HC530002T] Color Streaming... frameRate=29.970030fps
+[04/15 23:26:25.317013][info][618227][VideoSensor.cpp:153] [CP0HC530002T] Color backend frame callback, frameRate=29.970030fps
+[04/15 23:26:25.317534][info][618230][SensorBase.cpp:370] [CP0HC530002T] Color Streaming... frameRate=29.964043fps
+[04/15 23:26:30.323064][info][618227][VideoSensor.cpp:153] [CP0HC530002T] Color backend frame callback, frameRate=29.958059fps
+[04/15 23:26:30.324137][info][618230][SensorBase.cpp:370] [CP0HC530002T] Color Streaming... frameRate=29.958059fps
+[04/15 23:26:35.328902][info][618227][VideoSensor.cpp:153] [CP0HC530002T] Color backend frame callback, frameRate=29.970030fps
+[04/15 23:26:35.329626][info][618230][SensorBase.cpp:370] [CP0HC530002T] Color Streaming... frameRate=29.970030fps
+[04/15 23:26:37.732842][info][618117][Pipeline.cpp:336] [CP0HC530002T] Try to stop pipeline!
+[04/15 23:26:37.732912][info][618117][Pipeline.cpp:312] [CP0HC530002T] Try to stop streams!
+[04/15 23:26:37.732947][info][618117][SensorBase.cpp:213] [CP0HC530002T] Stream state changed to STOPPING@Color
+[04/15 23:26:37.774523][info][618117][SensorBase.cpp:213] [CP0HC530002T] Stream state changed to STOPPED@Color
+[04/15 23:26:37.774886][info][618117][Pipeline.cpp:326] [CP0HC530002T] Sensor stream stopped, sensorType=Color
+[04/15 23:26:37.774920][info][618117][Pipeline.cpp:332] [CP0HC530002T] Stop streams done!
+[04/15 23:26:37.775129][info][618117][Pipeline.cpp:356] [CP0HC530002T] Stop pipeline done!
+[04/15 23:26:37.775154][info][618117][Pipeline.cpp:53] [CP0HC530002T] Pipeline destroyed! @0x7C916C2DDAA0
+[04/15 23:26:37.775310][info][618117][SensorBase.cpp:47] [CP0HC530002T] SensorBase is destroyed
+[04/15 23:26:37.776378][info][618117][ObLibuvcDevicePort.cpp:87] uvc_close done.
+[04/15 23:26:37.776389][info][618117][ObLibuvcDevicePort.cpp:88] ~ObLibuvcDevicePort done
+[04/15 23:26:37.780536][info][618117][ObLibuvcDevicePort.cpp:87] uvc_close done.
+[04/15 23:26:37.780577][info][618117][ObLibuvcDevicePort.cpp:88] ~ObLibuvcDevicePort done
+[04/15 23:26:49.607369][info][619175][LinuxUsbPal.cpp:335] Create PollingDeviceWatcher!
+[04/15 23:26:49.607453][info][619175][DeviceManager.cpp:25] Current found device(s): (2)
+[04/15 23:26:49.607463][info][619175][DeviceManager.cpp:34] 	- Name: Gemini 335, PID: 0x0800, SN/ID: CP0HC530002T, Connection: USB3.2
+[04/15 23:26:49.607469][info][619175][DeviceManager.cpp:34] 	- Name: Gemini 335, PID: 0x0800, SN/ID: CP0E753000KA, Connection: USB3.2
+[04/15 23:26:49.607479][info][619175][DeviceManager.cpp:339] Enable net device enumeration: true
+[04/15 23:26:51.613858][info][619175][DeviceManager.cpp:25] Current device(s) list: (2)
+[04/15 23:26:51.613930][info][619175][DeviceManager.cpp:34] 	- Name: Gemini 335, PID: 0x0800, SN/ID: CP0HC530002T, Connection: USB3.2
+[04/15 23:26:51.613940][info][619175][DeviceManager.cpp:34] 	- Name: Gemini 335, PID: 0x0800, SN/ID: CP0E753000KA, Connection: USB3.2
+[04/15 23:26:51.618835][info][619175][DeviceBase.cpp:651] key: AppSlot,value:2
+[04/15 23:26:51.618860][info][619175][DeviceBase.cpp:651] key: HwType,value:R1
+[04/15 23:26:51.618865][info][619175][DeviceBase.cpp:651] key: HwVer,value:V1.1
+[04/15 23:26:51.618868][info][619175][DeviceBase.cpp:651] key: IspFwVer,value:20241125
+[04/15 23:26:51.618872][info][619175][DeviceBase.cpp:651] key: IspNeedVer,value:20241125
+[04/15 23:26:51.618876][info][619175][DeviceBase.cpp:651] key: PresetVer,value:1.2.2
+[04/15 23:26:51.779858][info][619175][DeviceManager.cpp:194] Device created successfully! Name: Gemini 335, PID: 0x0800, SN/ID: CP0HC530002T FW: 1.4.60
+[04/15 23:26:51.780566][info][619175][Pipeline.cpp:42] [CP0HC530002T] Pipeline created with device: {name: Gemini 335, sn: CP0HC530002T}, @0x73B5F82DDAA0
+[04/15 23:26:51.806967][info][619175][Pipeline.cpp:216] [CP0HC530002T] Check and set config done!
+[04/15 23:26:51.807380][info][619175][Pipeline.cpp:254] [CP0HC530002T] Try to start streams!
+[04/15 23:26:51.807423][info][619175][VideoSensor.cpp:58] [CP0HC530002T] Try to start stream: {type: Color, format: RGB, width: 640, height: 480, fps: 30}
+[04/15 23:26:51.807442][info][619175][SensorBase.cpp:213] [CP0HC530002T] Stream state changed to STARTING@Color
+[04/15 23:26:51.807450][info][619175][VideoSensor.cpp:127] [CP0HC530002T] Start backend stream: {type: Color, format: YUYV, width: 640, height: 480, fps: 30}
+[04/15 23:26:51.809475][info][619175][Pipeline.cpp:270] [CP0HC530002T] Start streams done!
+[04/15 23:26:51.809498][info][619175][Pipeline.cpp:238] [CP0HC530002T] Pipeline start done!
+[04/15 23:26:52.010033][warning][619175][Pipeline.cpp:305] [CP0HC530002T] Wait for frame timeout, you can try to increase the wait time! current timeout=200
+[04/15 23:26:52.348746][info][619251][SensorBase.cpp:213] [CP0HC530002T] Stream state changed to STREAMING@Color
+[04/15 23:26:55.210835][warning][619252][Pipeline.cpp:305] [CP0HC530002T] Wait for frame timeout, you can try to increase the wait time! current timeout=200 [**1 logs in 3200ms, last: 23:26:52.210279**]
+[04/15 23:26:55.620465][info][619175][Pipeline.cpp:336] [CP0HC530002T] Try to stop pipeline!
+[04/15 23:26:55.620529][info][619175][Pipeline.cpp:312] [CP0HC530002T] Try to stop streams!
+[04/15 23:26:55.620575][info][619175][SensorBase.cpp:213] [CP0HC530002T] Stream state changed to STOPPING@Color
+[04/15 23:26:55.664988][info][619175][SensorBase.cpp:213] [CP0HC530002T] Stream state changed to STOPPED@Color
+[04/15 23:26:55.665189][info][619175][Pipeline.cpp:326] [CP0HC530002T] Sensor stream stopped, sensorType=Color
+[04/15 23:26:55.665197][info][619175][Pipeline.cpp:332] [CP0HC530002T] Stop streams done!
+[04/15 23:26:55.665403][info][619175][Pipeline.cpp:356] [CP0HC530002T] Stop pipeline done!
+[04/15 23:26:55.665441][info][619175][Pipeline.cpp:53] [CP0HC530002T] Pipeline destroyed! @0x73B5F82DDAA0
+[04/15 23:26:55.665627][info][619175][SensorBase.cpp:47] [CP0HC530002T] SensorBase is destroyed
+[04/15 23:26:55.666956][info][619175][ObLibuvcDevicePort.cpp:87] uvc_close done.
+[04/15 23:26:55.667014][info][619175][ObLibuvcDevicePort.cpp:88] ~ObLibuvcDevicePort done
+[04/15 23:26:55.671292][info][619175][ObLibuvcDevicePort.cpp:87] uvc_close done.
+[04/15 23:26:55.671325][info][619175][ObLibuvcDevicePort.cpp:88] ~ObLibuvcDevicePort done
+[04/15 23:27:59.890947][info][620569][LinuxUsbPal.cpp:335] Create PollingDeviceWatcher!
+[04/15 23:27:59.891020][info][620569][DeviceManager.cpp:25] Current found device(s): (2)
+[04/15 23:27:59.891027][info][620569][DeviceManager.cpp:34] 	- Name: Gemini 335, PID: 0x0800, SN/ID: CP0HC530002T, Connection: USB3.2
+[04/15 23:27:59.891031][info][620569][DeviceManager.cpp:34] 	- Name: Gemini 335, PID: 0x0800, SN/ID: CP0E753000KA, Connection: USB3.2
+[04/15 23:27:59.891036][info][620569][DeviceManager.cpp:339] Enable net device enumeration: true
+[04/15 23:28:01.896351][info][620569][DeviceManager.cpp:25] Current device(s) list: (2)
+[04/15 23:28:01.896413][info][620569][DeviceManager.cpp:34] 	- Name: Gemini 335, PID: 0x0800, SN/ID: CP0HC530002T, Connection: USB3.2
+[04/15 23:28:01.896419][info][620569][DeviceManager.cpp:34] 	- Name: Gemini 335, PID: 0x0800, SN/ID: CP0E753000KA, Connection: USB3.2
+[04/15 23:28:01.899918][info][620569][DeviceBase.cpp:651] key: AppSlot,value:2
+[04/15 23:28:01.899968][info][620569][DeviceBase.cpp:651] key: HwType,value:R1
+[04/15 23:28:01.899977][info][620569][DeviceBase.cpp:651] key: HwVer,value:V1.1
+[04/15 23:28:01.899983][info][620569][DeviceBase.cpp:651] key: IspFwVer,value:20241125
+[04/15 23:28:01.899991][info][620569][DeviceBase.cpp:651] key: IspNeedVer,value:20241125
+[04/15 23:28:01.899997][info][620569][DeviceBase.cpp:651] key: PresetVer,value:1.2.2
+[04/15 23:28:02.060214][info][620569][DeviceManager.cpp:194] Device created successfully! Name: Gemini 335, PID: 0x0800, SN/ID: CP0HC530002T FW: 1.4.60
+[04/15 23:28:02.060542][info][620569][Pipeline.cpp:42] [CP0HC530002T] Pipeline created with device: {name: Gemini 335, sn: CP0HC530002T}, @0x79ADAC2DDAC0
+[04/15 23:28:02.087629][info][620569][Pipeline.cpp:216] [CP0HC530002T] Check and set config done!
+[04/15 23:28:02.088080][info][620569][Pipeline.cpp:254] [CP0HC530002T] Try to start streams!
+[04/15 23:28:02.088124][info][620569][VideoSensor.cpp:58] [CP0HC530002T] Try to start stream: {type: Color, format: RGB, width: 640, height: 480, fps: 30}
+[04/15 23:28:02.088148][info][620569][SensorBase.cpp:213] [CP0HC530002T] Stream state changed to STARTING@Color
+[04/15 23:28:02.088160][info][620569][VideoSensor.cpp:127] [CP0HC530002T] Start backend stream: {type: Color, format: YUYV, width: 640, height: 480, fps: 30}
+[04/15 23:28:02.090426][info][620569][Pipeline.cpp:270] [CP0HC530002T] Start streams done!
+[04/15 23:28:02.090476][info][620569][Pipeline.cpp:238] [CP0HC530002T] Pipeline start done!
+[04/15 23:28:02.291075][warning][620569][Pipeline.cpp:305] [CP0HC530002T] Wait for frame timeout, you can try to increase the wait time! current timeout=200
+[04/15 23:28:02.632072][info][620664][SensorBase.cpp:213] [CP0HC530002T] Stream state changed to STREAMING@Color
+[04/15 23:28:05.491739][warning][620665][Pipeline.cpp:305] [CP0HC530002T] Wait for frame timeout, you can try to increase the wait time! current timeout=200 [**1 logs in 3200ms, last: 23:28:02.491258**]
+[04/15 23:28:07.637119][info][620664][VideoSensor.cpp:153] [CP0HC530002T] Color backend frame callback, frameRate=30.169830fps
+[04/15 23:28:07.637910][info][620667][SensorBase.cpp:370] [CP0HC530002T] Color Streaming... frameRate=30.175858fps
+[04/15 23:28:12.642881][info][620664][VideoSensor.cpp:153] [CP0HC530002T] Color backend frame callback, frameRate=29.970030fps
+[04/15 23:28:12.643412][info][620667][SensorBase.cpp:370] [CP0HC530002T] Color Streaming... frameRate=29.964043fps
+[04/15 23:28:17.648837][info][620664][VideoSensor.cpp:153] [CP0HC530002T] Color backend frame callback, frameRate=29.964043fps
+[04/15 23:28:17.649828][info][620667][SensorBase.cpp:370] [CP0HC530002T] Color Streaming... frameRate=29.964043fps
+[04/15 23:28:22.654813][info][620664][VideoSensor.cpp:153] [CP0HC530002T] Color backend frame callback, frameRate=29.964043fps
+[04/15 23:28:22.655709][info][620667][SensorBase.cpp:370] [CP0HC530002T] Color Streaming... frameRate=29.964043fps
+[04/15 23:28:27.660625][info][620664][VideoSensor.cpp:153] [CP0HC530002T] Color backend frame callback, frameRate=29.964043fps
+[04/15 23:28:27.661115][info][620667][SensorBase.cpp:370] [CP0HC530002T] Color Streaming... frameRate=29.964043fps
+[04/15 23:28:32.666701][info][620664][VideoSensor.cpp:153] [CP0HC530002T] Color backend frame callback, frameRate=29.964043fps
+[04/15 23:28:32.667182][info][620667][SensorBase.cpp:370] [CP0HC530002T] Color Streaming... frameRate=29.964043fps
+[04/15 23:28:37.672418][info][620664][VideoSensor.cpp:153] [CP0HC530002T] Color backend frame callback, frameRate=29.964043fps
+[04/15 23:28:37.672900][info][620667][SensorBase.cpp:370] [CP0HC530002T] Color Streaming... frameRate=29.970030fps
+[04/15 23:28:42.678529][info][620664][VideoSensor.cpp:153] [CP0HC530002T] Color backend frame callback, frameRate=29.964043fps
+[04/15 23:28:42.679190][info][620667][SensorBase.cpp:370] [CP0HC530002T] Color Streaming... frameRate=29.958059fps
+[04/15 23:28:47.684479][info][620664][VideoSensor.cpp:153] [CP0HC530002T] Color backend frame callback, frameRate=29.964043fps
+[04/15 23:28:47.685691][info][620667][SensorBase.cpp:370] [CP0HC530002T] Color Streaming... frameRate=29.964043fps
+[04/15 23:28:52.690224][info][620664][VideoSensor.cpp:153] [CP0HC530002T] Color backend frame callback, frameRate=29.964043fps
+[04/15 23:28:52.690706][info][620667][SensorBase.cpp:370] [CP0HC530002T] Color Streaming... frameRate=29.970030fps
+[04/15 23:28:57.696133][info][620664][VideoSensor.cpp:153] [CP0HC530002T] Color backend frame callback, frameRate=29.964043fps
+[04/15 23:28:57.697188][info][620667][SensorBase.cpp:370] [CP0HC530002T] Color Streaming... frameRate=29.958059fps
+[04/15 23:29:01.935429][info][620569][Pipeline.cpp:336] [CP0HC530002T] Try to stop pipeline!
+[04/15 23:29:01.935487][info][620569][Pipeline.cpp:312] [CP0HC530002T] Try to stop streams!
+[04/15 23:29:01.935522][info][620569][SensorBase.cpp:213] [CP0HC530002T] Stream state changed to STOPPING@Color
+[04/15 23:29:01.979324][info][620569][SensorBase.cpp:213] [CP0HC530002T] Stream state changed to STOPPED@Color
+[04/15 23:29:01.979769][info][620569][Pipeline.cpp:326] [CP0HC530002T] Sensor stream stopped, sensorType=Color
+[04/15 23:29:01.979819][info][620569][Pipeline.cpp:332] [CP0HC530002T] Stop streams done!
+[04/15 23:29:01.980131][info][620569][Pipeline.cpp:356] [CP0HC530002T] Stop pipeline done!
+[04/15 23:29:01.980174][info][620569][Pipeline.cpp:53] [CP0HC530002T] Pipeline destroyed! @0x79ADAC2DDAC0
+[04/15 23:29:01.980349][info][620569][SensorBase.cpp:47] [CP0HC530002T] SensorBase is destroyed
+[04/15 23:29:01.981355][info][620569][ObLibuvcDevicePort.cpp:87] uvc_close done.
+[04/15 23:29:01.981362][info][620569][ObLibuvcDevicePort.cpp:88] ~ObLibuvcDevicePort done
+[04/15 23:29:01.985434][info][620569][ObLibuvcDevicePort.cpp:87] uvc_close done.
+[04/15 23:29:01.985464][info][620569][ObLibuvcDevicePort.cpp:88] ~ObLibuvcDevicePort done
+[04/15 23:33:37.195169][info][625379][LinuxUsbPal.cpp:335] Create PollingDeviceWatcher!
+[04/15 23:33:37.195272][info][625379][DeviceManager.cpp:25] Current found device(s): (2)
+[04/15 23:33:37.195286][info][625379][DeviceManager.cpp:34] 	- Name: Gemini 335, PID: 0x0800, SN/ID: CP0HC530002T, Connection: USB3.2
+[04/15 23:33:37.195294][info][625379][DeviceManager.cpp:34] 	- Name: Gemini 335, PID: 0x0800, SN/ID: CP0E753000KA, Connection: USB3.2
+[04/15 23:33:37.195304][info][625379][DeviceManager.cpp:339] Enable net device enumeration: true
+[04/15 23:33:39.202091][info][625379][DeviceManager.cpp:25] Current device(s) list: (2)
+[04/15 23:33:39.202179][info][625379][DeviceManager.cpp:34] 	- Name: Gemini 335, PID: 0x0800, SN/ID: CP0HC530002T, Connection: USB3.2
+[04/15 23:33:39.202190][info][625379][DeviceManager.cpp:34] 	- Name: Gemini 335, PID: 0x0800, SN/ID: CP0E753000KA, Connection: USB3.2
+[04/15 23:33:39.208172][info][625379][DeviceBase.cpp:651] key: AppSlot,value:2
+[04/15 23:33:39.208199][info][625379][DeviceBase.cpp:651] key: HwType,value:R1
+[04/15 23:33:39.208204][info][625379][DeviceBase.cpp:651] key: HwVer,value:V1.1
+[04/15 23:33:39.208207][info][625379][DeviceBase.cpp:651] key: IspFwVer,value:20241125
+[04/15 23:33:39.208210][info][625379][DeviceBase.cpp:651] key: IspNeedVer,value:20241125
+[04/15 23:33:39.208213][info][625379][DeviceBase.cpp:651] key: PresetVer,value:1.2.2
+[04/15 23:33:39.369746][info][625379][DeviceManager.cpp:194] Device created successfully! Name: Gemini 335, PID: 0x0800, SN/ID: CP0HC530002T FW: 1.4.60
+[04/15 23:33:39.370192][info][625379][Pipeline.cpp:42] [CP0HC530002T] Pipeline created with device: {name: Gemini 335, sn: CP0HC530002T}, @0x7D60A82DDAA0
+[04/15 23:33:39.398964][info][625379][Pipeline.cpp:216] [CP0HC530002T] Check and set config done!
+[04/15 23:33:39.399198][info][625379][Pipeline.cpp:254] [CP0HC530002T] Try to start streams!
+[04/15 23:33:39.399209][info][625379][VideoSensor.cpp:58] [CP0HC530002T] Try to start stream: {type: Color, format: RGB, width: 640, height: 480, fps: 30}
+[04/15 23:33:39.399226][info][625379][SensorBase.cpp:213] [CP0HC530002T] Stream state changed to STARTING@Color
+[04/15 23:33:39.399233][info][625379][VideoSensor.cpp:127] [CP0HC530002T] Start backend stream: {type: Color, format: YUYV, width: 640, height: 480, fps: 30}
+[04/15 23:33:39.401083][info][625379][Pipeline.cpp:270] [CP0HC530002T] Start streams done!
+[04/15 23:33:39.401100][info][625379][Pipeline.cpp:238] [CP0HC530002T] Pipeline start done!
+[04/15 23:33:39.601682][warning][625379][Pipeline.cpp:305] [CP0HC530002T] Wait for frame timeout, you can try to increase the wait time! current timeout=200
+[04/15 23:33:39.931248][info][625464][SensorBase.cpp:213] [CP0HC530002T] Stream state changed to STREAMING@Color
+[04/15 23:33:42.803458][warning][625465][Pipeline.cpp:305] [CP0HC530002T] Wait for frame timeout, you can try to increase the wait time! current timeout=200 [**1 logs in 3201ms, last: 23:33:39.802961**]
+[04/15 23:33:44.935738][info][625464][VideoSensor.cpp:153] [CP0HC530002T] Color backend frame callback, frameRate=30.175858fps
+[04/15 23:33:44.936168][info][625479][SensorBase.cpp:370] [CP0HC530002T] Color Streaming... frameRate=30.181892fps
+[04/15 23:33:49.941427][info][625464][VideoSensor.cpp:153] [CP0HC530002T] Color backend frame callback, frameRate=29.964043fps
+[04/15 23:33:49.941961][info][625479][SensorBase.cpp:370] [CP0HC530002T] Color Streaming... frameRate=29.970030fps
+[04/15 23:33:54.947485][info][625464][VideoSensor.cpp:153] [CP0HC530002T] Color backend frame callback, frameRate=29.964043fps
+[04/15 23:33:54.948446][info][625479][SensorBase.cpp:370] [CP0HC530002T] Color Streaming... frameRate=29.958059fps
+[04/15 23:33:59.953278][info][625464][VideoSensor.cpp:153] [CP0HC530002T] Color backend frame callback, frameRate=29.964043fps
+[04/15 23:33:59.954220][info][625479][SensorBase.cpp:370] [CP0HC530002T] Color Streaming... frameRate=29.964043fps
+[04/15 23:34:04.959107][info][625464][VideoSensor.cpp:153] [CP0HC530002T] Color backend frame callback, frameRate=29.964043fps
+[04/15 23:34:04.959970][info][625479][SensorBase.cpp:370] [CP0HC530002T] Color Streaming... frameRate=29.970030fps
+[04/15 23:34:09.965141][info][625464][VideoSensor.cpp:153] [CP0HC530002T] Color backend frame callback, frameRate=29.964043fps
+[04/15 23:34:09.965741][info][625479][SensorBase.cpp:370] [CP0HC530002T] Color Streaming... frameRate=29.964043fps
+[04/15 23:34:14.438672][info][625379][Pipeline.cpp:336] [CP0HC530002T] Try to stop pipeline!
+[04/15 23:34:14.438739][info][625379][Pipeline.cpp:312] [CP0HC530002T] Try to stop streams!
+[04/15 23:34:14.438774][info][625379][SensorBase.cpp:213] [CP0HC530002T] Stream state changed to STOPPING@Color
+[04/15 23:34:14.481531][info][625379][SensorBase.cpp:213] [CP0HC530002T] Stream state changed to STOPPED@Color
+[04/15 23:34:14.481935][info][625379][Pipeline.cpp:326] [CP0HC530002T] Sensor stream stopped, sensorType=Color
+[04/15 23:34:14.481946][info][625379][Pipeline.cpp:332] [CP0HC530002T] Stop streams done!
+[04/15 23:34:14.482156][info][625379][Pipeline.cpp:356] [CP0HC530002T] Stop pipeline done!
+[04/15 23:34:14.482190][info][625379][Pipeline.cpp:53] [CP0HC530002T] Pipeline destroyed! @0x7D60A82DDAA0
+[04/15 23:34:14.482352][info][625379][SensorBase.cpp:47] [CP0HC530002T] SensorBase is destroyed
+[04/15 23:34:14.483729][info][625379][ObLibuvcDevicePort.cpp:87] uvc_close done.
+[04/15 23:34:14.483780][info][625379][ObLibuvcDevicePort.cpp:88] ~ObLibuvcDevicePort done
+[04/15 23:34:14.488240][info][625379][ObLibuvcDevicePort.cpp:87] uvc_close done.
+[04/15 23:34:14.488280][info][625379][ObLibuvcDevicePort.cpp:88] ~ObLibuvcDevicePort done
+[04/15 23:34:37.881749][info][626442][LinuxUsbPal.cpp:335] Create PollingDeviceWatcher!
+[04/15 23:34:37.881882][info][626442][DeviceManager.cpp:25] Current found device(s): (2)
+[04/15 23:34:37.881897][info][626442][DeviceManager.cpp:34] 	- Name: Gemini 335, PID: 0x0800, SN/ID: CP0HC530002T, Connection: USB3.2
+[04/15 23:34:37.881908][info][626442][DeviceManager.cpp:34] 	- Name: Gemini 335, PID: 0x0800, SN/ID: CP0E753000KA, Connection: USB3.2
+[04/15 23:34:37.881919][info][626442][DeviceManager.cpp:339] Enable net device enumeration: true
+[04/15 23:34:39.889272][info][626442][DeviceManager.cpp:25] Current device(s) list: (2)
+[04/15 23:34:39.889356][info][626442][DeviceManager.cpp:34] 	- Name: Gemini 335, PID: 0x0800, SN/ID: CP0HC530002T, Connection: USB3.2
+[04/15 23:34:39.889367][info][626442][DeviceManager.cpp:34] 	- Name: Gemini 335, PID: 0x0800, SN/ID: CP0E753000KA, Connection: USB3.2
+[04/15 23:34:39.893862][info][626442][DeviceBase.cpp:651] key: AppSlot,value:2
+[04/15 23:34:39.893893][info][626442][DeviceBase.cpp:651] key: HwType,value:R1
+[04/15 23:34:39.893898][info][626442][DeviceBase.cpp:651] key: HwVer,value:V1.1
+[04/15 23:34:39.893902][info][626442][DeviceBase.cpp:651] key: IspFwVer,value:20241125
+[04/15 23:34:39.893905][info][626442][DeviceBase.cpp:651] key: IspNeedVer,value:20241125
+[04/15 23:34:39.893909][info][626442][DeviceBase.cpp:651] key: PresetVer,value:1.2.2
+[04/15 23:34:40.055452][info][626442][DeviceManager.cpp:194] Device created successfully! Name: Gemini 335, PID: 0x0800, SN/ID: CP0HC530002T FW: 1.4.60
+[04/15 23:34:40.057138][info][626442][Pipeline.cpp:42] [CP0HC530002T] Pipeline created with device: {name: Gemini 335, sn: CP0HC530002T}, @0x7D79902DDAC0
+[04/15 23:34:40.084036][info][626442][Pipeline.cpp:216] [CP0HC530002T] Check and set config done!
+[04/15 23:34:40.084298][info][626442][Pipeline.cpp:254] [CP0HC530002T] Try to start streams!
+[04/15 23:34:40.084308][info][626442][VideoSensor.cpp:58] [CP0HC530002T] Try to start stream: {type: Color, format: RGB, width: 640, height: 480, fps: 30}
+[04/15 23:34:40.084326][info][626442][SensorBase.cpp:213] [CP0HC530002T] Stream state changed to STARTING@Color
+[04/15 23:34:40.084346][info][626442][VideoSensor.cpp:127] [CP0HC530002T] Start backend stream: {type: Color, format: YUYV, width: 640, height: 480, fps: 30}
+[04/15 23:34:40.086164][info][626442][Pipeline.cpp:270] [CP0HC530002T] Start streams done!
+[04/15 23:34:40.086179][info][626442][Pipeline.cpp:238] [CP0HC530002T] Pipeline start done!
+[04/15 23:34:40.286728][warning][626442][Pipeline.cpp:305] [CP0HC530002T] Wait for frame timeout, you can try to increase the wait time! current timeout=200
+[04/15 23:34:40.636069][info][626523][SensorBase.cpp:213] [CP0HC530002T] Stream state changed to STREAMING@Color
+[04/15 23:34:41.503517][info][626442][Pipeline.cpp:336] [CP0HC530002T] Try to stop pipeline!
+[04/15 23:34:41.503594][info][626442][Pipeline.cpp:312] [CP0HC530002T] Try to stop streams!
+[04/15 23:34:41.503628][info][626442][SensorBase.cpp:213] [CP0HC530002T] Stream state changed to STOPPING@Color
+[04/15 23:34:41.547726][info][626442][SensorBase.cpp:213] [CP0HC530002T] Stream state changed to STOPPED@Color
+[04/15 23:34:41.547952][info][626442][Pipeline.cpp:326] [CP0HC530002T] Sensor stream stopped, sensorType=Color
+[04/15 23:34:41.547961][info][626442][Pipeline.cpp:332] [CP0HC530002T] Stop streams done!
+[04/15 23:34:41.548177][info][626442][Pipeline.cpp:356] [CP0HC530002T] Stop pipeline done!
+[04/15 23:34:41.548209][info][626442][Pipeline.cpp:53] [CP0HC530002T] Pipeline destroyed! @0x7D79902DDAC0
+[04/15 23:34:41.548379][info][626442][SensorBase.cpp:47] [CP0HC530002T] SensorBase is destroyed
+[04/15 23:34:41.549482][info][626442][ObLibuvcDevicePort.cpp:87] uvc_close done.
+[04/15 23:34:41.549491][info][626442][ObLibuvcDevicePort.cpp:88] ~ObLibuvcDevicePort done
+[04/15 23:34:41.553359][info][626442][ObLibuvcDevicePort.cpp:87] uvc_close done.
+[04/15 23:34:41.553394][info][626442][ObLibuvcDevicePort.cpp:88] ~ObLibuvcDevicePort done
+[04/15 23:34:41.555898][warning][626526][Pipeline.cpp:305] [CP0HC530002T] Wait for frame timeout, you can try to increase the wait time! current timeout=200 [**1 logs in 1269ms, last: 23:34:40.486934**]

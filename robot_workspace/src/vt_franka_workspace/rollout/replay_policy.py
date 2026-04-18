@@ -125,6 +125,69 @@ def build_replay_policy(
 build_replay_policy.__vt_franka_policy_factory__ = True
 
 
+def build_step_replay_policy(
+    *,
+    episode_dir: str | Path | None = None,
+    hz: float | None = None,
+    speed_scale: float = 1.0,
+    skip_gripper: bool = False,
+    teleop_settings: TeleopSettings | None = None,
+    **_: Any,
+):
+    if episode_dir is None:
+        raise ValueError("Step replay policy requires --episode-dir")
+    if speed_scale <= 0.0:
+        raise ValueError("speed_scale must be positive")
+
+    episode = load_replay_episode(episode_dir)
+    if len(episode.timestamps) == 0:
+        raise ValueError("Replay episode is empty")
+
+    teleop_settings = teleop_settings or TeleopSettings()
+    base_hz = hz if hz is not None and hz > 0.0 else episode.hz
+    effective_hz = base_hz * speed_scale if base_hz > 0.0 else speed_scale
+    if effective_hz <= 0.0:
+        effective_hz = 1.0
+
+    step_index = 0
+    final_index = len(episode.timestamps) - 1
+    last_gripper_closed: bool | None = None
+
+    def replay_policy(observation: dict) -> dict:
+        nonlocal step_index, last_gripper_closed
+        del observation
+
+        index = min(step_index, final_index)
+        action: dict[str, Any] = {
+            "target_tcp": episode.target_tcp[index].astype(float).tolist(),
+        }
+
+        if not skip_gripper:
+            gripper_closed = bool(episode.gripper_closed[index])
+            if last_gripper_closed is None or gripper_closed != last_gripper_closed:
+                action["gripper_velocity"] = teleop_settings.gripper_velocity
+                action["gripper_force_limit"] = teleop_settings.grasp_force
+                if gripper_closed:
+                    action["gripper_closed"] = True
+                else:
+                    action["gripper_width"] = teleop_settings.max_gripper_width
+                last_gripper_closed = gripper_closed
+
+        if index >= final_index:
+            action["terminate"] = True
+        else:
+            step_index += 1
+
+        return action
+
+    replay_policy.__vt_franka_control_hz__ = effective_hz
+    replay_policy.__vt_franka_max_duration_sec__ = len(episode.timestamps) / effective_hz
+    return replay_policy
+
+
+build_step_replay_policy.__vt_franka_policy_factory__ = True
+
+
 def _build_relative_timestamps(episode: ReplayEpisode, hz: float | None) -> np.ndarray:
     if hz is not None and hz > 0.0:
         return np.arange(len(episode.timestamps), dtype=np.float64) / hz

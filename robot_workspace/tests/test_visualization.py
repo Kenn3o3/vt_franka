@@ -1,5 +1,6 @@
 from pathlib import Path
 
+import json
 import numpy as np
 
 from vt_franka_workspace.visualization import export_episode_composite_video
@@ -7,7 +8,7 @@ from vt_franka_workspace.visualization import export_episode_composite_video
 
 def test_export_episode_composite_video_creates_mp4(tmp_path: Path):
     episode_dir = tmp_path / "episode_0000"
-    streams_dir = episode_dir / "streams" / "orbbec_rgb"
+    streams_dir = episode_dir / "streams" / "rgb_third_person"
     streams_dir.mkdir(parents=True)
 
     try:
@@ -20,7 +21,7 @@ def test_export_episode_composite_video_creates_mp4(tmp_path: Path):
         frame = np.full((48, 64, 3), value, dtype=np.uint8)
         frame_path = streams_dir / f"frame{idx}.jpg"
         assert cv2.imwrite(str(frame_path), frame)
-        frames.append(f"streams/orbbec_rgb/frame{idx}.jpg")
+        frames.append(f"streams/rgb_third_person/frame{idx}.jpg")
 
     timestamps = np.array([1.0, 1.1, 1.2], dtype=np.float64)
     pose = np.array(
@@ -48,8 +49,20 @@ def test_export_episode_composite_video_creates_mp4(tmp_path: Path):
         teleop_gripper_closed=np.zeros((3,), dtype=bool),
         gelsight_marker_locations=np.empty((3, 0), dtype=object),
         gelsight_marker_offsets=np.empty((3, 0), dtype=object),
-        orbbec_rgb_frame_paths=np.array(frames, dtype=object),
-        orbbec_rgb_capture_timestamps=timestamps,
+        rgb_third_person_frame_paths=np.array(frames, dtype=object),
+        rgb_third_person_capture_timestamps=timestamps,
+    )
+    (episode_dir / "episode_manifest.json").write_text(
+        json.dumps(
+            {
+                "metadata": {
+                    "instruction": "Move the bowl to the right 10 cm.",
+                    "start_state": {"x": 0.03, "y": 0.4, "z": 0.14, "yaw_deg": 45},
+                    "goal_state": {"x": 0.13, "y": 0.4, "z": 0.14, "yaw_deg": 45},
+                }
+            }
+        ),
+        encoding="utf-8",
     )
 
     output = export_episode_composite_video(episode_dir)

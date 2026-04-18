@@ -51,7 +51,12 @@ class ControllerService:
 
     def queue_tcp_command(self, command: TcpTargetCommand) -> None:
         target_pose = pose7d_to_pose6d(command.target_tcp)
-        target_time = time.monotonic() + 1.0 / self.settings.control.teleop_command_hz
+        target_duration_sec = (
+            float(command.target_duration_sec)
+            if command.target_duration_sec is not None
+            else 1.0 / self.settings.control.teleop_command_hz
+        )
+        target_time = time.monotonic() + target_duration_sec
         self.command_queue.append({"target_pose": target_pose, "target_time": target_time})
 
     def queue_gripper_width_command(self, command: GripperWidthCommand) -> None:
