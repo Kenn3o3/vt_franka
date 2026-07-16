@@ -21,6 +21,6 @@ control:
   ready_duration_sec: 2.0
   ready_joint_positions: [1.7026, -0.0901, -0.1763, -1.8991, -0.0258, 1.791, 0.7442]
   ready_joint_duration_sec: 4.0
-  max_policy_pos_speed_m_s: 0.10
-  max_policy_rot_speed_rad_s: 0.3
+  max_policy_pos_speed_m_s: 1.0
+  max_policy_rot_speed_rad_s: 1.0
   max_queue_size: 256
