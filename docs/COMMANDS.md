@@ -1,6 +1,27 @@
-我想理清一下现在的system有没有实现好我的需求：
-- 首先，所有模型的actions应该用的是我在训练时的commanded action而不是observed embodiment。
 链路是这样的：
+
+In Controller PC:
+
+#### Terminal C1: Polymetis robot server
+
+```bash
+conda activate polymetis-local
+launch_robot.py robot_client=franka_hardware robot_client.executable_cfg.robot_ip=172.16.0.2
+```
+
+#### Terminal C2: Polymetis gripper server
+
+```bash
+conda activate polymetis-local
+launch_gripper.py gripper=franka_hand gripper.executable_cfg.robot_ip=172.16.0.2
+```
+
+#### Terminal C3: Controller API
+
+```bash
+conda activate polymetis-local
+vt-franka-controller run --config robot_controller/config/controller.yaml
+```
 
 启动环境：
 ```bash
