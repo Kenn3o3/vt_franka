@@ -1,6 +1,4 @@
-链路是这样的：
-
-In Controller PC:
+### Controller PC:
 
 #### Terminal C1: Polymetis robot server
 
@@ -23,7 +21,7 @@ conda activate polymetis-local
 vt-franka-controller run --config robot_controller/config/controller.yaml
 ```
 
-启动环境：
+### Workspace PC:
 ```bash
 conda activate vt-franka-workspace
 cd /home/zhenya/kenny/visuotact/vt_franka

@@ -44991,3 +44991,11 @@
 [07/09 13:58:41.345661][info][814546][ObLibuvcDevicePort.cpp:88] ~ObLibuvcDevicePort done
 [07/09 13:58:41.356622][info][814546][ObLibuvcDevicePort.cpp:87] uvc_close done.
 [07/09 13:58:41.356643][info][814546][ObLibuvcDevicePort.cpp:88] ~ObLibuvcDevicePort done
+[07/17 14:10:39.503192][info][1237930][LinuxUsbPal.cpp:335] Create PollingDeviceWatcher!
+[07/17 14:10:39.503267][info][1237930][DeviceManager.cpp:25] Current found device(s): (0)
+[07/17 14:10:39.503278][info][1237930][DeviceManager.cpp:339] Enable net device enumeration: true
+[07/17 14:10:41.524390][info][1237930][DeviceManager.cpp:25] Current device(s) list: (0)
+[07/17 18:22:37.503275][info][1313896][LinuxUsbPal.cpp:335] Create PollingDeviceWatcher!
+[07/17 18:22:37.503332][info][1313896][DeviceManager.cpp:25] Current found device(s): (0)
+[07/17 18:22:37.503338][info][1313896][DeviceManager.cpp:339] Enable net device enumeration: true
+[07/17 18:22:39.511482][info][1313896][DeviceManager.cpp:25] Current device(s) list: (0)
